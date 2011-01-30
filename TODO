@@ -1,0 +1,21 @@
+TODO
+
+* extend main algorith to support more flexible string metaphonization,
+once names mostly will be source of rules exception. This should result
+into three types of functions:
+
+  1) STRICT to phonetics rules. No exceptions beyond that known on Portuguese
+
+  2) LESS-STRICT, where some common exceptions are included. Those mostly 
+     exists to solve foreign names and strange names. Only common cases are
+     supported, so many exceptions will follow one or another rule, even that
+     if that means to map some unusual sound used by people to another key.
+
+  3) STRICTLESS. Not certain if this level should be reached. However, it 
+     will be less strict, possibly omitting any phonetic key that could make 
+     search more difficult. Mostly, keeps attached to sound representation, 
+     more than orthografy rules, which it means considering the sound use of
+     the letters and words.
+     
+* add support to PHP
+* add support to MySQL

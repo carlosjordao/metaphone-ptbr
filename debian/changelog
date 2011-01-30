@@ -1,0 +1,8 @@
+metaphoneptbr (1.11) jaunty; urgency=low
+  * adicionado mais alguns casos de estrangeirismos, como sheila e christiano, para q tenham proximidade com nomes semelhantes.
+  * internamente: pré-filtro limpa a string de símbolos duplicados e muda para uppercase
+  * organização do código. Remoção de testes de símbolos duplicados onde não era mais necessário.
+
+ -- Carlos Costa Jordao <carlosjordao@gmail.com>  Sat, 29 Jan 2011 22:45:00 -0200
+
+

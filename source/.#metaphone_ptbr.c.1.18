@@ -1,0 +1,761 @@
+/*
+ * This is a port of the Double Metaphone based algorithm for brazilian 
+ * portuguese, developed by Prefeitura Municipal de Varzea Paulista for PHP.
+ *
+ *
+ * OBJECTIVES:
+ *
+ * As Double Metaphone, the ideia is to compute sound like strings, but
+ * in this case, just for brazilian portuguese. Why? Because would be nice
+ * to have generic tool for every language, but sometimes is not desirable or
+ * either maintanable. Any changes could break the original metaphone code, and 
+ * one way of avoiding this is introducing more "alternate" strings. Another one
+ * is creating specifics metaphone functions for each language. That's my choice
+ *
+ * Information on using Double Metaphone can be found at
+ *	 http://www.codeproject.com/string/dmetaphone1.asp
+ * and the original article describing it can be found at
+ *	 http://www.cuj.com/documents/s=8038/cuj0006philips/
+ *
+ * The original port for portuguese can be found here:
+ * http://www2.varzeapaulista.sp.gov.br/metaphone/
+ */
+
+
+/***************************** COPYRIGHT NOTICES ***********************
+
+Some of this code is based on dmetaphone.c file, from postgresql contrib
+tree directory, some is based on a PHP algorithm, which can be found here:
+http://www2.varzeapaulista.sp.gov.br/metaphone/
+
+
+The original double metaphone code bears this copyright notice:
+
+  Copyright 2000, Maurice Aubrey <maurice@hevanet.com>.
+  All rights reserved.
+
+  This code is based heavily on the C++ implementation by
+  Lawrence Philips and incorporates several bug fixes courtesy
+  of Kevin Atkinson <kevina@users.sourceforge.net>.
+
+  This module is free software; you may redistribute it and/or
+  modify it under the same terms as Perl itself.
+
+
+
+The original code is authored by Andrew Dunstan <amdunstan@ncshp.org>, and
+<andrew@dunslane.net> and is covered this copyright:
+
+  Copyright 2003, North Carolina State Highway Patrol.
+  All rights reserved.
+
+  Permission to use, copy, modify, and distribute this software and its
+  documentation for any purpose, without fee, and without a written agreement
+  is hereby granted, provided that the above copyright notice and this
+  paragraph and the following two paragraphs appear in all copies.
+
+  IN NO EVENT SHALL THE NORTH CAROLINA STATE HIGHWAY PATROL BE LIABLE TO ANY
+  PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+  INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+  DOCUMENTATION, EVEN IF THE NORTH CAROLINA STATE HIGHWAY PATROL HAS BEEN
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  THE NORTH CAROLINA STATE HIGHWAY PATROL SPECIFICALLY DISCLAIMS ANY
+  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED
+  HEREUNDER IS ON AN "AS IS" BASIS, AND THE NORTH CAROLINA STATE HIGHWAY PATROL
+  HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
+  MODIFICATIONS.
+
+
+
+The metaphone port is authored by Carlos Costa Jordao <carlosjordao@gmail.com>
+and is covered under this copyright:
+
+  Copyright 2008, Carlos Costa Jordao <carlosjordao@gmail.com>.
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without modification,
+  are permitted provided that the following conditions are met:
+  
+  1. Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright notice, this
+     list of conditions and the following disclaimer in the documentation and/or
+     other materials provided with the distribution.
+  
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR 
+  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+***********************************************************************/
+
+
+
+/* turn off assertions for embedded function */
+#define NDEBUG
+
+
+#include "metaphone_ptbr.h"
+
+
+/*
+ * remaining perl module funcs unchanged except for declaring them static
+ * and reformatting to PostgreSQL indentation and to fit in 80 cols.
+ *
+ */
+
+static metastring *
+NewMetaString(char *init_str)
+{
+	metastring *s;
+	char		empty_string[] = "";
+
+	META_MALLOC(s, 1, metastring);
+	assert(s != NULL);
+
+	if (init_str == NULL)
+		init_str = empty_string;
+	s->length = strlen(init_str);
+	/* preallocate a bit more for potential growth */
+	s->bufsize = s->length + 7;
+
+	META_MALLOC(s->str, s->bufsize, char);
+	assert(s->str != NULL);
+
+	strncpy(s->str, init_str, s->length + 1);
+	s->free_string_on_destroy = 1;
+
+	return s;
+}
+
+
+static void
+DestroyMetaString(metastring * s)
+{
+	if (s == NULL)
+		return;
+
+	if (s->free_string_on_destroy && (s->str != NULL))
+		META_FREE(s->str);
+
+	META_FREE(s);
+}
+
+
+static void
+IncreaseBuffer(metastring * s, int chars_needed)
+{
+	META_REALLOC(s->str, (s->bufsize + chars_needed + 10), char);
+	assert(s->str != NULL);
+	s->bufsize = s->bufsize + chars_needed + 10;
+}
+
+/* 
+ * Hope that fixes toupper() problem with UTF-8 characters
+ */
+inline static wchar_t toUpper(const wchar_t c)
+{
+	/* hehe cálculo para converter caracter para maiúscula, baseado na tabela ascii */
+	if( (char)c > 96 && (char)c < 123 )
+		return (wchar_t)(c-32);
+
+	/* para outros casos, a conversão com simplificação 
+	 * por isso GetSimplifiedAt() caiu em desuso
+	 */
+	switch( c ) {
+
+	/* não posso converter para 'S' senão açaí vai soar azaí */
+	case L'ç': return L'Ç';
+
+	case L'á': return 'A';
+	case L'à': return 'A';
+	case L'ã': return 'A';
+	case L'â': return 'A';
+	case L'ä': return 'A';
+
+	case L'é': return 'E';
+	case L'è': return 'E';
+	case L'ẽ': return 'E';
+	case L'ê': return 'E';
+	case L'ë': return 'E';
+
+	case L'í': return 'I';
+	case L'ì': return 'I';
+	case L'ĩ': return 'I';
+	case L'î': return 'I';
+	case L'ï': return 'I';
+
+	case L'ó': return 'O';
+	case L'ò': return 'O';
+	case L'õ': return 'O';
+	case L'ô': return 'O';
+	case L'ö': return 'O';
+
+	case L'ú': return 'U';
+	case L'ù': return 'U';
+	case L'ũ': return 'U';
+	case L'û': return 'U';
+	case L'ü': return 'U';
+	}
+
+	return c;
+}
+
+static void
+MakeUpper(wchar_t* i)
+{
+	for (; *i; i++)
+		*i = toUpper(*i);
+}
+
+
+static wchar_t
+GetAt(wchar_t* s, int pos)
+{
+	if ((pos < 0) || (pos >= wcslen(s)))
+		return '\0';
+
+	return ((wchar_t) *(s + pos));
+}
+
+
+static void
+MetaphAdd(metastring * s, char *new_str)
+{
+	int	add_length = 0;
+	
+
+	if (new_str == NULL)
+		return;
+
+	add_length = strlen(new_str);
+	if ((s->length + add_length) > (s->bufsize - 1))
+		IncreaseBuffer(s, add_length);
+
+        /* just make the copy. strcat() won't work here */
+	while (*new_str)
+		s->str[ s->length++ ] = *new_str++;
+}
+
+/*
+ * this function has been included as most of metaphone characters
+ * has only 1 byte length 
+ */
+static void
+MetaphAddChr(metastring * s, char new_str)
+{
+	int			add_length;
+
+	if (new_str == '\0')
+		return;
+
+	add_length = 1;
+	if ((s->length + add_length) > (s->bufsize - 1))
+		IncreaseBuffer(s, add_length); 
+
+	s->str[s->length] = new_str;
+	s->length += add_length;
+}
+
+static int
+isVowel(char chr)
+{
+	switch (chr)
+	{
+		case 'Y': case 'A': case 'E': case 'I': case 'O': case 'U':			
+			return 1;
+	}
+	return 0;
+}
+
+/* just a shortcut */
+#define GetSimplifiedAt(a,b) GetAt(a,b)
+/* Is this character outside of a word? */
+#define WORD_EDGE(c) (c == L'\0' || isspace(c))
+
+/*
+ * Metaphone_PTBR()
+ * - adicionado suporte a wide char (UTF-8). 
+ */
+static
+char *
+Metaphone_PTBR(const wchar_t *str, const int max_length)
+{
+	int			length		= 0;
+	wchar_t 		*original	= NULL;
+	metastring 		*primary	= NULL;
+	int			current 	= 0;
+	int			last		= 0;
+	char			*code 		= NULL;
+	wchar_t			current_char 	= L'\0',
+				last_char 	= L'\0', 
+				ahead_char 	= L'\0';
+
+	if( !str ) 
+		return NULL;
+
+	/* we need the real length and last prior to padding */
+	length = wcslen(str);
+	last = length - 1;
+	//original = (wchar_t *)wcsdup((char *)str);
+	original = (wchar_t *)wcsdup(str);
+	primary = NewMetaString("");
+
+	MakeUpper(original);
+
+	
+	/* max_length = maximum metaphone string limit, defined as 50 chars long
+	 * restrição de limite metaphone. Algoritmo original contempla tal coisa, e é algo que faz sentido */
+	while ((primary->length < max_length) && (current < length))
+	{
+		current_char = GetSimplifiedAt(original, current);
+		switch (current_char)
+		{
+			case 'A':
+			case 'E':
+			case 'I':
+			case 'O':
+			case 'U':
+				/* palavras começadas com vogais mantém a mesma. */
+				if (WORD_EDGE(last_char)) 
+					MetaphAddChr(primary, current_char);
+				break;
+
+			case 'Y':
+				/* Algumas vogais especiais, no início da frase... */
+				if (WORD_EDGE(last_char)) 
+					MetaphAddChr(primary, 'I');
+				break;
+
+		
+			case 'L':
+				ahead_char = GetAt(original, current+1);
+				/* Aqui é um caso de estudo: ignorar o 'L' como proposto
+				 * ou transformar o 'U' em 'L', como em "AU", por causa do
+				 * som próximo que ambos têm? Ex: Zilda, manter, ou 
+				 * Augusto -> ALGST, Mau -> ML... 
+				 */ 
+				/* lha, lho. Adicionado 2009-11-09. Thx Peter Krauss. Ele estava mal-colocado */
+				if (ahead_char == 'H')
+					MetaphAddChr(primary, '1');
+				else
+				/* como em Louco, aloprado, alado, lampada, etc */
+				/* optando por manter mal -> ML... */
+				if (isVowel(ahead_char) || WORD_EDGE(last_char))
+					MetaphAddChr(primary, 'L');
+
+				/* atualmente ignora L antes de consoantes 
+				 * é uma estratégia ignorar alguns casos de L, já que o L assume
+				 * um som de O ou U... alto, baltazar, almirante, etc.
+				 */
+				break;
+
+			case 'T':
+			case 'P': 
+				/* estas duas consoantes possuem casos especiais
+				 * por causa de palavras como pharmacia
+				 */
+				ahead_char = GetAt(original, current+1);
+				if (ahead_char == 'H')
+				{
+					if (current_char == 'P')
+						MetaphAddChr(primary, 'F');
+					else
+						MetaphAddChr(primary, 'T');
+					current++;
+					break;
+				}
+			case 'B':
+			case 'D':
+			case 'F':
+			case 'J': 
+			case 'K':
+			case 'M':
+			case 'V':
+				/* para estes casos, evitar repetição de consoantes */ 
+				if( last_char != current_char )
+					MetaphAddChr(primary, current_char);
+				
+				break;
+			
+			/* checar consoantes com som confuso e similares */
+			case 'G':
+				ahead_char = GetSimplifiedAt(original, current+1);
+				switch( ahead_char ) 
+				{
+					/* ge, gi */
+					case 'E':
+					case 'I':
+						MetaphAddChr(primary,'J');
+						break;
+						
+					/* ga, go, gu */
+					default:
+						MetaphAddChr(primary,'G');
+						break;
+				}
+				break;
+			
+			case 'R':
+				ahead_char = GetSimplifiedAt(original, current+1);
+				
+				/* como em: andar, rato */
+				if (WORD_EDGE(last_char) || WORD_EDGE(ahead_char))
+				{
+					MetaphAddChr(primary,'2');
+				}
+				/* como em: carro */
+				else if (ahead_char == 'R')
+				{
+					MetaphAddChr(primary,'2');
+					current++;
+				}
+				/* como em: arara */
+				else if (isVowel(last_char) && isVowel(ahead_char))
+				{
+					MetaphAddChr(primary,'R');
+					current++;
+						
+				/* outros casos, como em: arsenico */
+				} else
+					MetaphAddChr(primary,'R');
+				
+				break;
+
+			case 'Z':
+				ahead_char = GetAt(original, current+1);
+				
+				/* termina com, como em algoz */
+				if (WORD_EDGE(ahead_char))
+				{
+					MetaphAddChr(primary,'S');
+				}
+				else if (ahead_char != 'Z')
+				{
+					MetaphAddChr(primary,'Z');
+				}
+				else
+					current++;
+									
+				break;		
+		
+			
+			case 'N':
+				ahead_char = GetAt(original, current+1);
+				
+				/* no português, todas as palavras terminam com 'M', exceto
+				 * no caso de nomes próprios, ou estrangeiros. Para todo caso,
+				 * assume-se som de 'M' (aportuguesar a palavra)
+				 */
+				if (WORD_EDGE(ahead_char))
+				{
+					MetaphAddChr(primary,'M');
+				}
+				/* aranha, nhoque, manha */
+				else if (ahead_char == 'H') 
+				{
+					MetaphAddChr(primary,'3');
+					current++;
+				}
+				/* duplicado... */
+				else if (last_char != 'N')
+				{
+					MetaphAddChr(primary,'N');
+				}
+				break;
+				
+			case 'S':
+				ahead_char = GetSimplifiedAt(original, current+1);
+				
+				/* como em: sapato, atras */
+				if (WORD_EDGE(last_char) || WORD_EDGE(ahead_char))
+				{
+					MetaphAddChr(primary,'S');
+				}
+				/* como em: assar */
+				else if (ahead_char == 'S')
+				{
+					MetaphAddChr(primary,'S');
+					last_char = ahead_char;
+					current++;
+				}
+				/* como em: asa, coser */
+				else if (isVowel(last_char) && isVowel(ahead_char))
+				{
+					MetaphAddChr(primary,'Z');
+				}
+				else
+				{
+					/* special cases */
+					if (ahead_char == 'C') 
+					{
+						char ahead2_char = GetSimplifiedAt(original, current+2);
+						switch (ahead2_char)
+						{	/* ascender, lascivia */
+							case 'E': case 'I':
+								MetaphAddChr(primary,'S');
+								current += 2;
+								break;
+								
+							/* asco, auscultar, mascavo */
+							case 'A': case 'O': case 'U':
+								MetaphAdd(primary,"SC");
+								current += 2;
+								break;
+								
+							/* mesclado */
+							default:
+								MetaphAddChr(primary,'S');
+								current ++;
+								break;
+						}
+					}
+					else
+						MetaphAddChr(primary,'S');
+				}
+				break;
+			
+			/* there is too many exceptions to work on... ahh! */
+			case 'X':
+			{
+				char last2_char = GetAt(original,current-2);
+				ahead_char = GetSimplifiedAt(original,current+1);
+
+				/* como em: fax, anticlímax e todos terminados com 'X' */
+				if (WORD_EDGE(ahead_char)) 
+				{
+					/* o som destes casos: 
+					 * MetaphAdd(primary,"KS"); 
+					 * para manter compatibilidade com outra implementação, usar abaixo 
+					 * como em: Felix, Alex 
+					 * Na verdade, para o computador tanto faz. Se todos usarem o mesmo
+					 * significado, o computador sabe q são iguais, não que som q tem.
+					 * A discussão está na representação acurada ou não da fonética.
+					 */
+					MetaphAdd(primary,"X");
+				}
+				/* casos: ..ex.. */
+				else if (last_char == 'E') 
+				{
+					if( isVowel(ahead_char) )
+					{
+						/* Exonerar, exército, executar, exemplo, exame, exílio = ex + vowel
+						 * exuberar
+						 */
+						if (WORD_EDGE(last2_char))
+						{
+						/*	MetaphAddChr(primary,'Z'); 
+						 * por compatibilidade, e também deve facilitar a busca 
+						 * mas 'exoesqueleto' cai neste caso aqui.
+						 */
+							MetaphAddChr(primary,'X'); 
+						}
+						else switch(ahead_char) 
+						{
+						case 'E': case 'I':
+							/* México, mexerica, mexer */
+							MetaphAddChr(primary,'X');
+							current ++;
+							break;
+						default:
+							/* Anexar, sexo, convexo, nexo, circunflexo
+							 * sexual
+							 * inclusive Alex e Alexandre, o que eh
+							 * bom, pois há Aleksandro ou Alex sandro
+							 * OBS: texugo cai aqui.
+							 */
+							MetaphAdd(primary,"KS");
+							current ++;
+							break;
+						}
+					}
+					/* exceção, exceto */
+					else if (ahead_char == 'C')
+					{
+						MetaphAddChr(primary,'S');
+						current++;
+					/* êxtase, mas infelizmente, exterminar cai aqui (acidente de percurso) */
+					} else
+						MetaphAdd(primary,"KS");
+				}
+				/* parece que certas sílabas predecessoras do 'x' como 
+				 * 'ca' em 'abacaxi' provocam o som de 'CH' no 'x'.
+				 * com exceção do 'm', q é mais complexo.
+				 */
+				else if (isVowel(last_char)) 
+				{
+					switch (last2_char)
+					{
+					/* encontros vocálicos */
+					case 'A': case 'E': case 'I': case 'O': case 'U':
+					case 'C': /* caixa, trouxe */
+					case 'K':
+					case 'G': /* gaxeta */
+					case 'L': /* laxante, lixa, lixo */
+					case 'R': /* roxo, bruxa */
+					case 'X': /* xaxim */
+						/* abacaxi, abaixar, frouxo, guaxo, Teixeira */
+						MetaphAddChr(primary,'X');
+						break;
+
+					default:
+						/* táxi, axila, axioma, tóxico, fixar, fixo, monóxido, óxido */
+						/* maxilar e enquadra máximo aqui tb, embora não seja correto. */
+						MetaphAdd(primary,"KS");
+						break;
+					} 
+				}
+				/* anything else... enxame, enxada, -- catch all exceptions :( */
+				else
+					MetaphAddChr(primary,'X');
+			}
+				break;							
+
+			/* ca, ce, ci, co, cu */
+			case 'C':
+				ahead_char = GetSimplifiedAt(original,current+1);
+				switch(ahead_char) 
+				{
+					case 'E': case 'I':
+						MetaphAddChr(primary,'S');
+						break;
+						
+					case 'H':
+						MetaphAddChr(primary,'X');
+						current ++;
+						break;
+
+					/* caso: Jacques 
+  					 * - não fazer nada. Deixa o 'Q' cuidar disso 
+  					 */
+					case 'Q':
+						break;
+						
+					default:
+						MetaphAddChr(primary,'K');
+						break;
+				}
+				break;
+				
+			/* 
+			 * only considers the vowels after 'H' if only they are on
+			 * the word beginning
+			 */
+			case 'H':
+				if (WORD_EDGE(last_char))
+				{ 
+					ahead_char = GetSimplifiedAt(original,current+1);
+					if (isVowel(ahead_char))
+					{
+						MetaphAddChr(primary,ahead_char);
+						/* this will provoque some words behavior different.
+						 * what can be desirable, due differences between
+						 * sounds and writting. Ex: HOSANA will be mapped to
+						 * 'S' sound, instead 'Z'.
+						 */ 
+						current ++;
+					}
+				} 					
+				break;
+			
+			case 'Q':
+				MetaphAddChr(primary,'K');
+				break;
+
+			case 'W':
+				ahead_char = GetSimplifiedAt(original,current+1);
+				if (isVowel(ahead_char))
+					MetaphAddChr(primary,'V');
+				/* desconsiderar o W no final das palavras, por ter som de U,
+ 				 * ou ainda seguidos por consoantes, por ter som de U (Newton)
+ 				 */
+				break;
+		
+			case L'Ç':
+				MetaphAddChr(primary, 'S');
+				break;
+
+		}
+		/* next char */
+		current ++;
+		
+		last_char = current_char;
+	}
+
+
+
+	/* 
+	 * end of line. Just copies the metaphone generated and clean up those buffer used.
+	 */
+	primary->str[ primary->length ] = '\0';
+
+	META_MALLOC(code, current+1, char);
+	if( !code ) 
+		return NULL;
+	strcpy(code, primary->str);
+
+	free(original);
+	DestroyMetaString(primary);
+
+	return code;
+}
+
+
+#ifdef PT_METAPHONE_MAIN
+
+
+/* useful in command line  */
+
+int main(int argc, char **argv)
+{
+	char	*code	= NULL,
+		*loc	= NULL;
+	int	count	= 1, ret = 0;
+	FILE	*fp	= NULL;
+	wchar_t	buf[201] = L"\0";
+	
+
+//	setlocale(LC_CTYPE, "pt_BR.UTF-8");
+	// Fixing locale part, important for correct character conversion
+        loc = setlocale(LC_CTYPE, NULL);
+        if( !loc || !(*loc) || !strcmp(loc,"C") || !strcmp(loc,"POSIX") ) 
+                if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) ) 
+			return -1;
+
+
+	while (count < argc )
+	{
+                ret = mbstowcs(buf,argv[count++],200);
+		code = Metaphone_PTBR(buf,MAX_METAPHONE_LENGTH);
+		printf("%s\n", code);
+		free(code);
+	}
+
+	fwide(stdin, 1);
+
+	/* read from stdin too, but don't wait for data  */
+	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
+	if( read(STDIN_FILENO, buf, 1) != EOF ) {
+	    ungetwc(buf[0], stdin);
+
+	    while (fgetws(buf,200,stdin))
+	    {
+		code = Metaphone_PTBR(buf,MAX_METAPHONE_LENGTH);
+		printf("%s\n", code);
+		free(code);
+	    }
+        }
+	return 0;
+}
+#endif
+

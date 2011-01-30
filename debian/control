@@ -1,0 +1,67 @@
+Source: metaphoneptbr
+Section: libdevel
+Priority: optional
+Maintainer: carlos costa jordao <carlosjordao@gmail.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.3
+
+
+Package: metaphoneptbr4pgsql
+Section: libs
+Priority: optional
+Architecture: any
+Depends: postgresql (>= 8.3)
+Description: This is a module for PostgreSQL database, to
+ reduce words in brazilian portuguese to a representative 
+ phonetic key, in a such way search could be very easier for
+ names, as well dictionary suggestion.
+ .
+ While there aren't known bugs at the moment, they could exist,
+ so please back up all important files before running it, and 
+ do so at your own risk.
+
+Package: php5-metaphoneptbr
+Section: interpreters
+Priority: optional
+Architecture: any
+Depends: php5 (>= 5.2)
+Description: This is the brazilian metaphone module for PHP 5.x, to
+ reduce words in brazilian portuguese to a representative 
+ phonetic key, in a such way search could be very easier for
+ names, as well dictionary suggestion.
+ .
+ While there aren't known bugs at the moment, they could exist,
+ so please back up all important files before running it, and 
+ do so at your own risk.
+ 
+ 
+Package: metaphoneptbr-utils
+Section: utils
+Priority: optional
+Architecture: any
+Depends: libc6 (>= 2.7)
+Description: This is the metaphone for brazilian portuguese, which
+ reduce words in brazilian portuguese to a representative 
+ phonetic key, in a such way searching names, dictionary words, 
+ streets should be easier.
+ .
+ While there aren't known bugs at the moment, they could exist,
+ so please tell me or go to: 
+ https://sourceforge.net/projects/metaphoneptbr
+ 
+
+Package: python-metaphoneptbr
+Section: libs
+Priority: optional
+Architecture: any
+Depends: python (>= 2.6)
+Description: This is the metaphone for brazilian portuguese, which
+ reduce words in brazilian portuguese to a representative 
+ phonetic key, in a such way searching names, dictionary words, 
+ streets should be easier.
+ .
+ While there aren't known bugs at the moment, they could exist,
+ so please tell me or go to: 
+ https://sourceforge.net/projects/metaphoneptbr
+ 
+

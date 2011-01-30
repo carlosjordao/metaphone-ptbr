@@ -1,0 +1,17 @@
+Compatibilidade:
+---------------
+Testado com postgresql 8.3, mas deve funcionar em 8.4 também 
+
+Como instalar:
+-------------
+1. Dentro do seu banco de dados, carregue o arquivo
+   metaphone_ptbr.sql
+
+   Normalmente ele fica em:
+   /usr/share/postgresql/XX/contrib/metaphone_ptbr.sql
+   XX -> versão do postgres (8.3)
+
+Exemplo de uso:
+--------------
+select metaphone_ptbr('Abcdefgh');
+

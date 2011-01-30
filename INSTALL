@@ -1,0 +1,46 @@
+Metaphone PTBR
+
+How to INSTALL (from source)
+
+* for PHP 5
+  go to php5 directory and you would do:
+  $ phpize5
+  $ ./configure
+  $ make
+  # make install
+
+  Now you can enable it on php.ini, by adding this line:
+  extension=metaphoneptbr.so
+
+
+* for PostgreSQL
+  go to pgsql directory and:
+  $ make
+  # make install
+  
+  Restart your server. Then, to install on you database:
+  $ psql -d [your base] -f /usr/share/postgresql/8.3/contrib/metaphoneptbr.sql
+
+  Now you can use the metaphone_ptbr() function:
+  psql# SELECT metaphone_ptbr('Ola mundo');
+
+
+* for command line program
+  go to the 'source' directory, then:
+  $ make
+  # make install
+
+
+* making debian packages
+  PS: lembrar de trocar a versão no arquivo debian/compat
+  Inside the root metaphoneptbr directory (from source), run:
+  # dpkg-buildpackage -rfakeroot -ICVS -tc  -D 
+
+  It should produce some files like those, so far:
+  ../metaphoneptbr_1.3_amd64.changes
+  ../metaphoneptbr_1.3.dsc
+  ../metaphoneptbr_1.3.tar.gz
+  ../metaphoneptbr4pgsql_1.3_amd64.deb
+  ../metaphoneptbr-utils_1.3_amd64.deb
+  ../php5-metaphoneptbr_1.3_amd64.deb
+
