@@ -40,7 +40,7 @@ Package: metaphoneptbr-utils
 Section: utils
 Priority: optional
 Architecture: any
-Depends: libc (>= 2.7)
+Depends: libc6 (>= 2.7)
 Description: This is the metaphone for brazilian portuguese, which
  reduce words in brazilian portuguese to a representative 
  phonetic key, in a such way searching names, dictionary words, 
