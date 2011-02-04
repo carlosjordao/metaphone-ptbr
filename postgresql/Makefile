@@ -4,6 +4,7 @@
 # with this, I can compile, install and uninstall from anywhere
 # but at least the 'dev' package is needed.
 USE_PGXS=1
+#PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin:.:$(PATH)
 
 MODULE_big = metaphone_ptbr
 OBJS = metaphone_pgmain.o

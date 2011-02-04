@@ -7,57 +7,69 @@
 # This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
-
-
+#export DH_VERBOSE=1
 
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-
 	touch configure-stamp
 
 
-build: build-stamp
+build:: build-stamp
+	# finished building.
 
 build-stamp: configure-stamp 
+	# build_stamp
 	dh_testdir
-
 	# Add here commands to compile the package.
 	#$(MAKE)
 	#docbook-to-man debian/metaphoneptbr4pgsql.sgml > metaphoneptbr4pgsql.1
-
 	touch $@
 
 clean::
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) -i distclean
 	cd php5 ; phpize5 --clean ; cd ..
 	cd python ; python setup.py clean ; cd ..
 	cd source ; make clean ; cd ..
-
 	dh_clean 
 
 
 install/php5-metaphoneptbr:: build
-	cd php5 ; phpize5 ; ./configure ; $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/php5-metaphoneptbr install 
-	echo "extension=metaphoneptbr.so" > /etc/php5/conf.d/metaphone_ptbr.ini
+	# installing php5-metaphone
+	dh_testroot
+	dh_installdirs
+	cd php5 ; phpize5 ; ./configure ; $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/php5 install 
+	# thanks code snippet from php5 source file...
+	install -D -m 0644 $(CURDIR)/php5/metaphone_ptbr.ini debian/php5/etc/php5/conf.d/metaphoneptbr.ini;
 
 install/metaphoneptbr4pgsql:: build
+	# installing metaphone-pgsql
+	dh_testroot
+	dh_installdirs
 	cd postgresql ;$(MAKE) DESTDIR=$(CURDIR)/debian/metaphoneptbr4pgsql install 
 
 
 install/metaphoneptbr-utils:: build
-	cd source ; $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/metaphoneptbr install 
+	# installing metaphone-utils
+	dh_testroot
+	dh_installdirs
+	cd source ; $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/metaphoneptbr 
+	install -D $(CURDIR)/source/metaphone_ptbr debian/metaphoneptbr/usr/bin/metaphone_ptbr
+	
+
 
 install/python-metaphoneptbr:: build
-	cd python; python setup.py install 
+	# installing metaphone-python
+	dh_testroot
+	dh_installdirs
+	cd python; python setup.py bdist
+	tar -xzf python/dist/*`arch`.tar.gz -C debian/
 
 
 
@@ -73,7 +85,7 @@ binary-arch: build install install/metaphoneptbr4pgsql install/php5-metaphoneptb
 	dh_installdocs
 #	dh_installexamples
 	dh_install
-	dh_installmenu
+#	dh_installmenu
 	dh_installdebconf	
 	dh_installdirs
 #	dh_installlogrotate
@@ -92,7 +104,7 @@ binary-arch: build install install/metaphoneptbr4pgsql install/php5-metaphoneptb
 #	dh_perl
 	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps
+#	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

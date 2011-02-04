@@ -2,15 +2,16 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: carlos costa jordao <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 5)
-Standards-Version: 3.7.3
+Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-8.4,
+ autotools-dev
+Standards-Version: 3.9.1
 
 
 Package: metaphoneptbr4pgsql
 Section: libs
 Priority: optional
 Architecture: any
-Depends: postgresql (>= 8.3)
+Depends: postgresql (>= 8.3), ${shlibs:Depends}, ${misc:Depends}
 Description: This is a module for PostgreSQL database, to
  reduce words in brazilian portuguese to a representative 
  phonetic key, in a such way search could be very easier for
@@ -39,7 +40,7 @@ Package: metaphoneptbr-utils
 Section: utils
 Priority: optional
 Architecture: any
-Depends: libc6 (>= 2.7)
+Depends: libc (>= 2.7)
 Description: This is the metaphone for brazilian portuguese, which
  reduce words in brazilian portuguese to a representative 
  phonetic key, in a such way searching names, dictionary words, 
