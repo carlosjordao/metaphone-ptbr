@@ -1,0 +1,1 @@
+dpkg-buildpackage -rfakeroot -ICVS -I.git -tc  -D -S && dput ppa:carlosjordao/metaphone ../metaphoneptbr_`head -n 1 debian/changelog | cut -d\  -f2 | cut -c2- | sed 's/)//'`_source.changes
