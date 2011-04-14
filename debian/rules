@@ -1,15 +1,14 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
+# $@ == package name (just a note to remember what is this)
 
+# define where the modules will installed
+PHP_EX5=$(shell /usr/bin/php-config5 --extension-dir)
 
+# default mandatory
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -17,68 +16,82 @@ configure-stamp:
 	touch configure-stamp
 
 
-build:: build-stamp
+build: build-stamp
 	# finished building.
 
 build-stamp: configure-stamp 
 	# build_stamp
-	dh_testdir
+	dh_testdir 
 	# Add here commands to compile the package.
 	#$(MAKE)
 	#docbook-to-man debian/metaphoneptbr4pgsql.sgml > metaphoneptbr4pgsql.1
 	touch $@
 
-clean::
+# specific cleaning routines
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) -i distclean
 	cd php5 ; phpize5 --clean ; cd ..
-	cd python ; python setup.py clean ; cd ..
+	cd python ; python setup.py clean --all ; cd ..
 	cd source ; make clean ; cd ..
 	dh_clean 
 
 
-install/php5-metaphoneptbr:: build
+# ---------
+# compile and package
+# ------------
+php5-metaphoneptbr: 
 	# installing php5-metaphone
-	dh_testroot
-	dh_installdirs
-	cd php5 ; phpize5 ; ./configure ; $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/php5 install 
+	dh_testroot -p$@
+	dh_testdir -p$@
+	dh_installdirs -p$@
+#	dh_shlibdeps 
+	cd php5 ; phpize5 && ./configure --prefix=$(CURDIR)/debian/php5-metaphoneptbr/usr && $(MAKE) DESTDIR=$(CURDIR)/debian/$@
 	# thanks code snippet from php5 source file...
-	install -D -m 0644 $(CURDIR)/php5/metaphone_ptbr.ini debian/php5/etc/php5/conf.d/metaphoneptbr.ini;
+	install -D php5/metaphone_ptbr.ini $(CURDIR)/debian/$@/etc/php5/conf.d/metaphone_ptbr.ini
+	install -D -m 0644 php5/modules/metaphoneptbr.so $(CURDIR)/debian/$@$(PHP_EX5)/metaphoneptbr.so
 
-install/metaphoneptbr4pgsql:: build
+
+metaphoneptbr4pgsql: 
 	# installing metaphone-pgsql
-	dh_testroot
-	dh_installdirs
-	cd postgresql ;$(MAKE) DESTDIR=$(CURDIR)/debian/metaphoneptbr4pgsql install 
+	dh_testroot -p$@
+	dh_testdir -p$@
+	dh_installdirs -p$@
+	cd postgresql ; $(MAKE) && $(MAKE) install DESTDIR=$(CURDIR)/debian/$@
 
 
-install/metaphoneptbr-utils:: build
+metaphoneptbr-utils: 
 	# installing metaphone-utils
-	dh_testroot
-	dh_installdirs
-	cd source ; $(MAKE) INSTALL_ROOT=$(CURDIR)/debian/metaphoneptbr 
-	install -D $(CURDIR)/source/metaphone_ptbr debian/metaphoneptbr/usr/bin/metaphone_ptbr
-	
+	dh_testroot -p$@
+	dh_testdir -p$@
+	dh_installdirs -p$@
+	cd source ; $(MAKE) 
+	install -D -m 0555 source/metaphone_ptbr $(CURDIR)/debian/$@/usr/bin/metaphone_ptbr
 
 
-install/python-metaphoneptbr:: build
+python-metaphoneptbr: 
 	# installing metaphone-python
-	dh_testroot
-	dh_installdirs
-	cd python; python setup.py bdist
-	tar -xzf python/dist/*`arch`.tar.gz -C debian/
+	dh_testroot -p$@
+	dh_testdir -p$@
+	dh_installdirs -p$@
+	cd python; python setup.py install --root $(CURDIR)/debian/$@
+#	tar -xzf python/dist/*`arch`.tar.gz -C debian/
 
 
+# --- end ----
+
+# mandatory entries
 
 # Build architecture-independent files here.
-binary-indep: build install install/metaphoneptbr4pgsql install/php5-metaphoneptbr install/metaphoneptbr-utils install/python-metaphoneptbr
+binary-indep: 
 # We have nothing to do by default.
 
+
 # Build architecture-dependent files here.
-binary-arch: build install install/metaphoneptbr4pgsql install/php5-metaphoneptbr install/metaphoneptbr-utils install/python-metaphoneptbr
+binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils python-metaphoneptbr 
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs 
@@ -110,4 +123,5 @@ binary-arch: build install install/metaphoneptbr4pgsql install/php5-metaphoneptb
 	dh_builddeb
 
 binary: binary-indep binary-arch
+
 .PHONY: build clean binary-indep binary-arch binary install configure
