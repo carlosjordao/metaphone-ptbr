@@ -2,7 +2,7 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos C. Jordao (jordao) <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev
+Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-8.4, autotools-dev
 Standards-Version: 3.9.1
 
 

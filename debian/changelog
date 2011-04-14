@@ -1,6 +1,10 @@
+metaphoneptbr (1.12.9) maverick; urgency=low
+  * fixed ppa package generation
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 14 Apr 2011 00:48:00 -0300
+
 metaphoneptbr (1.12.5) maverick; urgency=low
   * fixed debian package generation
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 13 Apr 2011 01:25:00 -0300
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 13 Apr 2011 01:25:00 -0300
 
 
 metaphoneptbr (1.12.2) maverick; urgency=low
