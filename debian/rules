@@ -77,7 +77,7 @@ python-metaphoneptbr:
 	dh_testroot -p$@
 	dh_testdir -p$@
 	dh_installdirs -p$@
-	cd python; python setup.py install --root $(CURDIR)/debian/$@
+	cd python; python setup.py install --root $(CURDIR)/debian/$@ --prefix /usr
 #	tar -xzf python/dist/*`arch`.tar.gz -C debian/
 
 
@@ -105,7 +105,8 @@ binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils python-m
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
-#	dh_python
+	dh_python
+	dh_pycentral
 	dh_installinit
 #	dh_installcron
 #	dh_installinfo
@@ -117,7 +118,7 @@ binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils python-m
 #	dh_perl
 	dh_makeshlibs
 	dh_installdeb
-#	dh_shlibdeps
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

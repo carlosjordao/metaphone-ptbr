@@ -2,7 +2,7 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos C. Jordao (jordao) <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-8.4, autotools-dev
+Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-8.4, autotools-dev, autoconf, python-all-dev
 Standards-Version: 3.9.1
 
 
@@ -10,7 +10,7 @@ Package: metaphoneptbr4pgsql
 Section: libs
 Priority: optional
 Architecture: any
-Depends: postgresql (>= 8.3), ${shlibs:Depends}, ${misc:Depends}
+Depends: postgresql (>= 8.3), ${misc:Depends}
 Description: This is a module for PostgreSQL database, to
  reduce words in brazilian portuguese to a representative 
  phonetic key, in a such way search could be very easier for
