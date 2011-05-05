@@ -1,3 +1,7 @@
+metaphoneptbr (1.12.23) natty; urgency=low
+  * fixed ppa package generation
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 4 May 2011 22:54:00 -0300
+
 metaphoneptbr (1.12.22) maverick; urgency=low
   * fixed ppa package generation
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 14 Apr 2011 00:48:00 -0300
