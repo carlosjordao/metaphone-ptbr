@@ -2,7 +2,7 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos C. Jordao (jordao) <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-8.4, autotools-dev, autoconf, python-all-dev
+Build-Depends: libc6-dev, debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-8.4, autotools-dev, autoconf, python-all-dev
 Standards-Version: 3.9.1
 
 
@@ -10,7 +10,7 @@ Package: metaphoneptbr4pgsql
 Section: libs
 Priority: optional
 Architecture: any
-Depends: postgresql (>= 8.3), ${misc:Depends}
+Depends: postgresql (>= 8.3), libc6, ${shlibs:Depends}, ${misc:Depends}
 Description: This is a module for PostgreSQL database, to
  reduce words in brazilian portuguese to a representative 
  phonetic key, in a such way search could be very easier for
@@ -50,18 +50,19 @@ Description: This is the metaphone for brazilian portuguese, which
  https://sourceforge.net/projects/metaphoneptbr
  
 
-Package: python-metaphoneptbr
-Section: libs
-Priority: optional
-Architecture: any
-Depends: python (>= 2.6)
-Description: This is the metaphone for brazilian portuguese, which
- reduce words in brazilian portuguese to a representative 
- phonetic key, in a such way searching names, dictionary words, 
- streets should be easier.
- .
- While there aren't known bugs at the moment, they could exist,
- so please tell me or go to: 
- https://sourceforge.net/projects/metaphoneptbr
+#Package: python-metaphoneptbr
+#Section: libs
+#Priority: optional
+#Architecture: any
+#XS-Python-Version: 2.6, 2.7
+#Depends: python (>= 2.6)
+#Description: This is the metaphone for brazilian portuguese, which
+# reduce words in brazilian portuguese to a representative 
+# phonetic key, in a such way searching names, dictionary words, 
+# streets should be easier.
+# .
+# While there aren't known bugs at the moment, they could exist,
+# so please tell me or go to: 
+# https://sourceforge.net/projects/metaphoneptbr
  
 
