@@ -76,7 +76,7 @@ and is covered under this copyright:
  * but for single words you should use something like 3 as max length 
  * for the result metaphone string. That would lead you to best scenario.
  */
-#define MAX_METAPHONE_LENGTH 50
+#define MAX_METAPHONE_LENGTH 4
 
 /* this one will help detect, in special inside MakeUpperAndClean() */
 #define DOUBLED_CHAR(i) ( i && *i && ((*i) == (*(i+1))) )
