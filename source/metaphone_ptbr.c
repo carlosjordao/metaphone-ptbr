@@ -1,18 +1,18 @@
 /*
- * This is a port of the Double Metaphone based algorithm for brazilian 
+ * This is a port of the Metaphone based algorithm for brazilian 
  * portuguese, developed by Prefeitura Municipal de Varzea Paulista for PHP.
  *
  *
  * OBJECTIVES:
  *
- * As Double Metaphone, the ideia is to compute sound like strings, but
+ * As Metaphone, the ideia is to compute sound like strings, but
  * in this case, just for brazilian portuguese. Why? Because would be nice
  * to have generic tool for every language, but sometimes is not desirable or
  * either maintanable. Any changes could break the original metaphone code, and 
  * one way of avoiding this is introducing more "alternate" strings. Another one
  * is creating specifics metaphone functions for each language. That's my choice
  *
- * Information on using Double Metaphone can be found at
+ * Information on using Metaphone can be found at
  *	 http://www.codeproject.com/string/dmetaphone1.asp
  * and the original article describing it can be found at
  *	 http://www.cuj.com/documents/s=8038/cuj0006philips/
@@ -384,11 +384,6 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 			case 'L':
 				ahead_char = GetAt(original, current+1);
-				/* Aqui é um caso de estudo: ignorar o 'L' como proposto
-				 * ou transformar o 'U' em 'L', como em "AU", por causa do
-				 * som próximo que ambos têm. Ex: Zilda, manter, ou 
-				 * Augusto -> ALGST, Mau -> ML.
-				 */ 
 				/* lha, lho. Adicionado 2009-11-09. Thx Peter Krauss. Ele estava mal-colocado */
 				if (ahead_char == 'H')
 					MetaphAddChr(primary, '1');
@@ -588,7 +583,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				{
 					if( isVowel(ahead_char) )
 					{
-						/* Exonerar, exército, executar, exemplo, exame, exílio = ex + vowel
+						/* começados com EX. Exonerar, exército, executar, exemplo, exame, exílio = ex + vowel
 						 * exuberar
 						 */
 						if (WORD_EDGE(last2_char))
@@ -634,29 +629,25 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				else if (isVowel(last_char)) 
 				{
 					/* faxina. Fax é tratado acima. */
-					if( last2_char == 'F' && last_char == 'A' )
+					switch (last2_char)
+					{
+					/* encontros vocálicos */
+					case 'A': case 'E': case 'I': case 'O': case 'U': /* caixa, trouxe, abaixar, frouxo, guaxo, Teixeira */
+					case 'C': /* coxa, abacaxi */
+					case 'K':
+					case 'G': /* gaxeta */
+					case 'L': /* laxante, lixa, lixo */
+					case 'R': /* roxo, bruxa */
+					case 'X': /* xaxim */
 						MetaphAddChr(primary,'X');
-					else
-						switch (last2_char)
-						{
-						/* encontros vocálicos */
-						case 'A': case 'E': case 'I': case 'O': case 'U':
-						case 'C': /* caixa, trouxe */
-						case 'K':
-						case 'G': /* gaxeta */
-						case 'L': /* laxante, lixa, lixo */
-						case 'R': /* roxo, bruxa */
-						case 'X': /* xaxim */
-							/* abacaxi, abaixar, frouxo, guaxo, Teixeira */
-							MetaphAddChr(primary,'X');
-							break;
+						break;
 
-						default:
-							/* táxi, axila, axioma, tóxico, fixar, fixo, monóxido, óxido */
-							/* maxilar e enquadra máximo aqui tb, embora não seja correto. */
-							MetaphAdd(primary,"KS");
-							break;
-						} 
+					default:
+						/* táxi, axila, axioma, tóxico, fixar, fixo, monóxido, óxido */
+						/* maxilar e enquadra máximo aqui tb, embora não seja correto. */
+						MetaphAdd(primary,"KS");
+						break;
+					} 
 				}
 				/* anything else... enxame, enxada, -- catch all exceptions :( */
 				else

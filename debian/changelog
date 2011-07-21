@@ -1,3 +1,7 @@
+metaphoneptbr (1.12.27) natty; urgency=low
+  * setting output string at 4 chars long, as soundex and other metaphone algorithm
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 7 Jul 2011 21:10:00 -0300
+
 metaphoneptbr (1.12.26) natty; urgency=low
   * fixed ppa package generation
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 4 May 2011 22:54:00 -0300

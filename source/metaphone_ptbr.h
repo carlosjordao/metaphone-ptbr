@@ -1,11 +1,11 @@
 /* ***************************************
-  This is a port of the Double Metaphone based algorithm for brazilian 
+  This is a port of the Metaphone based algorithm for brazilian 
   portuguese, developed by Prefeitura Municipal de Varzea Paulista for PHP.
  
  
   OBJECTIVES:
  
-  As Double Metaphone, the ideia is to compute sound like strings, but
+  As Metaphone, the ideia is to compute sound like strings, but
   in this case, just for brazilian portuguese. Why? Because would be nice
   to have generic tool for every language, but sometimes is not desirable or
   either maintanable. Any changes could break the original metaphone code, and 
