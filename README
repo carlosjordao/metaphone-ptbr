@@ -86,48 +86,61 @@ B   	-> B
 C[AOU]  -> K
 Cc  	-> K
 C[EI]  	-> S
-CH	-> X
+CHR	-> K
+CH	-> X (regra mais genérica aplica-se por último)
 Ç	-> S
 D   	-> D
 F	-> F
 G[AOU]	-> G
 G[EI]	-> J
+GH[EI]	-> J
+GHc	-> G
 ^Hv	-> v
+H	-> 0 (Outros casos de aparição de H devem ser ignorados)
 J	-> J
 K	-> K
 LH	-> 1 (não tem representacao no metaphone original)
-L	-> L
+^L	-> L
+Lv	-> L
 M	-> M
 N$	-> M
-NH	-> 3 (não tem representação no metaphone original - ñ)
+NH	-> 3 (não tem representação no metaphone original)
 P	-> P
 PH	-> F
 Q	-> K
-^R	-> 2 (não tem representação no metaphone original - IPA λ)
-vRv	-> 2
-RR	-> R
-vSv	-> Z
+^R	-> 2 (não tem representação no metaphone original)
+R$	-> 2 (não tem representação no metaphone original)
+RR	-> 2
+vRv	-> R
+.Rc	-> R
+cRv	-> R
+cRv	-> R
 SS	-> S
-SC[AEI]	-> S
-SC[UO]	-> SK (sim - duas letras. Porque tem sons distintos quando acompanhadas de U ou O).
-S	-> S
+SH	-> X
+SC[EI]	-> S
+SC[AUO]	-> SK (sim - duas letras porque tem sons distintos quando acompanhadas de U ou O).
+SCH	-> X
+Sc	-> S
+S	-> S (caso as outras regras não se apliquem, esta entra em vigor)
 T	-> T
 TH	-> T
 V	-> V
 Wv	-> V
-X$	-> X (o mais adequado seria KS, mas há de se considerar alguns nomes separados por espaços)
-^EXv	-> X (o correto é Z, mas por compatibilidade com o montado por Várzea)
-EX[EITP]	-> X 
+Wc	-> 0
+X$	-> X (o mais adequado seria KS, mas há de se considerar alguns nomes separados por espaços, tornando assim X uma representação mais interessante, embora não perfeitamente acurada)
+^EXv	-> Z 
+.EX[EI]	-> X 
+.EX[AOU]-> X 
+EX[EI]	-> X 
 EX[AOU]	-> KS
-EXC	-> S
-EX	-> KS
-[vCKGLRX]vX	-> X
-vX	-> KS
-X	-> X
+EX[PTC]	-> S
+EX.	-> KS
+[vCKGLRX][AIOU]X	-> X
+[DFMNPQSTVZ][AIOU]X	-> KS
+X	-> X (caso nenhuma caso acima case com a palavra, aplica-se esta regra)
 Y	-> I (é tratado como vogal para todos os efeitos)
 Z$	-> S
 Z	-> Z
-H	-> 0
 
 
 

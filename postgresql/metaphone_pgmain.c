@@ -1,10 +1,10 @@
 /*
- * This is a port of the Double Metaphone based algorithm for brazilian portuguese,
+ * This is a port of the Metaphone based algorithm for brazilian portuguese,
  * developed by Prefeitura Municipal de Varzea Paulista for PHP, for use in PostgreSQL.
  *
  * $PostgreSQL: pgsql/contrib/fuzzystrmatch/dmetaphone_ptbr.c,v 1.11 2007/02/27 23:48:05 tgl Exp $
  *
- * As Double Metaphone, the ideia is to compute sound like strings, but
+ * As Metaphone, the ideia is to compute sound like strings, but
  * in this case, just for brazilian portuguese. Why? Because would be nice
  * to have generic tool for every language, but sometimes is not desirable or
  * either maintanable. Any changes could break the code, and one way of 
@@ -24,7 +24,7 @@
  * Assuming that dmetaphone.so is in $libdir, the SQL to set up the
  * functions looks like this:
  *
- * CREATE FUNCTION dmetaphone_ptbr (text) RETURNS text
+ * CREATE FUNCTION metaphone_ptbr (text) RETURNS text
  *	  LANGUAGE C IMMUTABLE STRICT
  *	  AS '$libdir/dmetaphone', 'dmetaphone';
  *
