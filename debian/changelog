@@ -1,34 +1,15 @@
-metaphoneptbr (1.12.27) natty; urgency=low
+metaphoneptbr (1.12.32) unstable; urgency=low
+  * changes for debian mentors system upload. Cleaning lintian warnings
+  * fixing debian/rules for cleaning lintian warnings
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 15:27:00 -0300
+
+metaphoneptbr (1.12.30) unstable; urgency=low
+  * changes for debian mentors system upload
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 14:27:00 -0300
+
+
+metaphoneptbr (1.12.28-6) unstable; urgency=low
   * setting output string at 4 chars long, as soundex and other metaphone algorithm
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 7 Jul 2011 21:10:00 -0300
 
-metaphoneptbr (1.12.26) natty; urgency=low
-  * fixed ppa package generation
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 4 May 2011 22:54:00 -0300
-
-metaphoneptbr (1.12.22) maverick; urgency=low
-  * fixed ppa package generation
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 14 Apr 2011 00:48:00 -0300
-
-metaphoneptbr (1.12.5) maverick; urgency=low
-  * fixed debian package generation
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 13 Apr 2011 01:25:00 -0300
-
-
-metaphoneptbr (1.12.2) maverick; urgency=low
-  * fixing the php lib missing file
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 13 Apr 2011 01:25:00 -0300
-
-
-metaphoneptbr (1.12.1) maverick; urgency=low
-  * cleanup PPA import and building...
-  * fixing dependencies for the package
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 04 Feb 2011 01:25:00 -0200
-
-
-metaphoneptbr (1.11) maverick; urgency=low
-  * adicionado mais alguns casos de estrangeirismos, como sheila e christiano, para q tenham proximidade com nomes semelhantes.
-  * internamente: pré-filtro limpa a string de símbolos duplicados e muda para uppercase
-  * organização do código. Remoção de testes de símbolos duplicados onde não era mais necessário.
- -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Sat, 29 Jan 2011 22:45:00 -0200
 

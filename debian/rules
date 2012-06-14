@@ -16,8 +16,12 @@ configure-stamp:
 	touch configure-stamp
 
 
-build: build-stamp
+build: build-stamp build-arch build-indep
 	# finished building.
+
+build-arch: build-stamp
+
+build-indep: build-stamp
 
 build-stamp: configure-stamp 
 	# build_stamp
@@ -35,6 +39,7 @@ clean:
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) -i distclean
 	cd php5 ; phpize5 --clean ; cd ..
+	cd postgresql; make clean ; cd ..
 	cd python ; python setup.py clean --all ; cd ..
 	cd source ; make clean ; cd ..
 	dh_clean 
@@ -107,7 +112,7 @@ binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
-	dh_python
+#	dh_python
 	dh_installinit
 #	dh_installcron
 #	dh_installinfo

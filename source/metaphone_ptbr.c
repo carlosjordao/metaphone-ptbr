@@ -341,6 +341,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 	metastring 		*primary	= NULL;
 	int			current 	= 0;
 	int			last		= 0;
+	int			count		= 0;
 	char			*code 		= NULL;
 	wchar_t			current_char 	= L'\0',
 				last_char 	= L'\0', 
@@ -362,13 +363,14 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 	
 	/* main loop hard-limited - should be enough for very long names */
-	while ((primary->length < max_length) && (current < length))
+	while (( (primary->length-count) < max_length) && (current < length))
 	{
 		current_char = GetSimplifiedAt(original, current);
 
 		/* skips separator */
 		if (separator == current_char) {
 			MetaphAddChr(primary, separator);
+			count = primary->length;
 		} else
 		switch (current_char)
 		{
@@ -777,7 +779,9 @@ int main(int argc, char **argv)
                 if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) ) 
 			return -1;
 
-
+	/*
+	 *
+	 */
 	while (count < argc )
 	{
                 ret = mbstowcs(buf,argv[count++],200);
@@ -786,9 +790,10 @@ int main(int argc, char **argv)
 		free(code);
 	}
 
+/*
 	fwide(stdin, 1);
 
-	/* read from stdin too, but don't wait for data  */
+	// read from stdin too, but don't wait for data  
 	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
 	if( read(STDIN_FILENO, buf, 1) != EOF ) {
 	    //ungetwc(buf[0], stdin);
@@ -800,6 +805,7 @@ int main(int argc, char **argv)
 		free(code);
 	    }
         }
+*/
 	return 0;
 }
 #endif

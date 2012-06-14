@@ -88,6 +88,7 @@ Cc  	-> K
 C[EI]  	-> S
 CHR	-> K
 CH	-> X (regra mais genérica aplica-se por último)
+C$	-> K
 Ç	-> S
 D   	-> D
 F	-> F
@@ -100,7 +101,6 @@ H	-> 0 (Outros casos de aparição de H devem ser ignorados)
 J	-> J
 K	-> K
 LH	-> 1 (não tem representacao no metaphone original)
-^L	-> L
 Lv	-> L
 M	-> M
 N$	-> M
@@ -113,7 +113,6 @@ R$	-> 2 (não tem representação no metaphone original)
 RR	-> 2
 vRv	-> R
 .Rc	-> R
-cRv	-> R
 cRv	-> R
 SS	-> S
 SH	-> X

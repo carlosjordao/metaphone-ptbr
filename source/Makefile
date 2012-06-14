@@ -1,5 +1,6 @@
 
 main:
+	rm -f ../postgresql/*.{o,so}
 	gcc -DPT_METAPHONE_MAIN -o metaphone_ptbr metaphone_ptbr.c
 
 clean:
