@@ -1,3 +1,11 @@
+metaphoneptbr (1.12.34) unstable; urgency=low
+  * cleaned vim swap files
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 15 Jun 2012 18:05:00 -0300
+ 
+metaphoneptbr (1.12.33) unstable; urgency=low
+  * fixes Makefile to $(DESTDIR)
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 19:27:00 -0300
+
 metaphoneptbr (1.12.32) unstable; urgency=low
   * changes for debian mentors system upload. Cleaning lintian warnings
   * fixing debian/rules for cleaning lintian warnings

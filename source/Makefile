@@ -1,4 +1,5 @@
 
+
 main:
 	rm -f ../postgresql/*.{o,so}
 	gcc -DPT_METAPHONE_MAIN -o metaphone_ptbr metaphone_ptbr.c
@@ -11,7 +12,7 @@ distclean:
 
 
 install: main
-	install -D metaphone_ptbr /usr/bin/metaphone_ptbr
+	install -D metaphone_ptbr $(DESTDIR)/usr/bin/metaphone_ptbr
 
 uninstall:
-	rm -f /usr/bin/metaphone_ptbr
+	rm -f $(DESTDIR)/usr/bin/metaphone_ptbr
