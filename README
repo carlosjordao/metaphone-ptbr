@@ -30,7 +30,6 @@ uma aplicação de linha de comando.
 
 Para o PHP, a função chama-se metaphone_ptbr();
 
-UPDATE: porte para python tb!
 
 1.1 GUIA RÁPIDO
 a) PostgreSQL:
@@ -177,7 +176,7 @@ Dado as principais dificuldades fonéticas práticas, encontramos três frentes 
 	são tratadas as exceções (como acontece com os nomes), exceto aquelas previstas 
 	pela língua.
  
-        b) Conversão fonética semi-fiel. Acrescenta algumas exceções práticas do cotidiano,
+    b) Conversão fonética semi-fiel. Acrescenta algumas exceções práticas do cotidiano,
 	buscando alcançar um equilíbrio entre a grafia e a fonética dos nomes que fogem à regra.
 	Essa é a implementação atual.
 
@@ -194,8 +193,3 @@ apenas a sonoridade mais marcante da palavra e teria um número de casos semelha
 
  * * *
 
-4. O AGORA
-
-Hoje o algoritmo se encontra na frente de trabalho b), mas ainda não é capaz de reconhecer as diversas
-frentes. Um estudo mais aprofundado seria necessário para avaliar a possibilidade de utilizar a mesma 
-função ou apresentar três, uma para cada frente de trabalho.

@@ -1,3 +1,9 @@
+metaphoneptbr (1.12.35) unstable; urgency=low
+  * config for wnpp and sponsorship
+  * closes: #677564
+  * closes: #679013
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 15 Jun 2012 18:05:00 -0300
+ 
 metaphoneptbr (1.12.34) unstable; urgency=low
   * cleaned vim swap files
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 15 Jun 2012 18:05:00 -0300
