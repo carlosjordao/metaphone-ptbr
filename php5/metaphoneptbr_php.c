@@ -10,7 +10,7 @@
 
 /* {{{ doublemetaphone_functions[]
  * */
-function_entry metaphoneptbr_functions[] = {
+zend_function_entry metaphoneptbr_functions[] = {
         PHP_FE(metaphone_ptbr, NULL)
         {NULL, NULL, NULL}
 };

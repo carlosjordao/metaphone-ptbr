@@ -1,6 +1,7 @@
 Compatibilidade:
 ---------------
-Testado com postgresql 8.3, mas deve funcionar em 8.4 também 
+x Testado com postgresql 8.3, mas deve funcionar em 8.4 também 
+* modificado o script para rodar no 9.1
 
 Como instalar:
 -------------
@@ -15,3 +16,7 @@ Exemplo de uso:
 --------------
 select metaphone_ptbr('Abcdefgh');
 
+
+
+--
+  Carlos jordao, carlosjordao@gmail.com
