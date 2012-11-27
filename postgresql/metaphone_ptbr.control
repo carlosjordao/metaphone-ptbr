@@ -1,0 +1,5 @@
+# pair extension
+comment = 'Metaphone algorithm for pt-BR'
+default_version = '1.34'
+module_pathname = '$libdir/metaphone_ptbr'
+relocatable = true
