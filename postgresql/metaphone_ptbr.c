@@ -96,7 +96,7 @@ extern Datum metaphone_ptbr(PG_FUNCTION_ARGS);
  *
  */
 
-#include "../source/metaphone_ptbr.h"
+#include "../../source/metaphone_ptbr.h"
 #define META_MALLOC(v,n,t) \
 		  (v = (t*)palloc(((n)*sizeof(t))))
 
@@ -195,4 +195,4 @@ metaphone_ptbr(PG_FUNCTION_ARGS)
 
 #endif
 
-#include "../source/metaphone_ptbr.c"
+#include "../../source/metaphone_ptbr.c"

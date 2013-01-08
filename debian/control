@@ -2,9 +2,8 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos C. Jordao (jordao) <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 7), postgresql-server-dev-all, php5-dev, python-dev, libpq-dev, postgresql-server-dev-all, autotools-dev, autoconf
-#, python-all-dev, libc6-dev
-Standards-Version: 3.9.3
+Build-Depends: debhelper (>= 7), php5-dev, libpq-dev, postgresql-server-dev-all, autotools-dev, autoconf
+Standards-Version: 3.9.4
 
 
 Package: metaphoneptbr4pgsql
@@ -37,10 +36,6 @@ Description: This is the metaphone for brazilian portuguese
  It aims to reduce words in brazilian portuguese to a representative 
  phonetic key, in a such way searching names, dictionary words, 
  streets should be easier.
- .
- While there aren't known bugs at the moment, they could exist,
- so please tell me or go to: 
- https://sourceforge.net/projects/metaphoneptbr
  
 
 #Package: python-metaphoneptbr

@@ -1,11 +1,16 @@
+metaphoneptbr (1.12.37-1) unstable; urgency=low
+  * changed postgresql tree to support 8.4 and 9.1 modules
+  * add pg_buildext to debian/rules instead manual install
+  * changed debian package format to 3.0 quilt
+  * fixed segmentation fault when command line program receives zero-length string
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 08 Jan 2013 14:35:00 -0300
+
 metaphoneptbr (1.12.36-1) unstable; urgency=low
   * changed Postgresql support to 9.1
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 27 Nov 2012 17:35:00 -0300
 
 metaphoneptbr (1.12.35) unstable; urgency=low
   * config for wnpp and sponsorship
-  * closes: #677564
-  * closes: #679013
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 15 Jun 2012 18:05:00 -0300
  
 metaphoneptbr (1.12.34) unstable; urgency=low
@@ -25,9 +30,6 @@ metaphoneptbr (1.12.30) unstable; urgency=low
   * changes for debian mentors system upload
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 14:27:00 -0300
 
-
 metaphoneptbr (1.12.28-6) unstable; urgency=low
   * setting output string at 4 chars long, as soundex and other metaphone algorithm
  -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 7 Jul 2011 21:10:00 -0300
-
-

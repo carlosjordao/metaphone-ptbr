@@ -1,19 +1,33 @@
-Compatibilidade:
----------------
-x Testado com postgresql 8.3, mas deve funcionar em 8.4 também 
-* modificado o script para rodar no 9.1
+Compatibility
+-------------------------------------
+x Tested with postgresql 8.3  and 8.4
+* adapted to install on 9.1 too
 
-Como instalar:
--------------
-1. Dentro do seu banco de dados, carregue o arquivo
+1. Compiling
+-------------------------------------
+1. after unpacking the source tarball, go inside metaphoneptbr directory and run:
+$ sudo pg_buildext install postgresql postgresql/%v postgresql-%v-metaphoneptbr
+
+
+
+2a. How to install (8.3 or higher)
+-------------------------------------
+1. inside your database, load the file:
    metaphone_ptbr.sql
 
-   Normalmente ele fica em:
+   which usually stays in:
    /usr/share/postgresql/XX/contrib/metaphone_ptbr.sql
-   XX -> versão do postgres (8.3)
+   XX -> version of postgresql (8.3 or 8.4)
 
-Exemplo de uso:
---------------
+
+2b. How to install (9.1 or higher)
+-------------------------------------
+1. inside you database:
+    CREATE EXTENSION metaphoneptbr;
+
+
+3. How to use
+-------------------------------------
 select metaphone_ptbr('Abcdefgh');
 
 

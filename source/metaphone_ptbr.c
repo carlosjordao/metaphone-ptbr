@@ -21,52 +21,11 @@
  * http://www2.varzeapaulista.sp.gov.br/metaphone/
  */
 
-
 /***************************** COPYRIGHT NOTICES ***********************
 
 Some of this code is based on dmetaphone.c file, from postgresql contrib
 tree directory, some is based on a PHP algorithm, which can be found here:
 http://www2.varzeapaulista.sp.gov.br/metaphone/
-
-
-The original double metaphone code bears this copyright notice:
-
-  Copyright 2000, Maurice Aubrey <maurice@hevanet.com>.
-  All rights reserved.
-
-  This code is based heavily on the C++ implementation by
-  Lawrence Philips and incorporates several bug fixes courtesy
-  of Kevin Atkinson <kevina@users.sourceforge.net>.
-
-  This module is free software; you may redistribute it and/or
-  modify it under the same terms as Perl itself.
-
-
-
-The original code is authored by Andrew Dunstan <amdunstan@ncshp.org>, and
-<andrew@dunslane.net> and is covered this copyright:
-
-  Copyright 2003, North Carolina State Highway Patrol.
-  All rights reserved.
-
-  Permission to use, copy, modify, and distribute this software and its
-  documentation for any purpose, without fee, and without a written agreement
-  is hereby granted, provided that the above copyright notice and this
-  paragraph and the following two paragraphs appear in all copies.
-
-  IN NO EVENT SHALL THE NORTH CAROLINA STATE HIGHWAY PATROL BE LIABLE TO ANY
-  PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
-  INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
-  DOCUMENTATION, EVEN IF THE NORTH CAROLINA STATE HIGHWAY PATROL HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-  THE NORTH CAROLINA STATE HIGHWAY PATROL SPECIFICALLY DISCLAIMS ANY
-  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED
-  HEREUNDER IS ON AN "AS IS" BASIS, AND THE NORTH CAROLINA STATE HIGHWAY PATROL
-  HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
-  MODIFICATIONS.
-
 
 
 The metaphone port is authored by Carlos Costa Jordao <carlosjordao@gmail.com>
@@ -784,13 +743,17 @@ int main(int argc, char **argv)
 	 */
 	while (count < argc )
 	{
+		if( strlen(argv[count]) == 0 ) {
+			count++;
+			continue;
+		}
                 ret = mbstowcs(buf,argv[count++],200);
 		code = Metaphone_PTBR_s(buf,MAX_METAPHONE_LENGTH,'.');
 		printf("%s\n", code);
 		free(code);
 	}
 
-/*
+/* pipeline not working
 	fwide(stdin, 1);
 
 	// read from stdin too, but don't wait for data  

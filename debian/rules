@@ -16,20 +16,11 @@ configure-stamp:
 	touch configure-stamp
 
 
-build: build-stamp build-arch build-indep
-	# finished building.
+build: build-arch build-indep
+build-indep:
 
-build-arch: build-stamp
+build-arch: 
 
-build-indep: build-stamp
-
-build-stamp: configure-stamp 
-	# build_stamp
-	dh_testdir 
-	# Add here commands to compile the package.
-	#$(MAKE)
-	#docbook-to-man debian/metaphoneptbr4pgsql.sgml > metaphoneptbr4pgsql.1
-	touch $@
 
 # specific cleaning routines
 clean:
@@ -38,10 +29,10 @@ clean:
 	rm -f build-stamp configure-stamp
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) -i distclean
-	cd php5 ; phpize5 --clean ; cd ..
-	cd postgresql; make clean ; cd ..
-	cd python ; python setup.py clean --all ; cd ..
-	cd source ; make clean ; cd ..
+	cd php5 ; phpize5 --clean 
+#	pg_buildext clean postgresql postgresql/%v
+#	cd python ; python setup.py clean --all 
+	cd source ; make clean 
 	dh_clean 
 
 
@@ -53,7 +44,6 @@ php5-metaphoneptbr:
 	dh_testroot -p$@
 	dh_testdir -p$@
 	dh_installdirs -p$@
-#	dh_shlibdeps 
 	cd php5 ; phpize5 && ./configure --prefix=$(CURDIR)/debian/php5-metaphoneptbr/usr && $(MAKE) DESTDIR=$(CURDIR)/debian/$@
 	# thanks code snippet from php5 source file...
 	install -D php5/metaphone_ptbr.ini $(CURDIR)/debian/$@/etc/php5/conf.d/metaphone_ptbr.ini
@@ -65,7 +55,9 @@ metaphoneptbr4pgsql:
 	dh_testroot -p$@
 	dh_testdir -p$@
 	dh_installdirs -p$@
-	cd postgresql ; $(MAKE) && $(MAKE) install DESTDIR=$(CURDIR)/debian/$@
+	+pg_buildext build postgresql postgresql/%v 
+	+pg_buildext install postgresql postgresql/%v postgresql-%v-metaphoneptbr
+
 
 
 metaphoneptbr-utils: 
@@ -77,12 +69,12 @@ metaphoneptbr-utils:
 	install -D -m 0555 source/metaphone_ptbr $(CURDIR)/debian/$@/usr/bin/metaphone_ptbr
 
 
-python-metaphoneptbr: 
-	# installing metaphone-python
-	dh_testroot -p$@
-	dh_testdir -p$@
-	dh_installdirs -p$@
-	cd python; python setup.py install --root $(CURDIR)/debian/$@  --install-base /usr
+#python-metaphoneptbr: 
+#	# installing metaphone-python
+#	dh_testroot -p$@
+#	dh_testdir -p$@
+#	dh_installdirs -p$@
+#	cd python; python setup.py install --root $(CURDIR)/debian/$@  --install-base /usr
 #--prefix /usr
 #	tar -xzf python/dist/*`arch`.tar.gz -C debian/
 

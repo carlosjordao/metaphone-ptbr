@@ -14,15 +14,41 @@ How to INSTALL (from source)
 
 
 * for PostgreSQL
-  go to pgsql directory and:
-  $ make
-  # make install
-  
-  Restart your server. Then, to install on you database:
-  $ psql -d [your base] -f /usr/share/postgresql/8.3/contrib/metaphoneptbr.sql
+[From README inside 'postgresql' directory]
 
-  Now you can use the metaphone_ptbr() function:
-  psql# SELECT metaphone_ptbr('Ola mundo');
+Compatibility
+-------------------------------------
+x Tested with postgresql 8.3  and 8.4
+* adapted to install on 9.1 too
+
+1. Compiling
+-------------------------------------
+1. after unpacking the source tarball, go inside metaphoneptbr directory and run:
+$ sudo pg_buildext install postgresql postgresql/%v postgresql-%v-metaphoneptbr
+
+
+
+2a. How to install (8.3 or higher)
+-------------------------------------
+1. inside your database, load the file:
+   metaphone_ptbr.sql
+
+   which usually stays in:
+   /usr/share/postgresql/XX/contrib/metaphone_ptbr.sql
+   XX -> version of postgresql (8.3 or 8.4)
+
+
+2b. How to install (9.1 or higher)
+-------------------------------------
+1. inside you database:
+    CREATE EXTENSION metaphoneptbr;
+
+
+3. How to use
+-------------------------------------
+select metaphone_ptbr('Abcdefgh');
+
+
 
 
 * for command line program
