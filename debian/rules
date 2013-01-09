@@ -63,7 +63,7 @@ metaphoneptbr4pgsql:
 	dh_testroot -p$@
 	dh_installdirs -p$@
 	@echo "\n*****************************\n*** POSTGRESQL module \n**********************"
-	+pg_buildext build postgresql postgresql/%v 
+#	+pg_buildext build postgresql postgresql/%v 
 #	+pg_buildext install postgresql postgresql/%v DESTDIR="$(CURDIR)/debian/$@"
 #	cd postgresql/9.1 && $(MAKE) install  DESTDIR=$(CURDIR)/debian/$@
 	for v in `pg_buildext supported-versions postgresql`; do \
