@@ -1,0 +1,8 @@
+metaphoneptbr (1.12.37-1) unstable; urgency=low
+  * changed debian package format to 3.0 quilt
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 08 Jan 2013 14:35:00 -0300
+
+metaphoneptbr (1.12.36-1) unstable; urgency=low
+  * changed Postgresql support to 9.1
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 27 Nov 2012 17:35:00 -0300
+
