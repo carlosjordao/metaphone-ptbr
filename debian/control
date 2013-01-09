@@ -1,8 +1,9 @@
 Source: metaphoneptbr
 Section: libdevel
 Priority: optional
-Maintainer: Carlos C. Jordao (jordao) <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 7), php5-dev, libpq-dev, postgresql-server-dev-all, autotools-dev, autoconf
+Maintainer: Carlos C. Jordao <carlosjordao@gmail.com>
+Build-Depends: debhelper (>= 9), php5-dev, libpq-dev, postgresql-server-dev-all, autotools-dev, autoconf, hardening-wrapper
+Homepage: http://sourceforge.net/projects/metaphoneptbr/
 Standards-Version: 3.9.4
 
 
@@ -19,7 +20,7 @@ Description: This is a metaphone-pt_Br module for PostgreSQL database
 Package: php5-metaphoneptbr
 Section: interpreters
 Architecture: any
-Depends: php5 (>= 5.2), ${misc:Depends}
+Depends: php5 (>= 5.2), ${misc:Depends}, ${php:Depends}, ${shlibs:Depends}, php5-common
 Description: This is the brazilian metaphone module for PHP 5.x
  It aims a best PHP integration into tier application, providing
  a phonetic key search, in a such way similar search could be 
@@ -51,5 +52,3 @@ Description: This is the metaphone for brazilian portuguese
 # While there aren't known bugs at the moment, they could exist,
 # so please tell me or go to: 
 # https://sourceforge.net/projects/metaphoneptbr
- 
-

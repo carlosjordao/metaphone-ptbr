@@ -1,4 +1,4 @@
-commit
-include-removal
-auto-commit
-single-debian-patch
+#include-removal
+#auto-commit
+#single-debian-patch
+skip-patches
