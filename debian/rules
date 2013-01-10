@@ -7,9 +7,15 @@
 
 # $@ == package name (just a note to remember what is this)
 
+# --- ENVIRONMENT ---
 # define where the modules will installed
 PHP_EX5=$(shell /usr/bin/php-config5 --extension-dir)
-export DEB_BUILD_HARDENING = 1
+PHPFLAGS=`dpkg-buildflags --export=configure`
+# hardening
+export DEB_BUILD_HARDENING=1
+include /usr/share/dpkg/buildflags.mk
+# --- --- --- --- ---
+
 
 # default mandatory
 configure: configure-stamp
@@ -24,10 +30,16 @@ build-indep:
 
 #build-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils 
 build-arch:
+	@echo "\n*****************************\n*** PHP module \n**********************"
+	PHPFLAGS=`dpkg-buildflags --export=configure`
+	cd php5 && phpize5 && DEB_BUILD_HARDENING=1 ./configure --prefix=$(CURDIR)/debian/php5-metaphoneptbr/usr && DEB_BUILD_HARDENING=1 $(MAKE) -e DESTDIR=$(CURDIR)/debian/$@
+	@echo "\n*****************************\n*** METAPHONE UTILS\n**********************"
+	cd source && $(MAKE) -e
 
 
 # specific cleaning routines
 clean:
+	@echo "\n**************************\n\t\t cleaning \n**********************"
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
@@ -35,10 +47,10 @@ clean:
 	[ ! -f Makefile ] || $(MAKE) -i distclean
 	cd php5 ; phpize5 --clean 
 	cd postgresql ; $(MAKE) -C 9.1 clean ; $(MAKE) -C 8.4 clean
-#	pg_buildext clean postgresql postgresql/%v
 #	cd python ; python setup.py clean --all 
 	cd source ; make clean 
 	dh_clean 
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
 # ---------
@@ -50,11 +62,10 @@ php5-metaphoneptbr:
 	dh_testdir -p$@
 	dh_installdirs -p$@
 	@echo "\n*****************************\n*** PHP module \n**********************"
-	PHPFLAGS=`dpkg-buildflags --export=configure`
-	cd php5 ; phpize5 && ./configure $$PHPFLAGS --prefix=$(CURDIR)/debian/php5-metaphoneptbr/usr && $(MAKE)  -e  DESTDIR=$(CURDIR)/debian/$@
 	# thanks code snippet from php5 source file...
 	install -D -m 0644 php5/metaphone_ptbr.ini $(CURDIR)/debian/$@/etc/php5/conf.d/metaphone_ptbr.ini
 	install -D -m 0644 php5/modules/metaphoneptbr.so $(CURDIR)/debian/$@$(PHP_EX5)/metaphoneptbr.so
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
 metaphoneptbr4pgsql: 
@@ -63,12 +74,10 @@ metaphoneptbr4pgsql:
 	dh_testroot -p$@
 	dh_installdirs -p$@
 	@echo "\n*****************************\n*** POSTGRESQL module \n**********************"
-#	+pg_buildext build postgresql postgresql/%v 
-#	+pg_buildext install postgresql postgresql/%v DESTDIR="$(CURDIR)/debian/$@"
-#	cd postgresql/9.1 && $(MAKE) install  DESTDIR=$(CURDIR)/debian/$@
 	for v in `pg_buildext supported-versions postgresql`; do \
 	    $(MAKE) -C postgresql/$$v install DESTDIR=$(CURDIR)/debian/$@;\
 	done
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
 metaphoneptbr-utils: 
@@ -77,8 +86,8 @@ metaphoneptbr-utils:
 	dh_testroot -p$@
 	dh_installdirs -p$@
 	@echo "\n*****************************\n*** METAPHONE UTILS\n**********************"
-	cd source && $(MAKE) -e
 	install -D -m 0555 source/metaphone_ptbr $(CURDIR)/debian/$@/usr/bin/metaphone_ptbr
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
 #python-metaphoneptbr: 
@@ -104,7 +113,7 @@ binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils
 #python-metaphoneptbr 
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs
+	dh_installchangelogs debian/changelog
 	dh_installdocs
 	dh_install
 #	dh_installmenu
