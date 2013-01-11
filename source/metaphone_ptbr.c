@@ -70,12 +70,6 @@ and is covered under this copyright:
 #include "metaphone_ptbr.h"
 
 
-/*
- * remaining perl module funcs unchanged except for declaring them static
- * and reformatting to PostgreSQL indentation and to fit in 80 cols.
- *
- */
-
 static metastring *
 NewMetaString(char *init_str)
 {
@@ -171,7 +165,6 @@ inline static wchar_t toUpper(const wchar_t c)
 	case L'û':
 	case L'ü':
 		return L'U';
-
 	}
 
 	return (wchar_t)towupper((wint_t)c);
@@ -704,7 +697,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 	META_MALLOC(code, current+1, char);
 	if( !code ) 
 		return NULL;
-	strcpy(code, primary->str);
+	strncpy(code, primary->str, current);
 
 	META_FREE(original);
 	DestroyMetaString(primary);
