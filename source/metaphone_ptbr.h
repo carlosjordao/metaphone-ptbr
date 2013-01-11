@@ -79,7 +79,7 @@ and is covered under this copyright:
 #define MAX_METAPHONE_LENGTH 4
 
 /* this one will help detect, in special inside MakeUpperAndClean() */
-#define DOUBLED_CHAR(i) ( i && *i && ((*i) == (*(i+1))) )
+#define DOUBLED_CHAR(i) ((*i) == (*(i-1)))
 /* Is this character outside of a word? */
 #define WORD_EDGE(c) (c == L'\0' || isspace(c) || c==separator)
 

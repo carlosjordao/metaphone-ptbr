@@ -1,71 +1,56 @@
-CREDITOS
-  carlos jordao <carlosjordao@gmail.com>
+0. USO
+Depois de instalado:
+
+PostgreSQL 9.x:
+	CREATE EXTENSION metaphoneptbr;
+	select metaphone_ptbr('qualquer');
+PostgreSQL 8.x:
+	psql -d banco -f /usr/share/postgresql/XX/contrib/metaphone_ptbr.sql
+		XX -> version of postgresql (8.3 or 8.4)
+	select metaphone_ptbr('qualquer');
+PHP:
+	<?php echo metaphoneptbr('qualquer'); ?>
+
 
 1. INTRODUÇÃO 
 
 Metaphone for Brazilian Portuguese
 
-Bom, o metafone é um algoritmo de transformação de texto baseado em regras fonéticas
-(http://en.wikipedia.com/wiki/Metaphone)
-As regras foram baseadas no trabalho publicado da Prefeitura Municipal de Várzea Paulista
-(http://www2.varzeapaulista.sp.gov.br/metaphone)
+O metafone é um algoritmo de transformação de texto baseado em regras 
+fonéticas (http://en.wikipedia.com/wiki/Metaphone)
+
+As regras foram baseadas em um trabalho conjunto publicado peal Prefeitura 
+Municipal de Várzea Paulista (http://www2.varzeapaulista.sp.gov.br/metaphone),
+durante o projeto REDECA, voltado à infância e adolescência.
 
 Este port é uma variação para o português, ao menos o brasileiro.
 
-Escrito em C, tem como licença a BSD por questões de interesse de compatibilidade com 
-PostgreSQL e outros softwares, como PHP.
-
-O port para o PostgreSQL está pronto. Nessa primeira versão, basta entrar no diretório
-postgresql (tenha instalado o pacote 'dev' ao menos) e:
-$ make
-# make install 
-(fazer um restart no banco para pegar a nova lib)
-$ psql -d <seu banco> -f metaphone_ptbr.sql
-
-Pronto, as bibliotecas estão devidamente instaladas e a função criada (chama-se metaphone_ptbr())
-
-ex:
-SELECT metaphone_ptbr('Postgresql');
-
-
-A função pura pode ser encontrada dentro do diretório 'source', e até compilada para se tornar
-uma aplicação de linha de comando.
-
-Para o PHP, a função chama-se metaphone_ptbr();
-
-
-1.1 GUIA RÁPIDO
-a) PostgreSQL:
-SELECT metaphone_ptbr('Postgresql');
-
-b) PHP
-<?php
-  echo metaphone_ptbr('teste');
-?>
-
- * * *
-
 2. O ALGORITMO
 
-Assim como o Metaphone original e o Double Metaphone, o objetivo é criar uma palavra foneticamente
-representativa a partir da original utilizando as regras para o português brasileiro. Dessa forma, a busca é 
-facilitada por transformar cerca de 10 a 50 palavras em uma única representação. O custo de uma pesquisa em um
-banco de dados tradicional para as variantes cai drasticamente, de forma que um segundo algoritmo de proximidade 
-(levenshtein, similar text) para um ordenamento eficaz se torna viável pela menor quantidade de registros a serem 
-analisados.
+Assim como o Metaphone original e o Double Metaphone, o objetivo é criar uma 
+palavra foneticamente representativa a partir da original utilizando as 
+regras para o português brasileiro. Dessa forma, a busca é facilitada por 
+transformar cerca de 10 a 50 palavras em uma única representação. O custo de 
+uma pesquisa em um banco de dados tradicional para as variantes cai 
+drasticamente, de forma que um segundo algoritmo de proximidade (levenshtein, 
+similar text) para um ordenamento eficaz se torna viável pela menor 
+quantidade de registros a serem analisados.
 
-Basicamente, transforma uma palavra em uma forma fonética, a fim de que palavras foneticamente
-semelhantes possam ser encontradas, resolvendo a maior parte dos casos de busca de nomes de pessoas,
-ruas, além de permitir busca por palavras foneticamente semelhantes em um dicionário. 
+Basicamente, transforma uma palavra em uma forma fonética, a fim de que 
+palavras foneticamente semelhantes possam ser encontradas, resolvendo a maior 
+parte dos casos de busca de nomes de pessoas, ruas, além de permitir busca por
+palavras foneticamente semelhantes em um dicionário. 
 
+Pode-se dizer que o algoritmo simplifica a quantidade de símbolos das palavras,
+mantendo apenas o essencial para identificar seu núcleo. No caso do português 
+(e de várias outras línguas também), as consoantes são as letras que carregam a
+identificação de uma palavra. Logo, considera-se trocar a palavra por símbolos 
+que representam aquela sonoridade.
 
-Pode-se dizer que o algoritmo simplifica a quantidade de símbolos das palavras, mantendo apenas o essencial 
-para identificar seu núcleo. No caso do português (e de várias outras línguas também), as consoantes são as 
-letras que carregam a identificação de uma palavra. Logo, considera-se trocar a palavra por símbolos que
-representam a sonoridade.
-
-O algoritmo não é complexo, contudo, precisa lidar com o contexto das letras, algumas vezes analisando até
-duas letras à frente ou para trás. A sua implementação foi construída visando simplicidade e agilidade.
+O algoritmo não é complexo computacionalmente. Seu valor está no estudo das 
+regras fonéticas e o contexto das letras para determinação do som mais 
+apropriado, algumas vezes analisando até duas letras à frente ou para trás. A
+sua implementação foi construída visando simplicidade e agilidade.
 
 Para simplificar a representação do algoritmo, tomemos as seguintes notações:
 
@@ -148,13 +133,13 @@ Z	-> Z
 
 A escolha em uma implementação à parte do código original se dá por duas razões principais:
 1. O Metaphone original usa regras fonéticas americanas. O estrangeirismo na língua inglesa
-   é resolvido com uma segunda string fornecida pelo Double Metaphone, para resolver alguns
+   é resolvido com uma segunda string fornecida pelo Double Metaphone para resolver alguns
    empecilhos da primeira  versão. De  qualquer forma, o metaphone original não funciona de 
    forma satisfatória para o português.
 
 2. Implementar uma terceira string variante a partir do código metaphone seria uma tarefa
    hercúlea e provavelmente seriam inseridos erros no código original, pela dificuldade em
-   expandí-lo de forma apropriada. O código contém remendos (em especial o Double Metaphone)
+   expandí-lo de forma apropriada. O código contém adaptações (em especial o Double Metaphone)
    que buscam abranger todas as palavras do mundo em uma representação fonética única. 
    Contudo a maneira utilizada para tal é inviável, porque as letras e os sons são contextuais
    à língua utilizada.
@@ -179,7 +164,7 @@ Dado as principais dificuldades fonéticas práticas, encontramos três frentes 
 	são tratadas as exceções (como acontece com os nomes), exceto aquelas previstas 
 	pela língua.
  
-    b) Conversão fonética semi-fiel. Acrescenta algumas exceções práticas do cotidiano,
+	b) Conversão fonética semi-fiel. Acrescenta algumas exceções práticas do cotidiano,
 	buscando alcançar um equilíbrio entre a grafia e a fonética dos nomes que fogem à regra.
 	Essa é a implementação atual.
 

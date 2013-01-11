@@ -114,7 +114,7 @@ binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs debian/changelog
-	dh_installdocs
+	dh_installdocs -A README
 	dh_install
 #	dh_installmenu
 #	dh_installdebconf	

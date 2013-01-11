@@ -88,7 +88,8 @@ NewMetaString(char *init_str)
 	META_MALLOC(s->str, s->bufsize, char);
 	assert(s->str != NULL);
 
-	strncpy(s->str, init_str, s->length + 1);
+	//strncpy(s->str, init_str, s->length + 1);
+	memcpy(s->str, init_str, s->length + 1);
 	s->free_string_on_destroy = 1;
 
 	return s;
@@ -119,55 +120,53 @@ IncreaseBuffer(metastring * s, int chars_needed)
 /* 
  * Hope that fixes toupper() problem with UTF-8 characters
  */
-inline static wchar_t toUpper(const wchar_t c)
+inline static wchar_t toUpper(const wchar_t d)
 {
-//	if( (char)c > 96 && (char)c < 123 )
-//		return (wchar_t)(c-32);
+	wchar_t c;
+
+	c = (wchar_t)towupper((wint_t)d);
 
 	switch( c ) {
 
-//	case L'ç': return L'Ç';
-
-	case L'á':
-	case L'à':
-	case L'ã':
-	case L'â':
-	case L'ä':
+	case L'Á':
+	case L'À':
+	case L'Ã':
+	case L'Â':
+	case L'Ä':
 		return L'A';
 
-	case L'é': 
-	case L'è':
-	case L'ẽ':
-	case L'ê':
-	case L'ë':
+	case L'É': 
+	case L'È':
+	case L'Ẽ':
+	case L'Ê':
+	case L'Ë':
 		return L'E';
 
-	case L'y': 
 	case L'Y': 
 
-	case L'í': 
-	case L'ì':
-	case L'ĩ':
-	case L'î':
-	case L'ï': 
+	case L'Í': 
+	case L'Ì':
+	case L'Ĩ':
+	case L'Î':
+	case L'Ï': 
 		return L'I';
 
-	case L'ó':
-	case L'ò':
-	case L'õ':
-	case L'ô':
-	case L'ö':
+	case L'Ó':
+	case L'Ò':
+	case L'Õ':
+	case L'Ô':
+	case L'Ö':
 		return L'O';
 
-	case L'ú':
-	case L'ù':
-	case L'ũ':
-	case L'û':
-	case L'ü':
+	case L'Ú':
+	case L'Ù':
+	case L'Ũ':
+	case L'Û':
+	case L'Ü':
 		return L'U';
 	}
 
-	return (wchar_t)towupper((wint_t)c);
+	return c;
 } 
 
 /* 
@@ -178,27 +177,46 @@ inline static wchar_t toUpper(const wchar_t c)
 static wchar_t*
 MakeUpperAndClean(wchar_t* i)
 {
+	char buf[10];
+	mbstate_t ps;
 	wchar_t *s   =(wchar_t *)NULL, 
 		*aux =(wchar_t *)NULL;
 
-	if( !i || *i == L'\0' )
+        if( !i || *i == L'\0' )
 		return NULL;
 	
+	/* transforma todos em maiúsculas, com algumas simplificações */
+	aux = i;
+	while( *aux ) {
+		*aux = toUpper(*aux);
+		aux++;
+	}
+
+	/* copia para o novo buffer, eliminando os duplicados. */
 	META_MALLOC(s,wcslen(i)+1,wchar_t);
 	if( !s ) 
 		return (wchar_t *)NULL;
-	aux = s;
 
+	aux = s;
+	*aux = *i;
+	aux++;
+	i++;
 	for (; *i; i++) {
-		/* clean doubled chars. Not needed in portuguese */
-		if( DOUBLED_CHAR(i) )
+
+		/* clean doubled chars. Not needed in portuguese, except 'R' and 'S' */
+		if( DOUBLED_CHAR(i) ) {
 			if( *i != L'R' && *i != L'S' )
 				continue;
-		*aux = toUpper(*i);
+
+			/* caso mais de 2 caracteres seguidos, vá até o último. */
+			while( *i && *i == *(i+1) )
+				i++;
+		}
+		*aux = *i;
 		aux++;
 	}
-	*aux = L'\0';
 
+	*aux = L'\0';
 	return s;
 }
 
@@ -217,10 +235,6 @@ GetSimplifiedAt(wchar_t* s, int pos)
 	if ((pos < 0) || (pos >= wcslen(s)))
 		return '\0';
 
-/* MakeUpperAndClean() took care of this.
-	if ((wchar_t) *(s+pos) == L'Y')	
-		return L'I';
-*/
 	return ((wchar_t) *(s + pos));
 }
 
@@ -269,8 +283,7 @@ isVowel(char chr)
 {
 	switch (chr)
 	{
-		/* for all effects, 'Y' counts too (antes da revisão ortográfica, claro) */
-		/* no caso, 'Y' é traduzido como 'I' durante a limpeza da string por MakeUpperAndClean() */
+		/* 'Y' é traduzido como 'I' durante a limpeza da string por toUpper() */
 		case 'A': case 'E': case 'I': case 'O': case 'U':
 			return 1;
 	}
@@ -289,7 +302,8 @@ char *
 Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator)
 {
 	int			length		= 0;
-	wchar_t 		*original	= NULL;
+	wchar_t 		*original	= NULL,
+				*tmp		= NULL;
 	metastring 		*primary	= NULL;
 	int			current 	= 0;
 	int			last		= 0;
@@ -309,7 +323,9 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 	/* let's everything be uppercase. */
 //	original = MakeUpperAndClean((wchar_t *)wcsdup(str));
-	original = MakeUpperAndClean((wchar_t *)str);
+	tmp = wcsdup(str);
+	original = MakeUpperAndClean(tmp);
+	free(tmp);
 	if( !original )
 		return NULL;
 
@@ -697,7 +713,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 	META_MALLOC(code, current+1, char);
 	if( !code ) 
 		return NULL;
-	strncpy(code, primary->str, current);
+	memcpy(code, primary->str, current);
 
 	META_FREE(original);
 	DestroyMetaString(primary);
@@ -742,7 +758,10 @@ int main(int argc, char **argv)
 		}
                 ret = mbstowcs(buf,argv[count++],200);
 		code = Metaphone_PTBR_s(buf,MAX_METAPHONE_LENGTH,'.');
-		printf("%s\n", code);
+		if( code )
+			printf("%s\n", code);
+		else
+			puts("error - null string");
 		free(code);
 	}
 

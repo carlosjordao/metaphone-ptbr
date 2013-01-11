@@ -2,6 +2,7 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos C. Jordao (jordao) <carlosjordao@gmail.com>
+DM-Upload-Allowed: yes
 #Build-Depends: debhelper (>= 9), php5-dev, libpq-dev, postgresql-server-dev-all, hardening-wrapper, autoconf, autotools-dev, dpkg-dev (>= 1.16.1)
 Build-Depends: debhelper (>= 9), php5-dev, libpq-dev, postgresql-server-dev-all, hardening-wrapper, dpkg-dev (>= 1.16.1)
 Homepage: http://sourceforge.net/projects/metaphoneptbr/
