@@ -19,7 +19,7 @@ zend_function_entry metaphoneptbr_functions[] = {
 /* {{{ stem_module_entry
  *  */
 zend_module_entry metaphoneptbr_module_entry = {
-        STANDARD_MODULE_HEADER,
+	STANDARD_MODULE_HEADER,
         "metaphoneptbr",
         metaphoneptbr_functions,
         NULL,//PHP_MINIT(metaphone_ptbr),
@@ -27,7 +27,7 @@ zend_module_entry metaphoneptbr_module_entry = {
         NULL,
         NULL,
         NULL,//PHP_MINFO(metaphone_ptbr),
-        "0.2",
+        "1.0",
         STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
@@ -65,7 +65,8 @@ PHP_FUNCTION(metaphone_ptbr)
 		if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) ) {
 			// if not set, will cause segmentation fault on Apache pthread 
 			RETURN_STRING("",1);
-			return -1;
+			//return -1;
+			return;
 		}
 	}
 
@@ -74,7 +75,8 @@ PHP_FUNCTION(metaphone_ptbr)
 	mblength = mbstowcs(NULL,str,0);
 	if( mblength < 1 ) {
 		RETURN_STRING("",1);
-		return -2;
+		//return -2;
+		return;
 	}
 
 	// 1.1 converting
@@ -83,7 +85,8 @@ PHP_FUNCTION(metaphone_ptbr)
 	if( ret < 0 ) {
 		META_FREE(stringUCS);
 		RETURN_STRING("",1);
-		return -3;
+		//return -3;
+		return;
 	}
 
 	stringUCS[mblength] = L'\0';

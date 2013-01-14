@@ -177,8 +177,6 @@ inline static wchar_t toUpper(const wchar_t d)
 static wchar_t*
 MakeUpperAndClean(wchar_t* i)
 {
-	char buf[10];
-	mbstate_t ps;
 	wchar_t *s   =(wchar_t *)NULL, 
 		*aux =(wchar_t *)NULL;
 
