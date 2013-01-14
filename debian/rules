@@ -13,7 +13,7 @@ PHP_EX5=$(shell /usr/bin/php-config5 --extension-dir)
 PHPFLAGS=`dpkg-buildflags --export=configure`
 # hardening
 export DEB_BUILD_HARDENING=1
-include /usr/share/dpkg/buildflags.mk
+#include /usr/share/dpkg/buildflags.mk
 # --- --- --- --- ---
 
 
