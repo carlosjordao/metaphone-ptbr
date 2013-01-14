@@ -1,3 +1,4 @@
-cd .. && tar --exclude-vcs --exclude=.mynotes --exclude=.dput.conf -czf metaphoneptbr_1.13.orig.tar.gz metaphoneptbr && cd - && dpkg-buildpackage -I.mynotes -I.dput.conf -I.git -tc -uc -us -D -S && dpkg-buildpackage -I.mynotes -I.dput.conf -I.git -tc -uc -us -D -b && lintian -I -E -i --pedantic ../*.dsc ../*.deb
-#dpkg-buildpackage -rfakeroot -I.mynotes -I.dput.conf -I.git -tc  -D -b . -S
-# && dput -c .dput.conf mentors-ftp ../metaphoneptbr_`head -n 1 debian/changelog | cut -d\  -f2 | cut -c2- | sed 's/)//'`_source.changes
+# teste
+#cd .. && tar --exclude-vcs --exclude=.mynotes --exclude=.dput.conf -czf metaphoneptbr_1.13.orig.tar.gz metaphoneptbr && cd - && dpkg-buildpackage -I.mynotes -I.dput.conf -I.git -tc -uc -us -D -S && dpkg-buildpackage -I.mynotes -I.dput.conf -I.git -tc -uc -us -D -b && lintian -I -E -i --pedantic ../*.dsc ../*.deb
+# para debian
+cd .. && tar --exclude-vcs --exclude=.mynotes --exclude=.dput.conf -czf metaphoneptbr_1.13.orig.tar.gz metaphoneptbr && cd - && dpkg-buildpackage -I.mynotes -I.dput.conf -I.git -tc  -D -S && dpkg-buildpackage -I.mynotes -I.dput.conf -I.git -tc -D -b && lintian -I -E -i --pedantic ../*.dsc ../*.deb && dput -c .dput.conf mentors-ftp ../metaphoneptbr_`head -n 1 debian/changelog | cut -d\  -f2 | cut -c2- | sed 's/)//'`_source.changes
