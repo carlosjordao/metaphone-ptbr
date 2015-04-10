@@ -2,6 +2,7 @@ Metaphone PTBR
 
 How to INSTALL (from source)
 
+*************************************
 * for PHP 5
   go to php5 directory and you would do:
   $ phpize5
@@ -9,10 +10,27 @@ How to INSTALL (from source)
   $ make
   # make install
 
-  Now you can enable it on php.ini, by adding this line:
+  Newer versions of PHP have changed the way they enable extensions:
+  # mv -i /etc/php5/conf.d/metaphone_ptbr.ini /etc/php5/mods-available
+
+  In a single line:
+  phpize5 && ./configure && make && make install 
+  if [ -d  /etc/php5/mods-available ]; then
+  	mv -i /etc/php5/conf.d/metaphone_ptbr.ini /etc/php5/mods-available && php5enmod metaphone_ptbr
+  fi
+
+
+  Old versions of PHP 5:
+  Now you can enable it on php.ini, by adding this line in config.ini
   extension=metaphoneptbr.so
 
+  Testing:
 
+  php -qr 'echo metaphone_ptbr("teste")."\n";'
+
+
+
+*************************************
 * for PostgreSQL
 [From README inside 'postgresql' directory]
 
@@ -51,6 +69,7 @@ select metaphone_ptbr('Abcdefgh');
 
 
 
+*************************************
 * for command line program
   go to the 'source' directory, then:
   $ make

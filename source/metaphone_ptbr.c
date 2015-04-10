@@ -304,7 +304,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				*tmp		= NULL;
 	metastring 		*primary	= NULL;
 	int			current 	= 0;
-	int			last		= 0;
+	//int			last		= 0;
 	int			count		= 0;
 	char			*code 		= NULL;
 	wchar_t			current_char 	= L'\0',
@@ -316,7 +316,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 	/* we need the real length and last prior to padding */
 	length 	 = wcslen(str);
-	last 	 = length - 1;
+	//last 	 = length - 1;
 	primary  = NewMetaString("");
 
 	/* let's everything be uppercase. */
