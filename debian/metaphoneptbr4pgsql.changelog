@@ -1,3 +1,9 @@
+metaphoneptbr (1.14-1) unstable; urgency=low
+  * added mapping of W[LR] -> V (Wladimir, Wrana). Thanks to Furquim
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 05 Mar 2015 16:35:00 -0300
+
+
 metaphoneptbr (1.12.37-1) unstable; urgency=low
 
   * changed postgresql tree to support 8.4 and 9.1 modules

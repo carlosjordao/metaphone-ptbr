@@ -686,6 +686,9 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				ahead_char = GetSimplifiedAt(original,current+1);
 				if (isVowel(ahead_char))
 					MetaphAddChr(primary,'V');
+                else if (ahead_char == 'L' || ahead_char == 'R' ) /* sugestão de luisfurquim@gmail.com p/ Wladimir e Wrana */
+                    MetaphAddChr(primary,'V');
+
 				/* desconsiderar o W no final das palavras, por ter som de U,
  				 * ou ainda seguidos por consoantes, por ter som de U (Newton)
 

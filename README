@@ -111,8 +111,8 @@ S	-> S (caso as outras regras não se apliquem, esta entra em vigor)
 T	-> T
 TH	-> T
 V	-> V
-Wv	-> V
-Wc	-> 0
+W[LRv]	-> V
+Wc	-> 0	(Exceto L e R, da regra acima)
 X$	-> X (o mais adequado seria KS, mas há de se considerar alguns nomes separados por espaços, tornando assim X uma representação mais interessante, embora não perfeitamente acurada)
 ^EXv	-> Z 
 .EX[EI]	-> X 

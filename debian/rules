@@ -128,8 +128,8 @@ binary-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs
-	dh_installdeb
 	dh_shlibdeps
+	dh_installdeb
 	echo "php:Depends=phpapi-"`php-config5 --phpapi` >> debian/php5-metaphoneptbr.substvars
 	dh_gencontrol 
 	dh_md5sums 
