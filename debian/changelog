@@ -1,3 +1,9 @@
+metaphoneptbr (1.14-2) unstable; urgency=low
+  * review of postgresql extension install, including support for 9.4 version
+  * review of PHP 5 extension install
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 05 Mar 2015 16:35:00 -0300
+
 metaphoneptbr (1.14-1) unstable; urgency=low
   * added mapping of W[LR] -> V (Wladimir, Wrana). Thanks to Furquim
 
