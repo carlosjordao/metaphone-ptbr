@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -e
+
+#EXTRA#
+
+if [ "$1" = "configure" ]; then
+    inidir=/etc/php5/mods-available
+
+    if [ -e /usr/share/php5/php5-maintscript-helper ] ; then
+    . /usr/share/php5/php5-maintscript-helper
+
+	dsoname="metaphoneptbr"
+	module="metaphone_ptbr"
+    inifile="metaphone_ptbr.ini"
+
+    # Register new conffile with UCF
+    ucf /usr/share/php5/metaphoneptbr/${inifile} ${inidir}/${inifile}
+    ucfr --force php5-metaphoneptbr ${inidir}/${inifile}
+
+    # Move pre-extension manager conffile
+    dpkg-maintscript-helper mv_conffile /etc/php5/conf.d/${inifile} ${inidir}/${inifile} -- "$@";
+
+    if [ -f "${inidir}/${inifile}.dpkg-new" ]; then
+        md5sum="$(md5sum ${inidir}/${inifile}.dpkg-new | sed -e 's/ .*//')"
+        old_md5sum="$(md5sum ${inidir}/${inifile} | sed -e 's/ .*//')"
+        if [ "$md5sum" = "$old_md5sum" ]; then
+            mv "${inidir}/${inifile}.dpkg-new" "${inidir}/${inifile}"
+        fi
+    fi
+
+    php5_invoke enmod ALL $module
+
+	echo "Use: <?php metaphone_ptbr('teste'); ?>"
+
+	php -r "metaphone_ptbr('teste');" && echo "... module enabled" || echo "Enable this module manually: sudo php5enmod metaphone_ptbr"
+    fi
+fi
+
+#DEBHELPER#
+
+exit 0
