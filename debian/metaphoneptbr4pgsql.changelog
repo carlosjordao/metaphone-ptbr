@@ -1,3 +1,8 @@
+metaphoneptbr (1.14-2) unstable; urgency=low
+  * added support for postgresq 9.4
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 10 Apr 2015 11:05:00 -0300
+
 metaphoneptbr (1.14-1) unstable; urgency=low
   * added mapping of W[LR] -> V (Wladimir, Wrana). Thanks to Furquim
 

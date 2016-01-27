@@ -63,7 +63,8 @@ php5-metaphoneptbr:
 	dh_installdirs -p$@
 	@echo "\n*****************************\n*** PHP module \n**********************"
 	# thanks code snippet from php5 source file...
-	install -D -m 0644 php5/metaphone_ptbr.ini $(CURDIR)/debian/$@/etc/php5/conf.d/metaphone_ptbr.ini
+	#install -D -m 0644 php5/metaphone_ptbr.ini $(CURDIR)/debian/$@/etc/php5/conf.d/metaphone_ptbr.ini
+	install -D -m 0644 php5/metaphone_ptbr.ini $(CURDIR)/debian/$@/usr/share/php5/metaphoneptbr/metaphone_ptbr.ini
 	install -D -m 0644 php5/modules/metaphoneptbr.so $(CURDIR)/debian/$@$(PHP_EX5)/metaphoneptbr.so
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 

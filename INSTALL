@@ -79,7 +79,7 @@ select metaphone_ptbr('Abcdefgh');
 * making debian packages
   PS: lembrar de trocar a versão no arquivo debian/compat
   Inside the root metaphoneptbr directory (from source), run:
-  # dpkg-buildpackage -rfakeroot -ICVS -tc  -D 
+  # dpkg-buildpackage -rfakeroot -ICVS -tc  -D  -uc -us
 
   It should produce some files like those, so far:
   ../metaphoneptbr_1.3_amd64.changes
