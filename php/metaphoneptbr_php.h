@@ -9,7 +9,7 @@ extern zend_module_entry metaphoneptbr_module_entry;
 #define phpext_metaphoneptbr_ptr &metaphoneptbr_module_entry
 */
 
-#define PHP_METAPHONEPTBR_WORLD_VERSION "0.2"
+#define PHP_METAPHONEPTBR_WORLD_VERSION "0.3"
 #define PHP_METAPHONEPTBR_WORLD_EXTNAME "metaphoneptbr"
 
 PHP_FUNCTION(metaphone_ptbr);

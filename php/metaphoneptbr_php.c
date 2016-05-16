@@ -64,7 +64,7 @@ PHP_FUNCTION(metaphone_ptbr)
 	if( !loc || !(*loc) || !strcmp(loc,"C") || !strcmp(loc,"POSIX") ) {
 		if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) ) {
 			// if not set, will cause segmentation fault on Apache pthread 
-			RETURN_STRING("",1);
+			RETURN_STRING("");
 			//return -1;
 			return;
 		}
@@ -74,7 +74,7 @@ PHP_FUNCTION(metaphone_ptbr)
 	// 1.1 discovering strlength
 	mblength = mbstowcs(NULL,str,0);
 	if( mblength < 1 ) {
-		RETURN_STRING("",1);
+		RETURN_STRING("");
 		//return -2;
 		return;
 	}
@@ -84,7 +84,7 @@ PHP_FUNCTION(metaphone_ptbr)
 	ret = mbstowcs(stringUCS, str, str_len);
 	if( ret < 0 ) {
 		META_FREE(stringUCS);
-		RETURN_STRING("",1);
+		RETURN_STRING("");
 		//return -3;
 		return;
 	}
@@ -98,7 +98,7 @@ PHP_FUNCTION(metaphone_ptbr)
         	result = Metaphone_PTBR_s(stringUCS, MAX_METAPHONE_LENGTH,separator[0]);
 
 	META_FREE(stringUCS);
-        RETURN_STRING(result, 0);
+    RETURN_STRING(result);
 }
 /* }}} */
 
