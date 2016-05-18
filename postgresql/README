@@ -1,7 +1,7 @@
 Compatibility
 -------------------------------------
 x Tested with postgresql 8.3  and 8.4
-* adapted to install on 9.1 too
+* adapted to install on 9.1 
 
 1. Compiling
 -------------------------------------

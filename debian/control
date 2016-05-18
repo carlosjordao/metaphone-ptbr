@@ -8,6 +8,7 @@ Standards-Version: 3.9.5
 
 
 Package: metaphoneptbr4pgsql
+#Package: postgresql-9.5-metaphoneptbr
 Section: libs
 Architecture: any
 Depends: postgresql (>= 8.3), ${shlibs:Depends}, ${misc:Depends}
@@ -39,17 +40,3 @@ Description: This is the metaphone for brazilian portuguese
  phonetic key, making it easier to compare and search by names, 
  dictionary words and streets names.
  
-
-#Package: python-metaphoneptbr
-#Section: libs
-#Architecture: any
-#XS-Python-Version: 2.6, 2.7
-#Depends: python (>= 2.6)
-#Description: This is the metaphone for brazilian portuguese, which
-# reduce words in brazilian portuguese to a representative 
-# phonetic key, in a such way searching names, dictionary words, 
-# streets should be easier.
-# .
-# While there aren't known bugs at the moment, they could exist,
-# so please tell me or go to: 
-# https://sourceforge.net/projects/metaphoneptbr

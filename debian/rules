@@ -46,8 +46,7 @@ clean:
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) -i distclean
 	cd php ; phpize --clean 
-	cd postgresql ; $(MAKE) -C 9.1 clean ; $(MAKE) -C 8.4 clean
-#	cd python ; python setup.py clean --all 
+	cd postgresql ; for i in 8.* 9.*; do $(MAKE) -C $i clean ; done
 	cd source ; make clean 
 	dh_clean 
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
@@ -74,6 +73,7 @@ metaphoneptbr4pgsql:
 	dh_installdirs -p$@
 	@echo "\n*****************************\n*** POSTGRESQL module \n**********************"
 	for v in `pg_buildext supported-versions postgresql`; do \
+	    $(MAKE) -C postgresql/$$v clean;\
 	    $(MAKE) -C postgresql/$$v install DESTDIR=$(CURDIR)/debian/$@;\
 	done
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
@@ -88,15 +88,6 @@ metaphoneptbr-utils:
 	install -D -m 0555 source/metaphone_ptbr $(CURDIR)/debian/$@/usr/bin/metaphone_ptbr
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
-
-#python-metaphoneptbr: 
-#	# installing metaphone-python
-#	dh_testroot -p$@
-#	dh_testdir -p$@
-#	dh_installdirs -p$@
-#	cd python; python setup.py install --root $(CURDIR)/debian/$@  --install-base /usr
-#--prefix /usr
-#	tar -xzf python/dist/*`arch`.tar.gz -C debian/
 
 # --- end ----
 
@@ -115,11 +106,8 @@ binary-arch: metaphoneptbr4pgsql php-metaphoneptbr metaphoneptbr-utils
 	dh_installchangelogs debian/changelog
 	dh_installdocs -A README
 	dh_install
-#	dh_installmenu
-#	dh_installdebconf	
 	dh_installdirs
-#	dh_python
-	dh_installinit
+#	dh_installinit
 	dh_installman
 	dh_link
 	dh_lintian
