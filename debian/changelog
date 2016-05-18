@@ -1,3 +1,11 @@
+metaphoneptbr (1.15) unstable; urgency=low
+  * review of PHP module for version 7 compatibility
+  * update debian control and rules files to mirror changes for new version of PHP
+  * added 9.5 symlink to 9.4 postgres module code
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Mon, 16 May 2016 15:49:00 -0300
+
+
 metaphoneptbr (1.14-2) unstable; urgency=low
   * review of postgresql extension install, including support for 9.4 version
   * review of PHP 5 extension install
