@@ -1,5 +1,5 @@
 /*
- * This is a port of the Metaphone based algorithm for brazilian 
+ * This is a port of the Metaphone based algorithm for brazilian
  * portuguese, developed by Prefeitura Municipal de Varzea Paulista for PHP.
  *
  *
@@ -8,7 +8,7 @@
  * As Metaphone, the ideia is to compute sound like strings, but
  * in this case, just for brazilian portuguese. Why? Because would be nice
  * to have generic tool for every language, but sometimes is not desirable or
- * either maintanable. Any changes could break the original metaphone code, and 
+ * either maintanable. Any changes could break the original metaphone code, and
  * one way of avoiding this is introducing more "alternate" strings. Another one
  * is creating specifics metaphone functions for each language. That's my choice
  *
@@ -36,23 +36,23 @@ and is covered under this copyright:
 
   Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-  
-  1. Redistributions of source code must retain the above copyright notice, this 
+
+  1. Redistributions of source code must retain the above copyright notice, this
      list of conditions and the following disclaimer.
   2. Redistributions in binary form must reproduce the above copyright notice, this
      list of conditions and the following disclaimer in the documentation and/or
      other materials provided with the distribution.
-  
-  
+
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR 
-  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
-  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
@@ -70,7 +70,7 @@ and is covered under this copyright:
 #include "metaphone_ptbr.h"
 
 
-static metastring *
+STATIC_OR_DYN metastring *
 NewMetaString(char *init_str)
 {
 	metastring *s;
@@ -96,7 +96,7 @@ NewMetaString(char *init_str)
 }
 
 
-static void
+STATIC_OR_DYN void
 DestroyMetaString(metastring * s)
 {
 	if (s == NULL)
@@ -109,7 +109,7 @@ DestroyMetaString(metastring * s)
 }
 
 
-static void
+STATIC_OR_DYN void
 IncreaseBuffer(metastring * s, int chars_needed)
 {
 	META_REALLOC(s->str, (s->bufsize + chars_needed + 10), char);
@@ -117,7 +117,7 @@ IncreaseBuffer(metastring * s, int chars_needed)
 	s->bufsize = s->bufsize + chars_needed + 10;
 }
 
-/* 
+/*
  * Hope that fixes toupper() problem with UTF-8 characters
  */
 inline static wchar_t toUpper(const wchar_t d)
@@ -135,20 +135,20 @@ inline static wchar_t toUpper(const wchar_t d)
 	case L'Ä':
 		return L'A';
 
-	case L'É': 
+	case L'É':
 	case L'È':
 	case L'Ẽ':
 	case L'Ê':
 	case L'Ë':
 		return L'E';
 
-	case L'Y': 
+	case L'Y':
 
-	case L'Í': 
+	case L'Í':
 	case L'Ì':
 	case L'Ĩ':
 	case L'Î':
-	case L'Ï': 
+	case L'Ï':
 		return L'I';
 
 	case L'Ó':
@@ -167,22 +167,22 @@ inline static wchar_t toUpper(const wchar_t d)
 	}
 
 	return c;
-} 
+}
 
-/* 
+/*
  * Just let the string in uppercase mode.
  * and, as this intend to be calling as a preparation measure, let's
  * make it clean for some cases that could become a problem.
  */
-static wchar_t*
+STATIC_OR_DYN wchar_t*
 MakeUpperAndClean(wchar_t* i)
 {
-	wchar_t *s   =(wchar_t *)NULL, 
+	wchar_t *s   =(wchar_t *)NULL,
 		*aux =(wchar_t *)NULL;
 
         if( !i || *i == L'\0' )
 		return NULL;
-	
+
 	/* transforma todos em maiúsculas, com algumas simplificações */
 	aux = i;
 	while( *aux ) {
@@ -192,7 +192,7 @@ MakeUpperAndClean(wchar_t* i)
 
 	/* copia para o novo buffer, eliminando os duplicados. */
 	META_MALLOC(s,wcslen(i)+1,wchar_t);
-	if( !s ) 
+	if( !s )
 		return (wchar_t *)NULL;
 
 	aux = s;
@@ -219,7 +219,7 @@ MakeUpperAndClean(wchar_t* i)
 }
 
 
-static wchar_t
+STATIC_OR_DYN wchar_t
 GetAt(wchar_t* s, int pos)
 {
 	if ((pos < 0) || (pos >= wcslen(s)))
@@ -227,7 +227,7 @@ GetAt(wchar_t* s, int pos)
 
 	return ((wchar_t) *(s + pos));
 }
-static wchar_t
+STATIC_OR_DYN wchar_t
 GetSimplifiedAt(wchar_t* s, int pos)
 {
 	if ((pos < 0) || (pos >= wcslen(s)))
@@ -238,11 +238,11 @@ GetSimplifiedAt(wchar_t* s, int pos)
 
 
 
-static void
+STATIC_OR_DYN void
 MetaphAdd(metastring * s, char *new_str)
 {
 	int	add_length = 0;
-	
+
 
 	if (new_str == NULL)
 		return;
@@ -258,9 +258,9 @@ MetaphAdd(metastring * s, char *new_str)
 
 /*
  * this function has been included as most of metaphone characters
- * has only 1 byte length 
+ * has only 1 byte length
  */
-static void
+STATIC_OR_DYN void
 MetaphAddChr(metastring * s, char new_str)
 {
 	int			add_length;
@@ -270,13 +270,13 @@ MetaphAddChr(metastring * s, char new_str)
 
 	add_length = 1;
 	if ((s->length + add_length) > (s->bufsize - 1))
-		IncreaseBuffer(s, add_length); 
+		IncreaseBuffer(s, add_length);
 
 	s->str[s->length] = new_str;
 	s->length += add_length;
 }
 
-static int
+STATIC_OR_DYN int
 isVowel(char chr)
 {
 	switch (chr)
@@ -288,14 +288,14 @@ isVowel(char chr)
 	return 0;
 }
 
-static
+STATIC_OR_DYN
 char *
 Metaphone_PTBR(const wchar_t *str, const int max_length)
 {
 	return Metaphone_PTBR_s(str, max_length, '\0');
 }
 
-static
+STATIC_OR_DYN
 char *
 Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator)
 {
@@ -308,10 +308,10 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 	int			count		= 0;
 	char			*code 		= NULL;
 	wchar_t			current_char 	= L'\0',
-				last_char 	= L'\0', 
+				last_char 	= L'\0',
 				ahead_char 	= L'\0';
 
-	if( !str ) 
+	if( !str )
 		return NULL;
 
 	/* we need the real length and last prior to padding */
@@ -327,7 +327,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 	if( !original )
 		return NULL;
 
-	
+
 	/* main loop hard-limited - should be enough for very long names */
 	while (( (primary->length-count) < max_length) && (current < length))
 	{
@@ -346,7 +346,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 			case 'O':
 			case 'U':
 				/* initials vowels after any space must stay too */
-				if (WORD_EDGE(last_char)) 
+				if (WORD_EDGE(last_char))
 					MetaphAddChr(primary, current_char);
 				break;
 
@@ -363,7 +363,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				break;
 
 			case 'T':
-			case 'P': 
+			case 'P':
 				/* those are special cases, from foreign names or
 				 * old portuguese names sintax.
 				 * Besides, should behavior as the others.
@@ -383,37 +383,37 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 			case 'B':
 			case 'D':
 			case 'F':
-			case 'J': 
+			case 'J':
 			case 'K':
 			case 'M':
 			case 'V':
 				MetaphAddChr(primary, current_char);
 				break;
-			
+
 			/* checar consoantes com som confuso e similares */
 			case 'G':
 				ahead_char = GetSimplifiedAt(original, current+1);
-				switch( ahead_char ) 
+				switch( ahead_char )
 				{
 					case 'H':
-						/* H sempre complica a vida. Se não for vogal, tratar como 'G', 
+						/* H sempre complica a vida. Se não for vogal, tratar como 'G',
 						   caso contrário segue o fluxo abaixo. */
-						if( !isVowel(GetSimplifiedAt(original, current+2)) ) 
+						if( !isVowel(GetSimplifiedAt(original, current+2)) )
 							MetaphAddChr(primary,'G');
 					case 'E':
 					case 'I':
 						MetaphAddChr(primary,'J');
 						break;
-						
+
 					default:
 						MetaphAddChr(primary,'G');
 						break;
 				}
 				break;
-			
+
 			case 'R':
 				ahead_char = GetSimplifiedAt(original, current+1);
-				
+
 				/* como em andar, carro, rato */
 				if (WORD_EDGE(last_char) || WORD_EDGE(ahead_char))
 				{
@@ -429,27 +429,27 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				{
 					MetaphAddChr(primary,'R');
 					current++;
-						
+
 				/* todo o resto, como em arsenico */
 				} else
 					MetaphAddChr(primary,'R');
-				
+
 				break;
 
 			case 'Z':
 				ahead_char = GetAt(original, current+1);
-				
+
 				/* termina com, como em algoz */
 				if (WORD_EDGE(ahead_char))
 					MetaphAddChr(primary,'S');
 				else
 					MetaphAddChr(primary,'Z');
-				break;		
-		
-			
+				break;
+
+
 			case 'N':
 				ahead_char = GetAt(original, current+1);
-				
+
 				/* no português, todas as palavras terminam com 'M', exceto
 				 * no caso de nomes próprios, ou estrangeiros. Para todo caso,
 				 * tem som de 'M'
@@ -459,7 +459,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAddChr(primary,'M');
 				}
 				/* aranha, nhoque, manha */
-				else if (ahead_char == 'H') 
+				else if (ahead_char == 'H')
 				{
 					MetaphAddChr(primary,'3');
 					current++;
@@ -470,10 +470,10 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAddChr(primary,'N');
 				}
 				break;
-				
+
 			case 'S':
 				ahead_char = GetSimplifiedAt(original, current+1);
-				
+
 				/* aSSar */
 				if (ahead_char == 'S')
 				{
@@ -493,7 +493,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAddChr(primary,'Z');
 				}
 				/* special cases = 'SC' */
-				else if (ahead_char == 'C') 
+				else if (ahead_char == 'C')
 				{
 					wchar_t ahead2_char = GetSimplifiedAt(original, current+2);
 					switch (ahead2_char)
@@ -502,7 +502,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 							MetaphAddChr(primary,'S');
 							current += 2;
 							break;
-							
+
 						/* maSCAvo, aSCO, auSCUltar */
 						case L'A': case L'O': case L'U':
 							MetaphAdd(primary,"SK");
@@ -514,7 +514,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 							MetaphAddChr(primary,'X');
 							current += 2;
 							break;
-							
+
 						/* mesclado */
 						default:
 							MetaphAddChr(primary,'S');
@@ -526,7 +526,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					/* catch all - deve pegar atrás e sapato */
 					MetaphAddChr(primary,'S');
 				break;
-			
+
 			/* there is too many exceptions to work on... ahh! */
 			case 'X':
 			{
@@ -534,12 +534,12 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				ahead_char = GetSimplifiedAt(original,current+1);
 
 				/* fax, anticlímax e todos terminados com 'X' */
-				if (WORD_EDGE(ahead_char)) 
+				if (WORD_EDGE(ahead_char))
 				{
-					/* o som destes casos: 
-					 * MetaphAdd(primary,"KS"); 
-					 * para manter compatibilidade com outra implementação, usar abaixo 
-					 * como em: Felix, Alex 
+					/* o som destes casos:
+					 * MetaphAdd(primary,"KS");
+					 * para manter compatibilidade com outra implementação, usar abaixo
+					 * como em: Felix, Alex
 					 * Na verdade, para o computador tanto faz. Se todos usarem o mesmo
 					 * significado, o computador sabe q são iguais, não que som q tem.
 					 * A discussão está na representação acurada ou não da fonética.
@@ -547,7 +547,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAdd(primary,"X");
 				}
 				/* ...ex... */
-				else if (last_char == 'E') 
+				else if (last_char == 'E')
 				{
 					if( isVowel(ahead_char) )
 					{
@@ -557,9 +557,9 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 						if (WORD_EDGE(last2_char))
 						{
 							/* deixado com o som original dele */
-							MetaphAddChr(primary,'Z'); 
+							MetaphAddChr(primary,'Z');
 						}
-						else switch(ahead_char) 
+						else switch(ahead_char)
 						{
 						case 'E': case 'I':
 							/* México, mexerica, mexer */
@@ -590,11 +590,11 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					else
 						MetaphAdd(primary,"KS");
 				}
-				/* parece que certas sílabas predecessoras do 'x' como 
+				/* parece que certas sílabas predecessoras do 'x' como
 				 * 'ca' em 'abacaxi' provocam o som de 'CH' no 'x'.
 				 * com exceção do 'm', q é mais complexo.
 				 */
-				else if (isVowel(last_char)) 
+				else if (isVowel(last_char))
 				{
 					/* faxina. Fax é tratado acima. */
 					switch (last2_char)
@@ -615,54 +615,54 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 						/* maxilar e enquadra máximo aqui tb, embora não seja correto. */
 						MetaphAdd(primary,"KS");
 						break;
-					} 
+					}
 				}
 				/* anything else... enxame, enxada, -- catch all exceptions :( */
 				else
 					MetaphAddChr(primary,'X');
 			}
-				break;							
+				break;
 
 			/* ca, ce, ci, co, cu */
 			case 'C':
 				ahead_char = GetSimplifiedAt(original,current+1);
-				switch(ahead_char) 
+				switch(ahead_char)
 				{
-				case 'E': case 'I': 
+				case 'E': case 'I':
 					MetaphAddChr(primary,'S');
 					break;
-					
+
 				case 'H':
 					/* christiano. */
 					if( GetSimplifiedAt(original,current+2) == 'R' )
 						MetaphAddChr(primary,'K');
 					/* CHapéu, chuva */
-					else 
+					else
 						MetaphAddChr(primary,'X');
 					current ++;
 					break;
 
-				/* Jacques - não fazer nada. Deixa o 'Q' cuidar disso 
+				/* Jacques - não fazer nada. Deixa o 'Q' cuidar disso
 				 * ou palavras com CK, mesma coisa.
 				 */
 				case 'Q':
 				case 'K':
 					break;
-					
+
 				default:
 					MetaphAddChr(primary,'K');
 					break;
 				}
 
 				break;
-				
-			/* 
+
+			/*
 			 * only considers the vowels after 'H' if only they are on
 			 * the beginning of the word
 			 */
 			case 'H':
 				if (WORD_EDGE(last_char))
-				{ 
+				{
 					ahead_char = GetSimplifiedAt(original,current+1);
 					if (isVowel(ahead_char))
 					{
@@ -672,12 +672,12 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 						 * sounds and writting. Ex: HOSANA will be mapped to
 						 * 'S' sound, instead 'Z'.
 						 * OBS: para voltar à representação de Z, comente a linha abaixo
-						 */ 
+						 */
 						current ++;
 					}
-				} 					
+				}
 				break;
-			
+
 			case 'Q':
 				MetaphAddChr(primary,'K');
 				break;
@@ -695,7 +695,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				 * soluções para www?
  				 */
 				break;
-		
+
 			case L'Ç':
 				MetaphAddChr(primary, 'S');
 				break;
@@ -703,7 +703,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 		}
 		/* next char */
 		current ++;
-		
+
 		last_char = current_char;
 	}
 
@@ -712,7 +712,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 	primary->str[ primary->length ] = '\0';
 
 	META_MALLOC(code, current+1, char);
-	if( !code ) 
+	if( !code )
 		return NULL;
 	memcpy(code, primary->str, current);
 
@@ -726,7 +726,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 #ifdef PT_METAPHONE_MAIN
 
 /* **************************************
- * TOOLS - metaphoneptbr package 
+ * TOOLS - metaphoneptbr package
  *
  * command line for unix
  *
@@ -739,13 +739,13 @@ int main(int argc, char **argv)
 	int	count	= 1, ret = 0;
 	FILE	*fp	= NULL;
 	wchar_t	buf[201] = L"\0";
-	
+
 
 //	setlocale(LC_CTYPE, "pt_BR.UTF-8");
 	// Fixing locale part, important for correct character conversion
         loc = setlocale(LC_CTYPE, NULL);
-        if( !loc || !(*loc) || !strcmp(loc,"C") || !strcmp(loc,"POSIX") ) 
-                if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) ) 
+        if( !loc || !(*loc) || !strcmp(loc,"C") || !strcmp(loc,"POSIX") )
+                if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) )
 			return -1;
 
 	/*
@@ -769,7 +769,7 @@ int main(int argc, char **argv)
 /* pipeline not working
 	fwide(stdin, 1);
 
-	// read from stdin too, but don't wait for data  
+	// read from stdin too, but don't wait for data
 	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
 	if( read(STDIN_FILENO, buf, 1) != EOF ) {
 	    //ungetwc(buf[0], stdin);
@@ -785,4 +785,3 @@ int main(int argc, char **argv)
 	return 0;
 }
 #endif
-
