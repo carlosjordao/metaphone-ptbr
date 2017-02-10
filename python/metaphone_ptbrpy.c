@@ -22,13 +22,18 @@ PyMODINIT_FUNC initmetaphoneptbr(void)
 
 static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
 {
-    const wchar_t *str_param   = NULL;
-    char *code              = NULL;
+    const wchar_t *str_param = NULL;
+    char *code               = NULL;
+    PyObject *result         = NULL ;
 
     if (!PyArg_ParseTuple(args, "u", &str_param))
         return NULL;
 
-    code = Metaphone_PTBR_s(str_param, MAX_METAPHONE_LENGTH, '.');
+    code = Metaphone_PTBR(str_param, MAX_METAPHONE_LENGTH);
 
-    return Py_BuildValue("s", code);
+    result = Py_BuildValue("s#", code, MAX_METAPHONE_LENGTH);
+
+    free(code) ;
+
+    return result ;
 }
