@@ -24,16 +24,21 @@ static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
 {
     const wchar_t *str_param = NULL;
     char *code               = NULL;
-    PyObject *result         = NULL ;
+    PyObject *result         = NULL;
+
 
     if (!PyArg_ParseTuple(args, "u", &str_param))
         return NULL;
 
     code = Metaphone_PTBR(str_param, MAX_METAPHONE_LENGTH);
 
-    result = Py_BuildValue("s#", code, MAX_METAPHONE_LENGTH);
+    if (code) {
+        result = Py_BuildValue("s#", code, strlen(code));
 
-    free(code) ;
+        free(code);
+    } else {
+        result = Py_BuildValue("s#", "", 0);
+    }
 
-    return result ;
+    return result;
 }
