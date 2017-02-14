@@ -68,9 +68,10 @@ and is covered under this copyright:
 
 
 #include "metaphone_ptbr.h"
+#include "alloc.h"
 
 
-STATIC_OR_DYN metastring *
+ metastring *
 NewMetaString(char *init_str)
 {
 	metastring *s;
@@ -96,7 +97,7 @@ NewMetaString(char *init_str)
 }
 
 
-STATIC_OR_DYN void
+ void
 DestroyMetaString(metastring * s)
 {
 	if (s == NULL)
@@ -109,7 +110,7 @@ DestroyMetaString(metastring * s)
 }
 
 
-STATIC_OR_DYN void
+ void
 IncreaseBuffer(metastring * s, int chars_needed)
 {
 	META_REALLOC(s->str, (s->bufsize + chars_needed + 10), char);
@@ -174,7 +175,7 @@ inline static wchar_t toUpper(const wchar_t d)
  * and, as this intend to be calling as a preparation measure, let's
  * make it clean for some cases that could become a problem.
  */
-STATIC_OR_DYN wchar_t*
+ wchar_t*
 MakeUpperAndClean(wchar_t* i)
 {
 	wchar_t *s   =(wchar_t *)NULL,
@@ -219,7 +220,7 @@ MakeUpperAndClean(wchar_t* i)
 }
 
 
-STATIC_OR_DYN wchar_t
+ wchar_t
 GetAt(wchar_t* s, int pos)
 {
 	if ((pos < 0) || (pos >= wcslen(s)))
@@ -227,7 +228,7 @@ GetAt(wchar_t* s, int pos)
 
 	return ((wchar_t) *(s + pos));
 }
-STATIC_OR_DYN wchar_t
+ wchar_t
 GetSimplifiedAt(wchar_t* s, int pos)
 {
 	if ((pos < 0) || (pos >= wcslen(s)))
@@ -238,7 +239,7 @@ GetSimplifiedAt(wchar_t* s, int pos)
 
 
 
-STATIC_OR_DYN void
+ void
 MetaphAdd(metastring * s, char *new_str)
 {
 	int	add_length = 0;
@@ -260,7 +261,7 @@ MetaphAdd(metastring * s, char *new_str)
  * this function has been included as most of metaphone characters
  * has only 1 byte length
  */
-STATIC_OR_DYN void
+ void
 MetaphAddChr(metastring * s, char new_str)
 {
 	int			add_length;
@@ -276,7 +277,7 @@ MetaphAddChr(metastring * s, char new_str)
 	s->length += add_length;
 }
 
-STATIC_OR_DYN int
+int
 isVowel(char chr)
 {
 	switch (chr)
@@ -288,14 +289,15 @@ isVowel(char chr)
 	return 0;
 }
 
-STATIC_OR_DYN
+
 char *
 Metaphone_PTBR(const wchar_t *str, const int max_length)
 {
 	return Metaphone_PTBR_s(str, max_length, '\0');
 }
 
-STATIC_OR_DYN
+//
+
 char *
 Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator)
 {
@@ -722,66 +724,3 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
  	return code;
 }
 
-
-#ifdef PT_METAPHONE_MAIN
-
-/* **************************************
- * TOOLS - metaphoneptbr package
- *
- * command line for unix
- *
- */
-
-int main(int argc, char **argv)
-{
-	char	*code	= NULL,
-		*loc	= NULL;
-	int	count	= 1, ret = 0;
-	FILE	*fp	= NULL;
-	wchar_t	buf[201] = L"\0";
-
-
-//	setlocale(LC_CTYPE, "pt_BR.UTF-8");
-	// Fixing locale part, important for correct character conversion
-        loc = setlocale(LC_CTYPE, NULL);
-        if( !loc || !(*loc) || !strcmp(loc,"C") || !strcmp(loc,"POSIX") )
-                if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) )
-			return -1;
-
-	/*
-	 *
-	 */
-	while (count < argc )
-	{
-		if( strlen(argv[count]) == 0 ) {
-			count++;
-			continue;
-		}
-                ret = mbstowcs(buf,argv[count++],200);
-		code = Metaphone_PTBR_s(buf,MAX_METAPHONE_LENGTH,'.');
-		if( code )
-			printf("%s\n", code);
-		else
-			puts("error - null string");
-		free(code);
-	}
-
-/* pipeline not working
-	fwide(stdin, 1);
-
-	// read from stdin too, but don't wait for data
-	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
-	if( read(STDIN_FILENO, buf, 1) != EOF ) {
-	    //ungetwc(buf[0], stdin);
-
-	    while (fgetws(buf,200,stdin))
-	    {
-		code = Metaphone_PTBR_s(buf,MAX_METAPHONE_LENGTH,'.');
-		printf("%s\n", code);
-		free(code);
-	    }
-        }
-*/
-	return 0;
-}
-#endif

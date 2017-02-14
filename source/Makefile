@@ -4,9 +4,7 @@ DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
 main:
-	rm -f ../postgresql/*.{o,so}
-	gcc -Wstack-protector $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -DPT_METAPHONE_MAIN -o metaphone_ptbr metaphone_ptbr.c
-#	gcc -DPT_METAPHONE_MAIN -o metaphone_ptbr metaphone_ptbr.c
+	gcc -Wstack-protector $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o metaphone_ptbr main.c metaphone_ptbr.c
 
 clean:
 	rm -f metaphone_ptbr *.o

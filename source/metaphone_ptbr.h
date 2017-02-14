@@ -57,11 +57,8 @@ and is covered under this copyright:
 #ifndef METAPHONE_PTBR_H
 #define METAPHONE_PTBR_H
 
-#ifndef _POSIX_C_SOURCE
-// for python code
+#include <ctype.h>
 #include <stdio.h>
-#endif
- #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -73,7 +70,7 @@ and is covered under this copyright:
 #include <locale.h>
 
 /* 50 should be enough for long names - based on statistical analysis
- * but for single words you should use something like 3 as max length
+ * but for single words you should use something like 3 or 4 as max length
  * for the result metaphone string. That would lead you to best scenario.
  */
 #define MAX_METAPHONE_LENGTH 4
@@ -85,7 +82,6 @@ and is covered under this copyright:
 
 
 /* this typedef was originally in the perl module's .h file */
-
 typedef struct
 {
         char	*str;
@@ -94,35 +90,18 @@ typedef struct
         int	free_string_on_destroy;
 } metastring;
 
-#ifdef PT_METAPHONE_MAIN
 
-  #define STATIC_OR_DYN static
-
-#else
-
-  #define STATIC_OR_DYN
-
-#endif
-
-STATIC_OR_DYN metastring * NewMetaString(char *init_str);
-STATIC_OR_DYN void DestroyMetaString(metastring * s);
-STATIC_OR_DYN void IncreaseBuffer(metastring * s, int chars_needed);
-STATIC_OR_DYN wchar_t* MakeUpperAndClean(wchar_t * s);
-STATIC_OR_DYN wchar_t GetAt(wchar_t* s, int pos);
-STATIC_OR_DYN void MetaphAdd(metastring * s, char *new_str);
-STATIC_OR_DYN void MetaphAddChr(metastring * s, char new_str);
-STATIC_OR_DYN int isVowel(char chr);
-STATIC_OR_DYN char * Metaphone_PTBR(const wchar_t *str, const int max_length);
+metastring * NewMetaString(char *init_str);
+void DestroyMetaString(metastring * s);
+void IncreaseBuffer(metastring * s, int chars_needed);
+wchar_t* MakeUpperAndClean(wchar_t * s);
+wchar_t GetAt(wchar_t* s, int pos);
+void MetaphAdd(metastring * s, char *new_str);
+void MetaphAddChr(metastring * s, char new_str);
+int isVowel(char chr);
+char * Metaphone_PTBR(const wchar_t *str, const int max_length);
 /* word bound char, as demanded. This is good when applied in long names */
-STATIC_OR_DYN char * Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator);
-
-
-
-/* use the standard malloc library when standalone */
-
-#define META_MALLOC(v,n,t) (v = (t*)malloc(((n)*sizeof(t))))
-#define META_REALLOC(v,n,t) (v = (t*)realloc((v),((n)*sizeof(t))))
-#define META_FREE(x) free((x))
+char * Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator);
 
 
 #endif
