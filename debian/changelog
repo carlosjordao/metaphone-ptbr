@@ -1,3 +1,10 @@
+metaphoneptbr (1.16) unstable; urgency=low
+  * Added python module extension
+  * reorganized some files structures
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sat, 11 Feb 2017 13:39:00 -0300
+
+
 metaphoneptbr (1.15) unstable; urgency=low
   * review of PHP module for version 7 compatibility
   * update debian control and rules files to mirror changes for new version of PHP

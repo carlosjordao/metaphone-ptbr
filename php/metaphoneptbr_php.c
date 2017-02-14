@@ -6,6 +6,8 @@
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "metaphoneptbr_php.h"
+#include "metaphone_ptbr.h"
+#include "alloc.h"
 
 
 /* {{{ doublemetaphone_functions[]
@@ -102,5 +104,4 @@ PHP_FUNCTION(metaphone_ptbr)
 }
 /* }}} */
 
-#include "../source/metaphone_ptbr.c"
 

@@ -15,6 +15,7 @@ PHPFLAGS=`dpkg-buildflags --export=configure`
 export DEB_BUILD_HARDENING=1
 #include /usr/share/dpkg/buildflags.mk
 # --- --- --- --- ---
+export PYBUILD_NAME=metaphoneptbr
 
 
 # default mandatory
@@ -30,11 +31,14 @@ build-indep:
 
 #build-arch: metaphoneptbr4pgsql php5-metaphoneptbr metaphoneptbr-utils 
 build-arch:
-	@echo "\n*****************************\n*** PHP module \n**********************"
+	@echo "\n*****************************\n*** BUILD-ARCH: PHP module \n**********************"
 	PHPFLAGS=`dpkg-buildflags --export=configure`
 	cd php && phpize && DEB_BUILD_HARDENING=1 ./configure --prefix=$(CURDIR)/debian/php-metaphoneptbr/usr && DEB_BUILD_HARDENING=1 $(MAKE) -e DESTDIR=$(CURDIR)/debian/$@
-	@echo "\n*****************************\n*** METAPHONE UTILS\n**********************"
+	@echo "\n*****************************\n*** BUILD-ARCH: METAPHONE UTILS\n**********************"
 	cd source && $(MAKE) -e
+	#@echo "\n*****************************\n*** BUILD-ARCH: PYTHON 3 module \n**********************"
+	#cd python && dh build --with python3 --buildsystem=pybuild
+
 
 
 # specific cleaning routines
@@ -45,7 +49,8 @@ clean:
 	rm -f build-stamp configure-stamp
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) -i distclean
-	cd php ; phpize --clean 
+	cd php ; phpize --clean ; cd ..
+	cd python; python3 setup.py clean ; cd ..
 	#cd postgresql ; for i in 8.* 9.*; do $(MAKE) -C $(i) clean ; done
 	cd source ; make clean 
 	dh_clean 
@@ -89,6 +94,14 @@ metaphoneptbr-utils:
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
+python3-metaphoneptbr:
+	@echo "\n*****************************\n*** PYTHON 3\n**********************"
+	cd python
+	dh build --with python3  --buildsystem=pybuild --sourcedirectory=python
+	dh install --with python3  --buildsystem=pybuild --sourcedirectory=python
+#--sourcedirectory=python
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
+
 # --- end ----
 
 # mandatory entries
@@ -99,8 +112,7 @@ binary-indep:
 
 
 # Build architecture-dependent files here.
-binary-arch: metaphoneptbr4pgsql php-metaphoneptbr metaphoneptbr-utils 
-#python-metaphoneptbr 
+binary-arch: metaphoneptbr4pgsql php-metaphoneptbr metaphoneptbr-utils  python3-metaphoneptbr
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs debian/changelog

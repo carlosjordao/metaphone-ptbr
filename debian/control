@@ -2,7 +2,8 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 9), php-dev, libpq-dev, postgresql-server-dev-all
+Build-Depends: debhelper (>= 10), php-dev, libpq-dev, postgresql-server-dev-all, python3-all, python3-setuptools, dh-python
+#, python-all, python-setuptools
 Homepage: http://sourceforge.net/projects/metaphoneptbr/
 Standards-Version: 3.9.5
 
@@ -22,7 +23,7 @@ Description: This is a metaphone-pt_Br module for PostgreSQL database
 Package: php-metaphoneptbr
 Section: interpreters
 Architecture: any
-Depends: php (>= 7.0), ${misc:Depends}, ${php:Depends}, ${shlibs:Depends}, php-common
+Depends: php (>= 7.0) | php-cli (>=7.0), ${misc:Depends}, ${php:Depends}, ${shlibs:Depends}, php-common
 Description: This is the brazilian metaphone module for PHP 5.x
  It aims a best PHP integration into tier application, providing
  a phonetic key search. It reduces words to a representative 
@@ -39,4 +40,14 @@ Description: This is the metaphone for brazilian portuguese
  with scripts. It reduces words to a representative 
  phonetic key, making it easier to compare and search by names, 
  dictionary words and streets names.
+ 
+
+Package: python3-metaphoneptbr
+Section: interpreters
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: This is the brazilian metaphone module for Python 3
+ It aims providing a phonetic key search for python 3. It reduces 
+ words to a representative phonetic key, making it easier to compare 
+ and search by names, dictionary words and streets names.
  

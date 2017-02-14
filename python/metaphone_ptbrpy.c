@@ -1,8 +1,11 @@
+#include <Python.h>
 #include "metaphone_ptbrpy.h"
+#include "../source/metaphone_ptbr.h"
+
+// http://python3porting.com/cextensions.html
 
 /* Docstrings */
-static char module_docstring[] =
-    "This module provides an interface for Metaphone for Brazilian Portuguese.";
+//static char module_docstring[] = "This module provides an interface for Metaphone for Brazilian Portuguese.";
 static char phonetic_docstring[] =
     "Convert a string to its Brazilian Portuguese phonetic version.";
 
@@ -12,12 +15,26 @@ static PyMethodDef module_methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "metaphoneptbr",     /* m_name */
+    "This is a module",  /* m_doc */
+    -1,                  /* m_size */
+    module_methods,		 /* m_methods */
+    NULL,                /* m_reload */
+    NULL,                /* m_traverse */
+    NULL,                /* m_clear */
+    NULL,                /* m_free */
+};
+
 /* Initialize the module */
-PyMODINIT_FUNC initmetaphoneptbr(void)
+PyMODINIT_FUNC PyInit_metaphoneptbr(void)
 {
-    PyObject *m = Py_InitModule3("metaphoneptbr", module_methods, module_docstring);
-    if (m == NULL)
-        return;
+	//PyObject *m = Py_InitModule3("metaphoneptbr", module_methods, module_docstring);
+	PyObject *m = PyModule_Create(&moduledef);
+	if (m == NULL)
+		return NULL;
+	return m;
 }
 
 static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
@@ -42,3 +59,4 @@ static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
 
     return result;
 }
+
