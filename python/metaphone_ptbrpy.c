@@ -25,12 +25,13 @@ static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
     const wchar_t *str_param = NULL;
     char *code               = NULL;
     PyObject *result         = NULL;
+    int max_length           = MAX_METAPHONE_LENGTH ;
 
 
-    if (!PyArg_ParseTuple(args, "u", &str_param))
+    if (!PyArg_ParseTuple(args, "u|i", &str_param, &max_length))
         return NULL;
 
-    code = Metaphone_PTBR(str_param, MAX_METAPHONE_LENGTH);
+    code = Metaphone_PTBR(str_param, max_length);
 
     if (code) {
         result = Py_BuildValue("s#", code, strlen(code));
