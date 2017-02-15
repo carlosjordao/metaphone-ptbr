@@ -99,7 +99,6 @@ python3-metaphoneptbr:
 	cd python
 	dh build --with python3  --buildsystem=pybuild --sourcedirectory=python
 	dh install --with python3  --buildsystem=pybuild --sourcedirectory=python
-#--sourcedirectory=python
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 # --- end ----
