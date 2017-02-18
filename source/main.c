@@ -1,14 +1,5 @@
 /***************************** COPYRIGHT NOTICES ***********************
-
-Some of this code is based on dmetaphone.c file, from postgresql contrib
-tree directory, some is based on a PHP algorithm, which can be found here:
-http://www2.varzeapaulista.sp.gov.br/metaphone/
-
-
-The metaphone port is authored by Carlos Costa Jordao <carlosjordao@gmail.com>
-and is covered under this copyright:
-
-  Copyright 2008, Carlos Costa Jordao <carlosjordao@gmail.com>.
+  Copyright 2017, Carlos Costa Jordao <carlosjordao@gmail.com>.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without modification,

@@ -1,33 +1,5 @@
 /* ***************************************
-  This is a port of the Metaphone based algorithm for brazilian
-  portuguese, developed by Prefeitura Municipal de Varzea Paulista for PHP.
-
-
-  OBJECTIVES:
-
-  As Metaphone, the ideia is to compute sound like strings, but
-  in this case, just for brazilian portuguese. Why? Because would be nice
-  to have generic tool for every language, but sometimes is not desirable or
-  either maintanable. Any changes could break the original metaphone code, and
-  one way of avoiding this is introducing more "alternate" strings. Another one
-  is creating specifics metaphone functions for each language. That's my choice
-
-  Information on using Double Metaphone can be found at
-        http://www.codeproject.com/string/dmetaphone1.asp
-  and the original article describing it can be found at
-        http://www.cuj.com/documents/s=8038/cuj0006philips/
-
-  The original port for portuguese can be found here:
-  http://www2.varzeapaulista.sp.gov.br/metaphone/
-
-
- * COPYRIGHT *
-
-
-The metaphone port is authored by Carlos Costa Jordao <carlosjordao@gmail.com>
-and is covered under this copyright:
-
-  Copyright 2008, Carlos Costa Jordao <carlosjordao@gmail.com>.
+  Copyright 2008-2017, Carlos Costa Jordao <carlosjordao@gmail.com>.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without modification,
@@ -96,6 +68,7 @@ void DestroyMetaString(metastring * s);
 void IncreaseBuffer(metastring * s, int chars_needed);
 wchar_t* MakeUpperAndClean(wchar_t * s);
 wchar_t GetAt(wchar_t* s, int pos);
+wchar_t GetSimplifiedAt(wchar_t* s, int pos);
 void MetaphAdd(metastring * s, char *new_str);
 void MetaphAddChr(metastring * s, char new_str);
 int isVowel(char chr);
