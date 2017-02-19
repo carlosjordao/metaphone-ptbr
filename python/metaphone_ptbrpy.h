@@ -1,6 +1,5 @@
   /************************************************************
-   Copyright (C) 2017 
-   Copyright (C) 2017  Carlos Costa Jordao <carlosjordao@gmail.com>
+   Copyright (C) 2017  Bruno Guberfain do Amaral <bruno.do.amaral@gmail.com>
    Released under the terms of the BSD license
   
     Redistribution and use in source and binary forms, with or without modification,
