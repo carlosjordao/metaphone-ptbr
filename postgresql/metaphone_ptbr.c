@@ -21,8 +21,6 @@ and is covered under this copyright:
 ***********************************************************************/
 
 /* include these first, according to the docs */
-#ifndef PT_METAPHONE_MAIN
-
 #include "postgres.h"
 #include "fmgr.h"
 
@@ -30,23 +28,10 @@ and is covered under this copyright:
 PG_MODULE_MAGIC;
 #endif
 
-/* turn off assertions for embedded function */
 //#define NDEBUG
-#endif
-
-
-/* prototype for the main function we got from the perl module */
-
-#ifndef DMETAPHONE_MAIN
 
 extern Datum metaphone_ptbr(PG_FUNCTION_ARGS);
 
-/*
- * The PostgreSQL visible dmetaphone function.
- *
- */
-
-#include "../../source/metaphone_ptbr.h"
 #define META_MALLOC(v,n,t) \
 		  (v = (t*)palloc(((n)*sizeof(t))))
 
@@ -61,6 +46,8 @@ extern Datum metaphone_ptbr(PG_FUNCTION_ARGS);
  */
 
 #define META_FREE(x)			 pfree((x)) 
+
+#include "../../source/metaphone_ptbr.h"
 
 PG_FUNCTION_INFO_V1(metaphone_ptbr);
 
@@ -77,7 +64,6 @@ metaphone_ptbr(PG_FUNCTION_ARGS)
 	wchar_t *stringUCS;
 	int mblength = 0, ret = 0;
 
-/* #ifdef PT_METAPHONE_NOSTRICT */
 	if (PG_ARGISNULL(0))
 		PG_RETURN_NULL();
 
@@ -88,7 +74,6 @@ metaphone_ptbr(PG_FUNCTION_ARGS)
 	if (maxmetalength <= 0 )
 		maxmetalength = MAX_METAPHONE_LENGTH;
 
-/* #endif */
 	arg = PG_GETARG_TEXT_P(0);
 	alen = VARSIZE(arg) - VARHDRSZ;
 
@@ -141,6 +126,5 @@ metaphone_ptbr(PG_FUNCTION_ARGS)
 	PG_RETURN_TEXT_P(result);
 }
 
-#endif
 
 #include "../../source/metaphone_ptbr.c"
