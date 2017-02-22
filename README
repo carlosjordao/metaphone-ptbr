@@ -10,6 +10,9 @@ PostgreSQL 8.x:
 	select metaphone_ptbr('qualquer');
 PHP:
 	<?php echo metaphoneptbr('qualquer'); ?>
+Python 2.7 ou 3:
+	from metaphoneptbr import phonetic
+	print(phonetic(u'qualquer'))
 
 
 1. INTRODUÇÃO 
