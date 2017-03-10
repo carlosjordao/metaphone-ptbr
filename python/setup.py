@@ -33,7 +33,7 @@ c_ext = Extension("metaphoneptbr", ["metaphone_ptbrpy.c", join("..", "source", "
 
 setup(
     name='Metaphone-ptbr',
-    version='1.15',
+    version='1.17',
     ext_modules=[c_ext],
     include_dirs=[".", join("..", "source")]
 )
