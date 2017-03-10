@@ -1,4 +1,4 @@
-metaphoneptbr (1.16) unstable; urgency=low
+metaphoneptbr (1.17) unstable; urgency=low
   * Added python 2 module extension support (Bruno Guberfain do Amaral)
 
  -- Carlos Costa Jordão <carlosjordao@gmail.com>  Thu, 09 Mar 2017 23:36:00 -0300
