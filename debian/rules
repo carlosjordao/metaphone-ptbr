@@ -2,8 +2,8 @@
 # -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-#export DH_OPTIONS=-v
+export DH_VERBOSE=1
+export DH_OPTIONS=-v
 
 # --- ENVIRONMENT ---
 PHP_EX=$(shell /usr/bin/php-config --extension-dir)
@@ -79,16 +79,16 @@ metaphoneptbr-utils:
 
 python3-metaphoneptbr:
 	@echo "\n*****************************\n*** PYTHON 3\n**********************"
-	PYBUILD_DISABLE_python2=1 pybuild --configure --dir python
-	PYBUILD_DISABLE_python2=1 pybuild --build --dir python
-	PYBUILD_DISABLE_python2=1 pybuild --install --dir python
+	pybuild -p 3 --configure --dir python
+	pybuild -p 3 --build     --dir python
+	pybuild -p 3 --install   --dir python
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 python2-metaphoneptbr:
 	@echo "\n*****************************\n*** PYTHON 2\n**********************"
-	PYBUILD_DISABLE_python3=1 pybuild --configure --dir python
-	PYBUILD_DISABLE_python3=1 pybuild --build --dir python
-	PYBUILD_DISABLE_python3=1 pybuild --install --dir python
+	pybuild -p 2 --configure --dir python
+	pybuild -p 2 --build     --dir python
+	pybuild -p 2 --install   --dir python
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 # --- end ----

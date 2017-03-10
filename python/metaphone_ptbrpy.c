@@ -67,7 +67,7 @@ PyMODINIT_FUNC PyInit_metaphoneptbr(void)
 
 PyMODINIT_FUNC initmetaphoneptbr(void)
 {
-    return Py_InitModule3("metaphoneptbr", module_methods, module_docstring);
+    Py_InitModule3("metaphoneptbr", module_methods, module_docstring);
 }
 
 #endif
