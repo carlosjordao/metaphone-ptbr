@@ -79,9 +79,16 @@ metaphoneptbr-utils:
 
 python3-metaphoneptbr:
 	@echo "\n*****************************\n*** PYTHON 3\n**********************"
-	pybuild --configure --dir python
-	pybuild --build --dir python
-	pybuild --install --dir python
+	PYBUILD_DISABLE_python2=1 pybuild --configure --dir python
+	PYBUILD_DISABLE_python2=1 pybuild --build --dir python
+	PYBUILD_DISABLE_python2=1 pybuild --install --dir python
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
+
+python2-metaphoneptbr:
+	@echo "\n*****************************\n*** PYTHON 2\n**********************"
+	PYBUILD_DISABLE_python3=1 pybuild --configure --dir python
+	PYBUILD_DISABLE_python3=1 pybuild --build --dir python
+	PYBUILD_DISABLE_python3=1 pybuild --install --dir python
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 # --- end ----
@@ -94,7 +101,7 @@ binary-indep:
 
 
 # Build architecture-dependent files here.
-binary-arch: metaphoneptbr4pgsql php-metaphoneptbr metaphoneptbr-utils  python3-metaphoneptbr
+binary-arch: metaphoneptbr4pgsql php-metaphoneptbr metaphoneptbr-utils  python2-metaphoneptbr python3-metaphoneptbr
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs debian/changelog

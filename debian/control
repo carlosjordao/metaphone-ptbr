@@ -41,6 +41,15 @@ Description: This is the metaphone for brazilian portuguese
  phonetic key, making it easier to compare and search by names, 
  dictionary words and streets names.
  
+Package: python2-metaphoneptbr
+Section: interpreters
+Architecture: any
+Depends: ${python2:Depends}, ${misc:Depends}
+Description: This is the brazilian metaphone module for Python 2
+ It aims providing a phonetic key search for python 2. It reduces 
+ words to a representative phonetic key, making it easier to compare 
+ and search by names, dictionary words and streets names.
+ 
 
 Package: python3-metaphoneptbr
 Section: interpreters
