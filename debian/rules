@@ -86,9 +86,9 @@ python3-metaphoneptbr:
 
 python2-metaphoneptbr:
 	@echo "\n*****************************\n*** PYTHON 2\n**********************"
-	pybuild -p 2 --configure --dir python
-	pybuild -p 2 --build     --dir python
-	pybuild -p 2 --install   --dir python
+	pybuild -p 2.7 --configure --dir python
+	pybuild -p 2.7 --build     --dir python
+	pybuild -p 2.7 --install   --dir python
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 # --- end ----
