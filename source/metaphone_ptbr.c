@@ -274,7 +274,6 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				*tmp		= NULL;
 	metastring 		*primary	= NULL;
 	int			current 	= 0;
-	//int			last		= 0;
 	int			count		= 0;
 	char			*code 		= NULL;
 	wchar_t			current_char 	= L'\0',
@@ -286,11 +285,9 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 	/* we need the real length and last prior to padding */
 	length 	 = wcslen(str);
-	//last 	 = length - 1;
 	primary  = NewMetaString("");
 
 	/* let's everything be uppercase. */
-//	original = MakeUpperAndClean((wchar_t *)wcsdup(str));
 	tmp = wcsdup(str);
 	original = MakeUpperAndClean(tmp);
 	free(tmp);
@@ -541,7 +538,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 							 * sexual
 							 * inclusive Alex e Alexandre, o que eh
 							 * bom, pois há Aleksandro ou Alex sandro
-							 * OBS: texugo cai aqui.
+							 * OBS: texugo cai aqui. Vítima de guerra.
 							 */
 							MetaphAdd(primary,"KS");
 							current ++;
@@ -681,10 +678,14 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 	primary->str[ primary->length ] = '\0';
 
-	META_MALLOC(code, current+1, char);
+	//META_MALLOC(code, current+1, char);
+	META_MALLOC(code, primary->length+1, char);
 	if( !code )
 		return NULL;
-	memcpy(code, primary->str, current);
+	//bzero(code, current+1);
+	//memcpy(code, primary->str, current);
+	memcpy(code, primary->str, primary->length);
+	code[primary->length] = '\0';
 
 	META_FREE(original);
 	DestroyMetaString(primary);
