@@ -74,16 +74,32 @@ PyMODINIT_FUNC initmetaphoneptbr(void)
 
 static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
 {
-    const wchar_t *str_param = NULL;
-    char *code               = NULL;
-    PyObject *result         = NULL;
-    int max_length           = MAX_METAPHONE_LENGTH ;
+    const char *str_param	= NULL;
+    char *code              = NULL;
+    PyObject *result        = NULL;
+    int max_length          = MAX_METAPHONE_LENGTH ;
+	wchar_t phoneme[200] = {0};
+	char *loc 				= NULL;
 
 
-    if (!PyArg_ParseTuple(args, "u|i", &str_param, &max_length))
+    if (!PyArg_ParseTuple(args, "s|i", &str_param, &max_length)) {
         return NULL;
+	}
 
-    code = Metaphone_PTBR(str_param, max_length);
+	loc = setlocale(LC_CTYPE, NULL);
+    if( !loc || !(*loc) || !strcmp(loc,"C") || !strcmp(loc,"POSIX") )
+		if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) )
+			return NULL;
+
+	/*
+	if (mbstowcs(NULL, str_param, 0) == -1) {
+		return NULL;
+	}
+	//bzero(phoneme, sizeof(wchar_t)*200);
+	*/
+	mbstowcs(phoneme, str_param, 199);
+
+    code = Metaphone_PTBR(phoneme, max_length);
 
     if (code) {
         result = Py_BuildValue("s#", code, strlen(code));
