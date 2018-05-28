@@ -1,4 +1,4 @@
-metaphoneptbr (1.18-rc2) unstable; urgency=low
+metaphoneptbr (1.19) unstable; urgency=low
   * modificado a compilação de módulo PostgreSQL;
   * suporte a PostgreSQL 10 do Ubuntu 18.04;
   * modificado dependências de compilação, usando lintian
