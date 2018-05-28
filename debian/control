@@ -2,17 +2,17 @@ Source: metaphoneptbr
 Section: libdevel
 Priority: optional
 Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
-Build-Depends: debhelper (>= 10), php-dev, libpq-dev, postgresql-server-dev-all, python3-all, python3-setuptools, dh-python
-#, python-all, python-setuptools
+Build-Depends: debhelper (>= 10), php-dev, libpq-dev, postgresql-server-dev-all, python3-all, python3-setuptools, dh-python, python-dev, python3-dev
 Homepage: http://sourceforge.net/projects/metaphoneptbr/
 Standards-Version: 3.9.5
 
 
-Package: metaphoneptbr4pgsql
-#Package: postgresql-9.5-metaphoneptbr
+#Package: metaphoneptbr4pgsql
+Package: postgresql-10-metaphoneptbr
 Section: libs
+XS-Testsuite: autopkgtest
 Architecture: any
-Depends: postgresql (>= 8.3), ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql (>= 10)
 Description: This is a metaphone-pt_Br module for PostgreSQL database
  It aims to extend word search beyond 'LIKE' commands boundaries,
  through a phonetic key search. It reduces words to a representative 
@@ -21,7 +21,7 @@ Description: This is a metaphone-pt_Br module for PostgreSQL database
 
 
 Package: php-metaphoneptbr
-Section: interpreters
+Section: php
 Architecture: any
 Depends: php (>= 7.0) | php-cli (>=7.0), ${misc:Depends}, ${php:Depends}, ${shlibs:Depends}, php-common
 Description: This is the brazilian metaphone module for PHP 5.x
@@ -42,9 +42,9 @@ Description: This is the metaphone for brazilian portuguese
  dictionary words and streets names.
  
 Package: python-metaphoneptbr
-Section: interpreters
+Section: python
 Architecture: any
-Depends: ${misc:Depends}, python (>= 2.6)
+Depends: ${shlibs:Depends}, python (>= 2.6)
 Description: This is the brazilian metaphone module for Python 2
  It aims providing a phonetic key search for python 2. It reduces 
  words to a representative phonetic key, making it easier to compare 
@@ -52,9 +52,9 @@ Description: This is the brazilian metaphone module for Python 2
  
 
 Package: python3-metaphoneptbr
-Section: interpreters
+Section: python
 Architecture: any
-Depends: python3 (>= 3.4), ${misc:Depends}
+Depends: ${shlibs:Depends}, python3 (>= 3.4) 
 Description: This is the brazilian metaphone module for Python 3
  It aims providing a phonetic key search for python 3. It reduces 
  words to a representative phonetic key, making it easier to compare 

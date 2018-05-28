@@ -55,15 +55,19 @@ php-metaphoneptbr:
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
-metaphoneptbr4pgsql: 
+#postgresql-10-metaphoneptbr: 
+postgresql-10-metaphoneptbr: 
 	@echo "\n*****************************\n*** POSTGRESQL module \n**********************"
 	dh_testdir -p$@
 	dh_testroot -p$@
 	dh_installdirs -p$@
-	for v in `pg_buildext supported-versions postgresql`; do \
-	    $(MAKE) -C postgresql/all clean;\
-	    $(MAKE) -C postgresql/all install DESTDIR=$(CURDIR)/debian/$@;\
-	done
+#	for v in `pg_buildext supported-versions postgresql`; do \
+#	    $(MAKE) -C postgresql/$v clean;\
+#	    $(MAKE) -C postgresql/$v install DESTDIR=$(CURDIR)/debian/$@;\
+#	done
+	$(MAKE) -C postgresql/all clean
+	$(MAKE) -C postgresql/all install DESTDIR=$(CURDIR)/debian/$@
+    
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 
@@ -101,7 +105,7 @@ binary-indep:
 
 
 # Build architecture-dependent files here.
-binary-arch: metaphoneptbr4pgsql php-metaphoneptbr metaphoneptbr-utils  python2-metaphoneptbr python3-metaphoneptbr
+binary-arch: postgresql-10-metaphoneptbr php-metaphoneptbr metaphoneptbr-utils  python2-metaphoneptbr python3-metaphoneptbr
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs debian/changelog

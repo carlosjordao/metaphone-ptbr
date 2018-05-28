@@ -1,3 +1,23 @@
+metaphoneptbr (1.18-rc2) unstable; urgency=low
+  * modificado a compilação de módulo PostgreSQL;
+  * suporte a PostgreSQL 10 do Ubuntu 18.04;
+  * modificado dependências de compilação, usando lintian
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Mon, 28 May 2018 15:39:00 -0300
+
+
+metaphoneptbr (1.18) unstable; urgency=low
+  * mantido suporte apenas para strings unicodes em python 2 devido ao uso de setlocale() ser desencorajado.
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sun, 26 Mar 2017 18:06:00 -0300
+
+
+metaphoneptbr (1.17) unstable; urgency=low
+  * acentos com python 2 funcionando de forma mais transparente.
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Wed, 15 Mar 2017 22:06:00 -0300
+
+
 metaphoneptbr (1.17) unstable; urgency=low
   * Added python 2 module extension support (Bruno Guberfain do Amaral)
 
