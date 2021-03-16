@@ -26,7 +26,7 @@
 
 ***********************************************************************/
 
-
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "metaphone_ptbrpy.h"
 #include "../source/metaphone_ptbr.h"
@@ -91,22 +91,17 @@ static PyObject *phonetic_phonetic(PyObject *self, PyObject *args)
 		if( !(loc=setlocale(LC_CTYPE,"pt_BR.UTF-8")) )
 			return NULL;
 
-	/*
-	if (mbstowcs(NULL, str_param, 0) == -1) {
-		return NULL;
-	}
-	//bzero(phoneme, sizeof(wchar_t)*200);
-	*/
 	mbstowcs(phoneme, str_param, 199);
 
     code = Metaphone_PTBR(phoneme, max_length);
 
     if (code) {
-        result = Py_BuildValue("s#", code, strlen(code));
-
+        //result = Py_BuildValue("s#", code, (int)strlen(code));
+        result = PyUnicode_FromString(code);
         free(code);
     } else {
-        result = Py_BuildValue("s#", "", 0);
+        //result = Py_BuildValue("s#", "", 0);
+        result = PyUnicode_FromString("");
     }
 
     return result;
