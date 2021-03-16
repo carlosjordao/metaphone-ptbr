@@ -29,7 +29,10 @@
 
 #include "metaphone_ptbr.h"
 #include "alloc.h"
-
+#include <unistd.h>
+#include <stdarg.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 
 /* **************************************
