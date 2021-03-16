@@ -10,7 +10,6 @@ Standards-Version: 3.9.5
 #Package: metaphoneptbr4pgsql
 Package: postgresql-10-metaphoneptbr
 Section: libs
-XS-Testsuite: autopkgtest
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql (>= 10)
 Description: This is a metaphone-pt_Br module for PostgreSQL database
