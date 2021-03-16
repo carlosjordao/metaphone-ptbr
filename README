@@ -78,67 +78,68 @@ letras em maiúsculo - representam uma vogal ou consoante real em particular
 
 LETRAS 	-> REPRESENTAÇÃO FONÉTICA (COMENTARIOS)
 ------------------------------------------
-^v	-> v (ou seja, copia a vogal)
+^v	    -> v (ou seja, copia a vogal)
 B   	-> B
 C[AOU]  -> K
 Cc  	-> K
 C[EI]  	-> S
-CHR	-> K
-CH	-> X (regra mais genérica aplica-se por último)
-C$	-> K
-Ç	-> S
+CHR	    -> K
+CH	    -> X (regra mais genérica aplica-se por último)
+C$	    -> K
+Ç	    -> S
 D   	-> D
-F	-> F
+F	    -> F
 G[AOU]	-> G
 G[EI]	-> J
 GH[EI]	-> J
-GHc	-> G
-^Hv	-> v
-H	-> 0 (Outros casos de aparição de H devem ser ignorados)
-J	-> J
-K	-> K
-LH	-> 1 (não tem representacao no metaphone original)
-Lv	-> L
-M	-> M
-N$	-> M
-NH	-> 3 (não tem representação no metaphone original)
-P	-> P
-PH	-> F
-Q	-> K
-^R	-> 2 (não tem representação no metaphone original)
-R$	-> 2 (não tem representação no metaphone original)
-RR	-> 2
-vRv	-> R
-.Rc	-> R
-cRv	-> R
-SS	-> S
-SH	-> X
+GHc	    -> G
+^Hv	    -> v
+H	    -> 0 (Outros casos de aparição de H devem ser ignorados)
+J	    -> J
+K	    -> K
+LH	    -> 1 (não tem representacao no metaphone original)
+Lv	    -> L
+M	    -> M
+N$	    -> M
+NH	    -> 3 (não tem representação no metaphone original)
+P	    -> P
+PH	    -> F
+Q	    -> K
+^R	    -> 2 (não tem representação no metaphone original)
+R$	    -> 2 (não tem representação no metaphone original)
+RR	    -> 2
+vRv	    -> R
+.Rc	    -> R
+cRv	    -> R
+SS	    -> S
+SH	    -> X
 SC[EI]	-> S
 SC[AUO]	-> SK (sim - duas letras porque tem sons distintos quando acompanhadas de U ou O).
-SCH	-> X
-Sc	-> S
-S	-> S (caso as outras regras não se apliquem, esta entra em vigor)
-T	-> T
-TH	-> T
-V	-> V
+SCH	    -> X
+Sc	    -> S
+S	    -> S (caso as outras regras não se apliquem, esta entra em vigor)
+T	    -> T
+TH	    -> T
+V	    -> V
 W[LRv]	-> V
-Wc	-> 0	(Exceto L e R, da regra acima)
-X$	-> X (o mais adequado seria KS, mas há de se considerar alguns nomes separados por espaços, tornando assim X uma representação mais interessante, embora não perfeitamente acurada)
+Wc	    -> 0	(Exceto L e R, da regra acima)
+X$	    -> X (o mais adequado seria KS, mas há de se considerar alguns nomes separados por espaços, tornando assim X uma representação mais interessante, embora não perfeitamente acurada)
 ^EXv	-> Z 
 .EX[EI]	-> X 
 .EX[AOU]-> X 
 EX[EI]	-> X 
 EX[AOU]	-> KS
 EX[PTC]	-> S
-EX.	-> KS
+EX.	    -> KS
 [vCKGLRX][AIOU]X	-> X
 [DFMNPQSTVZ][AIOU]X	-> KS
-X	-> X (caso nenhuma caso acima case com a palavra, aplica-se esta regra)
-Y	-> I (é tratado como vogal para todos os efeitos)
-Z$	-> S
-Z	-> Z
+X	    -> X (caso nenhuma caso acima case com a palavra, aplica-se esta regra)
+Y	    -> I (é tratado como vogal para todos os efeitos)
+Z$	    -> S
+Z	    -> Z
 
 
+Acima encontra-se uma versão simplificada do algoritmo utilizado para transformação fonética.
 
 
 A escolha em uma implementação à parte do código original se dá por duas razões principais:
@@ -149,7 +150,7 @@ A escolha em uma implementação à parte do código original se dá por duas ra
 
 2. Implementar uma terceira string variante a partir do código metaphone seria uma tarefa
    hercúlea e provavelmente seriam inseridos erros no código original, pela dificuldade em
-   expandí-lo de forma apropriada. O código contém adaptações (em especial o Double Metaphone)
+   expandi-lo de forma apropriada. O código contém adaptações (em especial o Double Metaphone)
    que buscam abranger todas as palavras do mundo em uma representação fonética única. 
    Contudo a maneira utilizada para tal é inviável, porque as letras e os sons são contextuais
    à língua utilizada.
