@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:README
 ### Como usar a ferramenta
 
@@ -17,6 +18,9 @@ Depois de instalado:
 PostgreSQL 10+:
 =======
 [0. USO](#0.-uso)<br/>[1. INTRODUÇÃO](#1.-introdução)<br/>[2. O ALGORITMO](#2.-o-algoritmo)<br/>[3. O FUTURO](#3.-o-futuro)
+=======
+[0. USO](#0-uso)<br/>[1. INTRODUÇÃO](#1-introdução)<br/>[2. O ALGORITMO](#2-o-algoritmo)<br/>[3. O FUTURO](#3-o-futuro)
+>>>>>>> 180e6bd (ops)
 
 -----
 
