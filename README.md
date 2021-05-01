@@ -1,6 +1,10 @@
-0. USO
-Depois de instalado:
+[0. USO](#0.-uso)<br/>[1. INTRODUÇÃO](#1.-introdução)<br/>[2. O ALGORITMO](#2.-o-algoritmo)<br/>[3. O FUTURO](#3.-o-futuro)
 
+-----
+
+## 0. USO
+Depois de instalado:
+```
 PostgreSQL 9.x:
 	CREATE EXTENSION metaphoneptbr;
 	select metaphone_ptbr('qualquer');
@@ -18,24 +22,22 @@ Python 3:
 Python 2:
 	import metaphoneptbr
 	print metaphoneptbr.phonetic(u'qualquer')
+```
 
+## 1. INTRODUÇÃO 
 
+*Metaphone for Brazilian Portuguese*
 
+"O metafone é um algoritmo de transformação de texto baseado em regras 
+fonéticas", [Wikipedia](http://en.wikipedia.com/wiki/Metaphone).
 
-1. INTRODUÇÃO 
+As regras foram baseadas em um trabalho conjunto publicado pela Prefeitura 
+Municipal de Várzea Paulista, durante o projeto REDECA (por volta de 2008), voltado à infância e adolescência. 
+Fato registrado na página [varzeapaulista.sp.gov.br/metaphone de 2011](https://web.archive.org/web/20110420062611/http://www2.varzeapaulista.sp.gov.br/metaphone/).
 
-Metaphone for Brazilian Portuguese
+Este *port* é uma variação para o português, ao menos o brasileiro.
 
-O metafone é um algoritmo de transformação de texto baseado em regras 
-fonéticas (http://en.wikipedia.com/wiki/Metaphone)
-
-As regras foram baseadas em um trabalho conjunto publicado peal Prefeitura 
-Municipal de Várzea Paulista (http://www2.varzeapaulista.sp.gov.br/metaphone),
-durante o projeto REDECA, voltado à infância e adolescência.
-
-Este port é uma variação para o português, ao menos o brasileiro.
-
-2. O ALGORITMO
+## 2. O ALGORITMO
 
 Assim como o Metaphone original e o Double Metaphone, o objetivo é criar uma 
 palavra foneticamente representativa a partir da original utilizando as 
@@ -64,6 +66,7 @@ sua implementação foi construída visando simplicidade e agilidade.
 
 Para simplificar a representação do algoritmo, tomemos as seguintes notações:
 
+```
 SIMBOLO - NOTACAO
 ------------------------------------------
 ^       - Representa o começo da palavra 
@@ -137,11 +140,10 @@ X	-> X (caso nenhuma caso acima case com a palavra, aplica-se esta regra)
 Y	-> I (é tratado como vogal para todos os efeitos)
 Z$	-> S
 Z	-> Z
-
-
-
+```
 
 A escolha em uma implementação à parte do código original se dá por duas razões principais:
+
 1. O Metaphone original usa regras fonéticas americanas. O estrangeirismo na língua inglesa
    é resolvido com uma segunda string fornecida pelo Double Metaphone para resolver alguns
    empecilhos da primeira  versão. De  qualquer forma, o metaphone original não funciona de 
@@ -164,21 +166,21 @@ complicadas de se tratar e que sempre vão precisar de um cuidado mais apurado o
 a fim de representá-los, mesmo que não 'soem' como o esperado na representação fonética, mas que possam 
 ser enquadrados ao lado de nomes semelhantes em grafia para a busca se tornar efetiva.
 
+---
 
- * * *
-
-3. O FUTURO
+## 3. O FUTURO
 
 Dado as principais dificuldades fonéticas práticas, encontramos três frentes de trabalho:
-	a) Conversão fonética fiel à norma. Aqui as regras gramaticais são aplicadas e não
+
+1. Conversão fonética fiel à norma. Aqui as regras gramaticais são aplicadas e não
 	são tratadas as exceções (como acontece com os nomes), exceto aquelas previstas 
 	pela língua.
  
-	b) Conversão fonética semi-fiel. Acrescenta algumas exceções práticas do cotidiano,
+2. Conversão fonética semi-fiel. Acrescenta algumas exceções práticas do cotidiano,
 	buscando alcançar um equilíbrio entre a grafia e a fonética dos nomes que fogem à regra.
 	Essa é a implementação atual.
 
-	c) Conversão fonética coloquial. Visando nomes e exceções às regras, inclui todas as regras
+3. Conversão fonética coloquial. Visando nomes e exceções às regras, inclui todas as regras
 	fonéticas comuns, mas as exceções tem mais força que as regras. A possível consequência a
 	este uso é a simplificação da identidade fonética da palavra, a fim de capturar maior número
 	de semelhantes. Difícil de definir as regras por serem subjetivas.
@@ -187,7 +189,3 @@ As conseqüências para essas frentes são a produção de diferentes metafones 
 de fidelidade. Ou seja, para o primeiro caso, a chave fonética seria a mais completa e também a mais
 restritiva, pois diminuiria o número de casos semelhantes. Para o último, seria a mais simples, mantendo
 apenas a sonoridade mais marcante da palavra e teria um número de casos semelhantes muito mais alto.
-
-
- * * *
-
