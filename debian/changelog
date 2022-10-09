@@ -1,3 +1,10 @@
+metaphoneptbr (1.22) unstable; urgency=low
+  * remoção de python-dev como dependência e suporte a python2
+  * adequação para o módulo de PHP funcionar na versão 8
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sat, 08 Oct 2022 17:00:00 -0300
+
+
 metaphoneptbr (1.21) unstable; urgency=low
   * rearranjo de includes
   * conversão do arquivo utf-8, arrumando erros no apresentados no VisualStudio ao compilar módulo python

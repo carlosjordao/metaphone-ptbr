@@ -56,7 +56,7 @@ php-metaphoneptbr:
 
 
 #postgresql-10-metaphoneptbr: 
-postgresql-10-metaphoneptbr: 
+postgresql-metaphoneptbr: 
 	@echo "\n*****************************\n*** POSTGRESQL module \n**********************"
 	dh_testdir -p$@
 	dh_testroot -p$@
@@ -88,12 +88,12 @@ python3-metaphoneptbr:
 	pybuild -p 3 --install   --dir python
 	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
-python2-metaphoneptbr:
-	@echo "\n*****************************\n*** PYTHON 2\n**********************"
-	pybuild -p 2.7 --configure --dir python
-	pybuild -p 2.7 --build     --dir python
-	pybuild -p 2.7 --install   --dir python
-	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
+#python2-metaphoneptbr:
+#	@echo "\n*****************************\n*** PYTHON 2\n**********************"
+#	pybuild -p 2.7 --configure --dir python
+#	pybuild -p 2.7 --build     --dir python
+#	pybuild -p 2.7 --install   --dir python
+#	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
 
 # --- end ----
 
@@ -106,7 +106,7 @@ binary-indep:
 
 # Build architecture-dependent files here.
 #binary-arch: postgresql-10-metaphoneptbr php-metaphoneptbr metaphoneptbr-utils  python2-metaphoneptbr python3-metaphoneptbr
-binary-arch: postgresql-10-metaphoneptbr php-metaphoneptbr metaphoneptbr-utils  python3-metaphoneptbr
+binary-arch: postgresql-metaphoneptbr php-metaphoneptbr metaphoneptbr-utils  python3-metaphoneptbr
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs debian/changelog
