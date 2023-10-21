@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Use: "
+echo ">>> from metaphoneptbr import phonetic"
+echo ">>> print(phonetic('teste'))"
+echo -e "TST\n>>>"
