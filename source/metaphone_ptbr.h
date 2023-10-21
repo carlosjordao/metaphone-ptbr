@@ -1,4 +1,4 @@
-/* ***************************************
+/* *************************************** 
   Copyright 2008-2017, Carlos Costa Jordao <carlosjordao@gmail.com>.
   All rights reserved.
 
@@ -30,20 +30,16 @@
 #define METAPHONE_PTBR_H
 
 #include <ctype.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
 #include <assert.h>
-#include <unistd.h>
 #include <wchar.h>
 #include <wctype.h>
-#include <fcntl.h>
-#include <locale.h>
+#include <locale.h> 
 
 /* 50 should be enough for long names - based on statistical analysis
  * but for single words you should use something like 3 or 4 as max length
- * for the result metaphone string. That would lead you to best scenario.
+ * for the resultant metaphone string. That would lead you to the best scenario.
  */
 #define MAX_METAPHONE_LENGTH 4
 
@@ -68,10 +64,9 @@ void DestroyMetaString(metastring * s);
 void IncreaseBuffer(metastring * s, int chars_needed);
 wchar_t* MakeUpperAndClean(wchar_t * s);
 wchar_t GetAt(wchar_t* s, int pos);
-wchar_t GetSimplifiedAt(wchar_t* s, int pos);
 void MetaphAdd(metastring * s, char *new_str);
 void MetaphAddChr(metastring * s, char new_str);
-int isVowel(char chr);
+int isVowel(wchar_t chr);
 char * Metaphone_PTBR(const wchar_t *str, const int max_length);
 /* word bound char, as demanded. This is good when applied in long names */
 char * Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator);

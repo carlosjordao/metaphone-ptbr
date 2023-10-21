@@ -13,8 +13,9 @@
 /* {{{ doublemetaphone_functions[]
  * */
 zend_function_entry metaphoneptbr_functions[] = {
-        PHP_FE(metaphone_ptbr, NULL)
-        {NULL, NULL, NULL}
+//        PHP_FE(metaphone_ptbr, NULL)
+        PHP_FE(metaphone_ptbr, arginfo_metaphone_ptbr)
+        PHP_FE_END
 };
 /* }}} */
 
@@ -28,7 +29,7 @@ zend_module_entry metaphoneptbr_module_entry = {
         NULL,//PHP_MSHUTDOWN(metaphone_ptbr),
         NULL,
         NULL,
-        NULL,//PHP_MINFO(metaphone_ptbr),
+        PHP_MINFO(metaphoneptbr_minfo),
         "1.0",
         STANDARD_MODULE_PROPERTIES
 };
@@ -39,26 +40,42 @@ zend_module_entry metaphoneptbr_module_entry = {
 ZEND_GET_MODULE(metaphoneptbr)
 #endif
 
+PHP_MINFO_FUNCTION(metaphoneptbr_minfo)
+{
+    php_info_print_table_start();
+    php_info_print_table_header(2, "metaphone ptbr support", "enabled");
+    php_info_print_table_end();
+}
+
+
 /* {{{ proto string metaphone_ptbr(string text)
  *    Break portuguese phrases down into their phonemes 
  */
 #include <locale.h>
 PHP_FUNCTION(metaphone_ptbr)
 {
-        char	*str 	= NULL,
-		*loc	= NULL,
-        	*result = NULL;
-        int 	str_len = 0,
-		ret	= 0,
-		mblength = 0,
-		sep_length = 0;
+    char	*str 	= NULL,
+	        *loc	= NULL,
+            *result = NULL;
+//    int 	str_len = 0,
+    size_t 	str_len = 0,
+        	ret	= 0,
+	        mblength = 0,
+	        sep_length = 0;
 	wchar_t *stringUCS = NULL;
 	/* this lefts wchar separator as a problem */
 	char	*separator = NULL;
 
-        if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &str, &str_len, &separator, &sep_length) == FAILURE) {
-                return;
-        }
+/*
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s", &str, &str_len, &separator, &sep_length) == FAILURE) {
+        return;
+    }
+*/
+    ZEND_PARSE_PARAMETERS_START(1, 2)
+        Z_PARAM_STRING(str, str_len)
+        Z_PARAM_OPTIONAL
+        Z_PARAM_STRING(separator, sep_length)
+    ZEND_PARSE_PARAMETERS_END();
 
 
 	// Fixing locale part, important for correct character conversion
@@ -97,7 +114,7 @@ PHP_FUNCTION(metaphone_ptbr)
 	if( sep_length <= 0 )
         	result = Metaphone_PTBR(stringUCS, MAX_METAPHONE_LENGTH);
 	else
-        	result = Metaphone_PTBR_s(stringUCS, MAX_METAPHONE_LENGTH,separator[0]);
+        	result = Metaphone_PTBR_s(stringUCS, MAX_METAPHONE_LENGTH, separator[0]);
 
 	META_FREE(stringUCS);
     RETURN_STRING(result);

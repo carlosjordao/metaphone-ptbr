@@ -1,5 +1,5 @@
-/*
-  Copyright 2008-2017, Carlos Costa Jordao <carlosjordao@gmail.com>.
+﻿/*
+  Copyright 2008-2021, Carlos Costa Jordao <carlosjordao@gmail.com>.
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without modification,
@@ -26,8 +26,6 @@
 
 ***********************************************************************/
 
-
-
 /* turn off assertions for embedded function */
 /* add check for python module */
 #ifndef NDEBUG
@@ -39,7 +37,7 @@
 #include "alloc.h"
 
 
- metastring *
+metastring *
 NewMetaString(char *init_str)
 {
 	metastring *s;
@@ -50,7 +48,7 @@ NewMetaString(char *init_str)
 
 	if (init_str == NULL)
 		init_str = empty_string;
-	s->length = strlen(init_str);
+	s->length = (int)strlen(init_str);
 	/* preallocate a bit more for potential growth */
 	s->bufsize = s->length + 7;
 
@@ -65,7 +63,7 @@ NewMetaString(char *init_str)
 }
 
 
- void
+void
 DestroyMetaString(metastring * s)
 {
 	if (s == NULL)
@@ -78,7 +76,7 @@ DestroyMetaString(metastring * s)
 }
 
 
- void
+void
 IncreaseBuffer(metastring * s, int chars_needed)
 {
 	META_REALLOC(s->str, (s->bufsize + chars_needed + 10), char);
@@ -191,20 +189,11 @@ MakeUpperAndClean(wchar_t* i)
  wchar_t
 GetAt(wchar_t* s, int pos)
 {
-	if ((pos < 0) || (pos >= wcslen(s)))
+	if ((pos < 0) || ((size_t)pos >= wcslen(s)))
 		return '\0';
 
 	return ((wchar_t) *(s + pos));
 }
- wchar_t
-GetSimplifiedAt(wchar_t* s, int pos)
-{
-	if ((pos < 0) || (pos >= wcslen(s)))
-		return '\0';
-
-	return ((wchar_t) *(s + pos));
-}
-
 
 
  void
@@ -216,7 +205,7 @@ MetaphAdd(metastring * s, char *new_str)
 	if (new_str == NULL)
 		return;
 
-	add_length = strlen(new_str);
+	add_length = (int)strlen(new_str);
 	if ((s->length + add_length) > (s->bufsize - 1))
 		IncreaseBuffer(s, add_length);
 
@@ -233,7 +222,6 @@ MetaphAdd(metastring * s, char *new_str)
 MetaphAddChr(metastring * s, char new_str)
 {
 	int			add_length;
-
 	if (new_str == '\0')
 		return;
 
@@ -245,24 +233,24 @@ MetaphAddChr(metastring * s, char new_str)
 	s->length += add_length;
 }
 
-int
-isVowel(char chr)
+ int
+isVowel(wchar_t chr)
 {
 	switch (chr)
 	{
-		/* 'Y' é traduzido como 'I' durante a limpeza da string por toUpper() */
-		case 'A': case 'E': case 'I': case 'O': case 'U':
+		// 'Y' é traduzido como 'I' durante a limpeza da string por toUpper() 
+		case L'A': case L'E': case L'I': case L'O': case L'U':
 			return 1;
 	}
 	return 0;
 }
 
-
-char *
+ char *
 Metaphone_PTBR(const wchar_t *str, const int max_length)
 {
 	return Metaphone_PTBR_s(str, max_length, '\0');
 }
+
 
 //
 
@@ -270,13 +258,13 @@ char *
 Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separator)
 {
 	int			length		= 0;
-	wchar_t 		*original	= NULL,
+	wchar_t 	*original	= NULL,
 				*tmp		= NULL;
-	metastring 		*primary	= NULL;
+	metastring 	*primary	= NULL;
 	int			current 	= 0;
 	int			count		= 0;
-	char			*code 		= NULL;
-	wchar_t			current_char 	= L'\0',
+	char		*code 		= NULL;
+	wchar_t		current_char 	= L'\0',
 				last_char 	= L'\0',
 				ahead_char 	= L'\0';
 
@@ -284,7 +272,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 		return NULL;
 
 	/* we need the real length and last prior to padding */
-	length 	 = wcslen(str);
+	length 	 = (int)wcslen(str);
 	primary  = NewMetaString("");
 
 	/* let's everything be uppercase. */
@@ -296,28 +284,28 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 
 	/* main loop hard-limited - should be enough for very long names */
-	while (( (primary->length-count) < max_length) && (current < length))
+	while (((primary->length-count) < max_length) && (current < length))
 	{
-		current_char = GetSimplifiedAt(original, current);
+		current_char = GetAt(original, current);
 
 		/* skips separator */
 		if (separator == current_char) {
-			MetaphAddChr(primary, separator);
+			MetaphAddChr(primary, (char)separator);
 			count = primary->length;
 		} else
 		switch (current_char)
 		{
-			case 'A':
-			case 'E':
-			case 'I':
-			case 'O':
-			case 'U':
+			case L'A':
+			case L'E':
+			case L'I':
+			case L'O':
+			case L'U':
 				/* initials vowels after any space must stay too */
 				if (WORD_EDGE(last_char))
 					MetaphAddChr(primary, current_char);
 				break;
 
-			case 'L':
+			case L'L':
 				ahead_char = GetAt(original, current+1);
 				/* lha, lho. Adicionado 2009-11-09. Thx Peter Krauss. Ele estava mal-colocado */
 				if (ahead_char == 'H')
@@ -329,8 +317,8 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				/* atualmente ignora L antes de consoantes */
 				break;
 
-			case 'T':
-			case 'P':
+			case L'T':
+			case L'P':
 				/* those are special cases, from foreign names or
 				 * old portuguese names sintax.
 				 * Besides, should behavior as the others.
@@ -347,28 +335,28 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					break;
 				}
 
-			case 'B':
-			case 'D':
-			case 'F':
-			case 'J':
-			case 'K':
-			case 'M':
-			case 'V':
+			case L'B':
+			case L'D':
+			case L'F':
+			case L'J':
+			case L'K':
+			case L'M':
+			case L'V':
 				MetaphAddChr(primary, current_char);
 				break;
 
 			/* checar consoantes com som confuso e similares */
-			case 'G':
-				ahead_char = GetSimplifiedAt(original, current+1);
+			case L'G':
+				ahead_char = GetAt(original, current+1);
 				switch( ahead_char )
 				{
-					case 'H':
+					case L'H':
 						/* H sempre complica a vida. Se não for vogal, tratar como 'G',
 						   caso contrário segue o fluxo abaixo. */
-						if( !isVowel(GetSimplifiedAt(original, current+2)) )
+						if( !isVowel(GetAt(original, current+2)) )
 							MetaphAddChr(primary,'G');
-					case 'E':
-					case 'I':
+					case L'E':
+					case L'I':
 						MetaphAddChr(primary,'J');
 						break;
 
@@ -378,15 +366,15 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				}
 				break;
 
-			case 'R':
-				ahead_char = GetSimplifiedAt(original, current+1);
+			case L'R':
+				ahead_char = GetAt(original, current+1);
 
 				/* como em andar, carro, rato */
 				if (WORD_EDGE(last_char) || WORD_EDGE(ahead_char))
 				{
 					MetaphAddChr(primary,'2');
 				}
-				else if (ahead_char == 'R')
+				else if (ahead_char == L'R')
 				{
 					MetaphAddChr(primary,'2');
 					current++;
@@ -403,7 +391,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
 				break;
 
-			case 'Z':
+			case L'Z':
 				ahead_char = GetAt(original, current+1);
 
 				/* termina com, como em algoz */
@@ -414,7 +402,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				break;
 
 
-			case 'N':
+			case L'N':
 				ahead_char = GetAt(original, current+1);
 
 				/* no português, todas as palavras terminam com 'M', exceto
@@ -426,30 +414,30 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAddChr(primary,'M');
 				}
 				/* aranha, nhoque, manha */
-				else if (ahead_char == 'H')
+				else if (ahead_char == L'H')
 				{
 					MetaphAddChr(primary,'3');
 					current++;
 				}
 				/* duplicado... */
-				else if (last_char != 'N')
+				else if (last_char != L'N')
 				{
 					MetaphAddChr(primary,'N');
 				}
 				break;
 
-			case 'S':
-				ahead_char = GetSimplifiedAt(original, current+1);
+			case L'S':
+				ahead_char = GetAt(original, current+1);
 
 				/* aSSar */
-				if (ahead_char == 'S')
+				if (ahead_char == L'S')
 				{
 					MetaphAddChr(primary,'S');
 					last_char = ahead_char;
 					current++;
 				}
 				/* mais estrangeirismo: sheila, mishel, e compatibilidade sonora com sobrenomes estrangeiros (japoneses) */
-				else if (ahead_char == 'H')
+				else if (ahead_char == L'H')
 				{
 					MetaphAddChr(primary,'X');
 					current++;
@@ -460,9 +448,9 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAddChr(primary,'Z');
 				}
 				/* special cases = 'SC' */
-				else if (ahead_char == 'C')
+				else if (ahead_char == L'C')
 				{
-					wchar_t ahead2_char = GetSimplifiedAt(original, current+2);
+					wchar_t ahead2_char = GetAt(original, current+2);
 					switch (ahead2_char)
 					{  /* aSCEnder, laSCIvia */
 						case L'E': case L'I':
@@ -495,10 +483,10 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				break;
 
 			/* there is too many exceptions to work on... ahh! */
-			case 'X':
+			case L'X':
 			{
 				wchar_t last2_char = GetAt(original,current-2);
-				ahead_char = GetSimplifiedAt(original,current+1);
+				ahead_char = GetAt(original,current+1);
 
 				/* fax, anticlímax e todos terminados com 'X' */
 				if (WORD_EDGE(ahead_char))
@@ -514,7 +502,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					MetaphAdd(primary,"X");
 				}
 				/* ...ex... */
-				else if (last_char == 'E')
+				else if (last_char == L'E')
 				{
 					if( isVowel(ahead_char) )
 					{
@@ -528,7 +516,7 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 						}
 						else switch(ahead_char)
 						{
-						case 'E': case 'I':
+						case L'E': case L'I':
 							/* México, mexerica, mexer */
 							MetaphAddChr(primary,'X');
 							current ++;
@@ -546,12 +534,12 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 						}
 					}
 					/* exceção, exceto */
-					else if (ahead_char == 'C')
+					else if (ahead_char == L'C')
 					{
 						MetaphAddChr(primary,'S');
 						current++;
 					/* expatriar, experimentar, extensão, exterminar. Infelizmente, êxtase cai aqui */
-					} else if (ahead_char == 'P' || ahead_char == 'T' )
+					} else if (ahead_char == L'P' || ahead_char == L'T' )
 						MetaphAdd(primary,"S");
 					/* catch all exceptions */
 					else
@@ -567,13 +555,13 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 					switch (last2_char)
 					{
 					/* encontros vocálicos */
-					case 'A': case 'E': case 'I': case 'O': case 'U': /* caixa, trouxe, abaixar, frouxo, guaxo, Teixeira */
-					case 'C': /* coxa, abacaxi */
-					case 'K':
-					case 'G': /* gaxeta */
-					case 'L': /* laxante, lixa, lixo */
-					case 'R': /* roxo, bruxa */
-					case 'X': /* xaxim */
+					case L'A': case L'E': case L'I': case L'O': case L'U': /* caixa, trouxe, abaixar, frouxo, guaxo, Teixeira */
+					case L'C': /* coxa, abacaxi */
+					case L'K':
+					case L'G': /* gaxeta */
+					case L'L': /* laxante, lixa, lixo */
+					case L'R': /* roxo, bruxa */
+					case L'X': /* xaxim */
 						MetaphAddChr(primary,'X');
 						break;
 
@@ -591,17 +579,17 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				break;
 
 			/* ca, ce, ci, co, cu */
-			case 'C':
-				ahead_char = GetSimplifiedAt(original,current+1);
+			case L'C':
+				ahead_char = GetAt(original,current+1);
 				switch(ahead_char)
 				{
-				case 'E': case 'I':
+				case L'E': case L'I':
 					MetaphAddChr(primary,'S');
 					break;
 
-				case 'H':
+				case L'H':
 					/* christiano. */
-					if( GetSimplifiedAt(original,current+2) == 'R' )
+					if( GetAt(original,current+2) == L'R' )
 						MetaphAddChr(primary,'K');
 					/* CHapéu, chuva */
 					else
@@ -612,8 +600,8 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				/* Jacques - não fazer nada. Deixa o 'Q' cuidar disso
 				 * ou palavras com CK, mesma coisa.
 				 */
-				case 'Q':
-				case 'K':
+				case L'Q':
+				case L'K':
 					break;
 
 				default:
@@ -627,10 +615,10 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 			 * only considers the vowels after 'H' if only they are on
 			 * the beginning of the word
 			 */
-			case 'H':
+			case L'H':
 				if (WORD_EDGE(last_char))
 				{
-					ahead_char = GetSimplifiedAt(original,current+1);
+					ahead_char = GetAt(original,current+1);
 					if (isVowel(ahead_char))
 					{
 						MetaphAddChr(primary,ahead_char);
@@ -645,15 +633,15 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 				}
 				break;
 
-			case 'Q':
+			case L'Q':
 				MetaphAddChr(primary,'K');
 				break;
 
-			case 'W':
-				ahead_char = GetSimplifiedAt(original,current+1);
+			case L'W':
+				ahead_char = GetAt(original,current+1);
 				if (isVowel(ahead_char))
 					MetaphAddChr(primary,'V');
-                else if (ahead_char == 'L' || ahead_char == 'R' ) /* sugestão de luisfurquim@gmail.com p/ Wladimir e Wrana */
+                else if (ahead_char == L'L' || ahead_char == L'R' ) /* sugestão de luisfurquim@gmail.com p/ Wladimir e Wrana */
                     MetaphAddChr(primary,'V');
 
 				/* desconsiderar o W no final das palavras, por ter som de U,
@@ -670,20 +658,14 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 		}
 		/* next char */
 		current ++;
-
 		last_char = current_char;
 	}
 
-
-
 	primary->str[ primary->length ] = '\0';
 
-	//META_MALLOC(code, current+1, char);
 	META_MALLOC(code, primary->length+1, char);
 	if( !code )
 		return NULL;
-	//bzero(code, current+1);
-	//memcpy(code, primary->str, current);
 	memcpy(code, primary->str, primary->length);
 	code[primary->length] = '\0';
 
@@ -692,4 +674,3 @@ Metaphone_PTBR_s(const wchar_t *str, const int max_length, const wchar_t separat
 
  	return code;
 }
-
