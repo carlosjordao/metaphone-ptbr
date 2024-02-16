@@ -1,7 +1,8 @@
 #!/bin/bash
 
 cat <<END
-database: 
+#----------------------------------------
+# Como instalar e utilizar a extensão:
 =# CREATE EXTENSION metaphoneptbr;
 =# select metaphone_ptbr('Teste');
  metaphone_ptbr 

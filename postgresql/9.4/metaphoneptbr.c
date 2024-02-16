@@ -1,1 +1,0 @@
-../metaphone_ptbr.c

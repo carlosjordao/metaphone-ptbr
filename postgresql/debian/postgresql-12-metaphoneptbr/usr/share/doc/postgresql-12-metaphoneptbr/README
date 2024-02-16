@@ -1,0 +1,36 @@
+Compatibility
+-------------------------------------
+* adapted to install on all supported versions (10+) through dpkg-buildpackage
+
+
+1. Compiling
+-------------------------------------
+- Install dependencies:
+	apt install build-essential postgresql-server-dev-all
+
+- After unpacking the source tarball, go inside metaphoneptbr/postgresql/all directory 
+	cd metaphoneptbr/postgresql/all
+- Run: 
+	make 
+	sudo make install
+- This will install the extension on the current version of postgresql you have installed.
+You can check which is with:  pg_buildext supported-versions postgresql
+
+
+2. How to use the module
+-------------------------------------
+- inside you database:
+	CREATE EXTENSION metaphoneptbr;
+
+- Use it as a function, for example:
+	select metaphone_ptbr('Abcdefgh');
+
+
+4. Building packages
+------------------------------------
+- on metaphoneptbr/postgresql, run:
+	dpkg-buildpackage -uc -us -b -tc
+
+
+--
+  Carlos jordao, carlosjordao@gmail.com
