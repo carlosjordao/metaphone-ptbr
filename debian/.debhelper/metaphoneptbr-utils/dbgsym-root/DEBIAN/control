@@ -1,0 +1,13 @@
+Package: metaphoneptbr-utils-dbgsym
+Package-Type: ddeb
+Source: metaphoneptbr
+Version: 1.23
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
+Installed-Size: 26
+Depends: metaphoneptbr-utils (= 1.23)
+Section: debug
+Priority: optional
+Description: debug symbols for metaphoneptbr-utils
+Build-Ids: fbc6f5cc6e4a3d1b187af8e58817cdc443b90685

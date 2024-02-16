@@ -1,0 +1,13 @@
+Package: php-metaphoneptbr-dbgsym
+Package-Type: ddeb
+Source: metaphoneptbr
+Version: 1.23
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
+Installed-Size: 36
+Depends: php-metaphoneptbr (= 1.23)
+Section: debug
+Priority: optional
+Description: debug symbols for php-metaphoneptbr
+Build-Ids: fb80e3d6e829414c1f00b8ad58c4a7c07abab699
