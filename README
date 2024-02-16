@@ -1,13 +1,22 @@
-0. USO
+### Como usar a ferramenta
+
+Os pacotes debian estão disponíveis na informação de release.
+Compilados contra Ubuntu 22.04.
+
+Porém também tem disponibilizado pacotes pgdg para outras versões de PostgreSQL.
+
+Caso precise compilar por algum motivo, as instruções de compilação/build estão no arquivo README
+de cada pasta:
+  * php/README --> para compilar o módulo em PHP
+  * python/README --> para criar o egg e/ou instalar, com pybuild
+  * postgresql/README --> para instalar na versão PostgreSQL do seu computador
+
 Depois de instalado:
 
-PostgreSQL 9.x:
+PostgreSQL 10+:
 	CREATE EXTENSION metaphoneptbr;
 	select metaphone_ptbr('qualquer');
-PostgreSQL 8.x:
-	psql -d banco -f /usr/share/postgresql/XX/contrib/metaphone_ptbr.sql
-		XX -> version of postgresql (8.3 or 8.4)
-	select metaphone_ptbr('qualquer');
+
 PHP:
 	<?php echo metaphoneptbr('qualquer'); ?>
 
@@ -15,14 +24,12 @@ Python 3:
 	from metaphoneptbr import phonetic
 	print(phonetic('qualquer'))
 
-Python 2:
-	import metaphoneptbr
-	print metaphoneptbr.phonetic(u'qualquer')
+A ferramenta é útil para criar um conjunto de palavras associadas uma identidade fonética.
+Esse mecanismo busca não a exatidão, mas a aproximação de um resultado fuzzy, no qual um conjunto
+é representado, podendo-se refinar as sugestões de buscas por nomes de pessoas ou logradouros.
 
 
-
-
-1. INTRODUÇÃO 
+### 1. INTRODUÇÃO 
 
 Metaphone for Brazilian Portuguese
 
@@ -35,7 +42,7 @@ durante o projeto REDECA, voltado à infância e adolescência.
 
 Este port é uma variação para o português, ao menos o brasileiro.
 
-2. O ALGORITMO
+### 2. O ALGORITMO
 
 Assim como o Metaphone original e o Double Metaphone, o objetivo é criar uma 
 palavra foneticamente representativa a partir da original utilizando as 
@@ -64,6 +71,7 @@ sua implementação foi construída visando simplicidade e agilidade.
 
 Para simplificar a representação do algoritmo, tomemos as seguintes notações:
 
+```
 SIMBOLO - NOTACAO
 ------------------------------------------
 ^       - Representa o começo da palavra 
@@ -74,8 +82,9 @@ c       - (minúsculo) representa uma consoante qualquer
 .	- Qualquer letra
 0	- (nulo) Representa que o símbolo foi ignorado e não mapeado.
 letras em maiúsculo - representam uma vogal ou consoante real em particular
+```
 
-
+```
 LETRAS 	-> REPRESENTAÇÃO FONÉTICA (COMENTARIOS)
 ------------------------------------------
 ^v	    -> v (ou seja, copia a vogal)
@@ -137,7 +146,7 @@ X	    -> X (caso nenhuma caso acima case com a palavra, aplica-se esta regra)
 Y	    -> I (é tratado como vogal para todos os efeitos)
 Z$	    -> S
 Z	    -> Z
-
+```
 
 Acima encontra-se uma versão simplificada do algoritmo utilizado para transformação fonética.
 
