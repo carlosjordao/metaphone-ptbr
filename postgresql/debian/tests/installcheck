@@ -1,0 +1,11 @@
+#!/bin/sh
+pg_buildext installcheck
+# alternatively: pg_buildext installcheck build-%v
+
+# Running extra code before invoking the actual action:
+set -e
+for v in $(pg_buildext installed-versions); do
+     test -L build-$v/sql || ln -s ../sql build-$v/
+     test -L build-$v/expected || ln -s ../expected build-$v/
+     pg_buildext installcheck-$v $(CURDIR)/all build-$v
+done

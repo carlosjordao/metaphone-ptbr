@@ -1,0 +1,4 @@
+misc:Depends=
+misc:Pre-Depends=
+php:Depends=phpapi-20210902
+shlibs:Depends=libc6 (>= 2.14)

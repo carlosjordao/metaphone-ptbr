@@ -1,0 +1,4 @@
+misc:Depends=postgresql-10
+postgresql:Depends=postgresql-10
+shlibs:Depends=libc6 (>= 2.14)
+misc:Pre-Depends=

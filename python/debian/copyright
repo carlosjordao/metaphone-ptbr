@@ -1,0 +1,10 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Metaphone pt-BR
+Source: http://sourceforge.net/projects/metaphoneptbr/
+
+Files: *
+Copyright: 2008, Carlos Costa Jordao <carlosjordao@gmail.com>
+License: GPL-3
+	You should have a copy of this licence under /usr/share/common-licenses/GPL-3
+
+

@@ -1,0 +1,7 @@
+f0f6b6fff16be183c887eef16ebf9eb7  usr/lib/postgresql/12/lib/bitcode/metaphoneptbr.index.bc
+6840f3c3d60fa2faf04a415ae224bf88  usr/lib/postgresql/12/lib/bitcode/metaphoneptbr/metaphoneptbr.bc
+07699effc62e7713c9f2e52284118558  usr/lib/postgresql/12/lib/metaphoneptbr.so
+45ab32f595b51c222fd40324e922941f  usr/share/doc/postgresql-12-metaphoneptbr/README
+7e786e0c39e21705692469b4f73a46d1  usr/share/doc/postgresql-12-metaphoneptbr/changelog.gz
+c7579b94305159102520a55b34ad5fd6  usr/share/postgresql/12/extension/metaphoneptbr--1.36.sql
+a1543d4c85498e9067387ba8180fcefe  usr/share/postgresql/12/extension/metaphoneptbr.control

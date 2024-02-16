@@ -1,40 +1,37 @@
 Compatibility
 -------------------------------------
-x Tested with postgresql 8.3  and 8.4
-* adapted to install on 9.1 
+* adapted to install on all supported versions (10+) through dpkg-buildpackage
+* packages created with pgdg dev packages may be incompatible with standard 
+postgresql from  Ubuntu/Debian.
+
 
 1. Compiling
 -------------------------------------
-1. after unpacking the source tarball, go inside metaphoneptbr/postgres directory 
+- Install dependencies:
+	apt install build-essential postgresql-server-dev-all
 
-If your postgresql version is not listed as a directory here, create a new one by
-copying the closest version. For example: cp -r 9.4 9.5
+- After unpacking the source tarball, go inside metaphoneptbr/postgresql/all directory 
+	cd metaphoneptbr/postgresql/all
+- Run: 
+	make 
+	sudo make install
+- This will install the extension on the current version of postgresql you have installed.
+You can check which is with:  pg_buildext supported-versions postgresql
 
-Go inside this directory and then run 'make install'
 
-
-
-2a. How to install (8.X)
+2. How to use the module
 -------------------------------------
-1. inside your database, load the file:
-   metaphone_ptbr.sql
+- inside you database:
+	CREATE EXTENSION metaphoneptbr;
 
-   which usually stays in:
-   /usr/share/postgresql/XX/contrib/metaphone_ptbr.sql
-   XX -> version of postgresql (8.3 or 8.4)
-
-
-2b. How to install (9.1 or higher)
--------------------------------------
-1. inside you database:
-    CREATE EXTENSION metaphoneptbr;
+- Use it as a function, for example:
+	select metaphone_ptbr('Teste');
 
 
-3. How to use
--------------------------------------
-select metaphone_ptbr('Abcdefgh');
+4. Building packages
+------------------------------------
+- on metaphoneptbr/postgresql, run:
+    pg_buildext updatecontrol
+	dpkg-buildpackage -uc -us -b -tc
 
 
-
---
-  Carlos jordao, carlosjordao@gmail.com

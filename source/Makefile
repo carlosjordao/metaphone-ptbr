@@ -4,7 +4,7 @@ DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
 main:
-	gcc -Wstack-protector $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o metaphone_ptbr main.c metaphone_ptbr.c
+	gcc -Wstack-protector -Wno-implicit-fallthrough $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o metaphone_ptbr main.c metaphone_ptbr.c
 
 clean:
 	rm -f metaphone_ptbr *.o

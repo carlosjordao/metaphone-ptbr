@@ -1,0 +1,18 @@
+Módulo metaphone-ptbr para python
+- esta seção é sobre compilar e instalar uma extensão python
+
+* Requisitos para compilar:
+	apt install python3-all python3-setuptools dh-python python3-dev
+
+* para compilar e instalar manualmente:
+	pybuild --configure
+	pybuild --build
+	pybuild --install
+
+* para gerar pacote debian:
+	dpkg-buildpackage -uc -us -b
+
+* forma de uso:
+from metaphoneptbr import phonetic"
+print(phonetic('teste'))"
+
