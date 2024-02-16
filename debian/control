@@ -7,18 +7,6 @@ Homepage: http://sourceforge.net/projects/metaphoneptbr/
 Standards-Version: 3.9.5
 
 
-#Package: metaphoneptbr4pgsql
-Package: postgresql-metaphoneptbr
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql (>= 10)
-Description: This is a metaphone-pt_Br module for PostgreSQL database
- It aims to extend word search beyond 'LIKE' commands boundaries,
- through a phonetic key search. It reduces words to a representative 
- phonetic key, making it easier to compare and search by names, 
- dictionary words and streets names.
-
-
 Package: php-metaphoneptbr
 Section: php
 Architecture: any

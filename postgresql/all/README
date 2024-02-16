@@ -1,6 +1,8 @@
 Compatibility
 -------------------------------------
 * adapted to install on all supported versions (10+) through dpkg-buildpackage
+* packages created with pgdg dev packages may be incompatible with standard 
+postgresql from  Ubuntu/Debian.
 
 
 1. Compiling
@@ -23,12 +25,13 @@ You can check which is with:  pg_buildext supported-versions postgresql
 	CREATE EXTENSION metaphoneptbr;
 
 - Use it as a function, for example:
-	select metaphone_ptbr('Abcdefgh');
+	select metaphone_ptbr('Teste');
 
 
 4. Building packages
 ------------------------------------
 - on metaphoneptbr/postgresql, run:
+    pg_buildext updatecontrol
 	dpkg-buildpackage -uc -us -b -tc
 
 
