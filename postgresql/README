@@ -35,5 +35,3 @@ You can check which is with:  pg_buildext supported-versions postgresql
 	dpkg-buildpackage -uc -us -b -tc
 
 
---
-  Carlos jordao, carlosjordao@gmail.com

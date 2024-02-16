@@ -14,7 +14,7 @@ override_dh_auto_install:
 	+pg_buildext install $(CURDIR)/all build-%v postgresql-%v-metaphoneptbr
 
 override_dh_installdocs:
-	dh_installdocs --all all/README 
+	dh_installdocs --all README 
 
 override_dh_auto_clean:
 	+pg_buildext clean $(CURDIR)/all build-%v
