@@ -1,0 +1,8 @@
+metaphoneptbr (1.23) unstable; urgency=low
+  * refatoramento dos pacotes do postgresql;
+  * separação do pacote debian do módulo de postgresql em outro diretorio
+  * geração de pacotes postgresql para diversas versões.
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sat, 08 Oct 2022 17:00:00 -0300
+
+
