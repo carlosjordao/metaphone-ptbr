@@ -1,0 +1,7 @@
+92abf95ebbf97e485ee8060dcc68604b  usr/lib/postgresql/14/lib/bitcode/metaphoneptbr.index.bc
+d7f7a33a020babaa4cb95f7776c91a88  usr/lib/postgresql/14/lib/bitcode/metaphoneptbr/metaphoneptbr.bc
+d1a55ac68ccae8220eb5419357bebe4e  usr/lib/postgresql/14/lib/metaphoneptbr.so
+45ab32f595b51c222fd40324e922941f  usr/share/doc/postgresql-14-metaphoneptbr/README
+7e786e0c39e21705692469b4f73a46d1  usr/share/doc/postgresql-14-metaphoneptbr/changelog.gz
+c7579b94305159102520a55b34ad5fd6  usr/share/postgresql/14/extension/metaphoneptbr--1.36.sql
+a1543d4c85498e9067387ba8180fcefe  usr/share/postgresql/14/extension/metaphoneptbr.control

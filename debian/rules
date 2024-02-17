@@ -1,133 +1,16 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-
-# Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 export DH_OPTIONS=-v
-
-# --- ENVIRONMENT ---
-PHP_EX=$(shell /usr/bin/php-config --extension-dir)
-PHPFLAGS=`dpkg-buildflags --export=configure`
-# hardening
 export DEB_BUILD_HARDENING=1
-export PYBUILD_NAME=metaphoneptbr
 
-
-# default mandatory
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	# Add here commands to configure the package.
-	touch configure-stamp
-
-
-build: 
-
-
-
-# specific cleaning routines
 clean:
-	@echo "\n**************************\n\t\t cleaning \n**********************"
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	# Add here commands to clean up after the build process.
-	[ ! -f Makefile ] || $(MAKE) -i distclean
-	cd php ; phpize --clean ; cd ..
-	cd python; python3 setup.py clean ; cd ..
-	cd source ; make clean 
-	dh_clean 
-	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
+	$(MAKE) -C source clean
+
+build:
+	$(MAKE) -C source
+
+%: 	
+	dh $@   --source-dir=$(CURDIR)/source 
 
 
-# ---------
-# compile and package
-# ------------
-php-metaphoneptbr: 
-	@echo "\n*****************************\n*** PHP module \n**********************"
-	dh_testroot -p$@
-	dh_testdir -p$@
-	dh_installdirs -p$@
-	cd php && phpize && DEB_BUILD_HARDENING=1 ./configure --prefix=$(CURDIR)/debian/php-metaphoneptbr/usr && DEB_BUILD_HARDENING=1 $(MAKE) -e DESTDIR=$(CURDIR)/debian/$@
-	install -D -m 0644 php/metaphone_ptbr.ini $(CURDIR)/debian/$@/usr/share/php/metaphoneptbr/metaphone_ptbr.ini
-	install -D -m 0644 php/modules/metaphoneptbr.so $(CURDIR)/debian/$@$(PHP_EX)/metaphoneptbr.so
-	echo "php:Depends=phpapi-"`php-config --phpapi` >> $(CURDIR)/debian/php-metaphoneptbr.substvars
-	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
-
-
-#postgresql-10-metaphoneptbr: 
-postgresql-metaphoneptbr: 
-	@echo "\n*****************************\n*** POSTGRESQL module \n**********************"
-	dh_testdir -p$@
-	dh_testroot -p$@
-	dh_installdirs -p$@
-#	for v in `pg_buildext supported-versions postgresql`; do \
-#	    $(MAKE) -C postgresql/$v clean;\
-#	    $(MAKE) -C postgresql/$v install DESTDIR=$(CURDIR)/debian/$@;\
-#	done
-	$(MAKE) -C postgresql/all clean
-	$(MAKE) -C postgresql/all install DESTDIR=$(CURDIR)/debian/$@
-    
-	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
-
-
-metaphoneptbr-utils: 
-	@echo "\n*****************************\n*** METAPHONE UTILS\n**********************"
-	dh_testdir -p$@
-	dh_testroot -p$@
-	dh_installdirs -p$@
-	cd source && $(MAKE) -e
-	install -D -m 0555 source/metaphone_ptbr $(CURDIR)/debian/$@/usr/bin/metaphone_ptbr
-	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
-
-
-python3-metaphoneptbr:
-	@echo "\n*****************************\n*** PYTHON 3\n**********************"
-	pybuild -p 3 --configure --dir python
-	pybuild -p 3 --build     --dir python
-	pybuild -p 3 --install   --dir python
-	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
-
-#python2-metaphoneptbr:
-#	@echo "\n*****************************\n*** PYTHON 2\n**********************"
-#	pybuild -p 2.7 --configure --dir python
-#	pybuild -p 2.7 --build     --dir python
-#	pybuild -p 2.7 --install   --dir python
-#	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
-
-# --- end ----
-
-# mandatory entries
-
-# Build architecture-independent files here.
-binary-indep: 
-# We have nothing to do by default.
-
-
-# Build architecture-dependent files here.
-#binary-arch: postgresql-10-metaphoneptbr php-metaphoneptbr metaphoneptbr-utils  python2-metaphoneptbr python3-metaphoneptbr
-binary-arch: postgresql-metaphoneptbr php-metaphoneptbr metaphoneptbr-utils  python3-metaphoneptbr
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs debian/changelog
-	dh_installdocs -A README
-	dh_install
-	dh_installdirs
-	dh_installman
-	dh_link
-	dh_lintian
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_makeshlibs
-	dh_shlibdeps
-	dh_installdeb
-	#echo "php:Depends=phpapi-"`php-config --phpapi` >> debian/php-metaphoneptbr.substvars
-	dh_gencontrol 
-	dh_md5sums 
-	dh_builddeb 
-
-binary: binary-indep binary-arch
-
-
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean

@@ -1,0 +1,3 @@
+postgresql-14-metaphoneptbr-dbgsym_1.23_amd64.ddeb debug optional automatic=yes
+postgresql-14-metaphoneptbr_1.23_amd64.deb libs optional
+postgresql-metaphoneptbr_1.23_amd64.buildinfo - optional

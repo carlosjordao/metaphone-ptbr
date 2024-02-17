@@ -1,0 +1,13 @@
+Package: postgresql-14-metaphoneptbr-dbgsym
+Package-Type: ddeb
+Source: postgresql-metaphoneptbr
+Version: 1.23
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
+Installed-Size: 26
+Depends: postgresql-14-metaphoneptbr (= 1.23)
+Section: debug
+Priority: optional
+Description: debug symbols for postgresql-14-metaphoneptbr
+Build-Ids: 0b00383e2099c06df3ac5d4e3ca62be9330f8fc3

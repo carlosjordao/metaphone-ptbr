@@ -7,7 +7,7 @@ Copyright: 2008, Carlos Costa Jordao <carlosjordao@gmail.com>
 License: GPL-3
 	You should have a copy of this licence under /usr/share/common-licenses/GPL-3
 
-Files: metaphoneptbr4pgsql
+Files: postgresql-*-metaphoneptbr
 Copyright: 2008, Carlos Costa Jordao <carlosjordao@gmail.com>
 License: BSD
 	Copyright (c) 2008, Carlos Costa Jordão

@@ -1,0 +1,4 @@
+postgresql-metaphoneptbr (1.23) unstable; urgency=low
+  * adição de suporte a postgresql >= 16
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Thu, 15 Feb 2024 13:00:00 -0300

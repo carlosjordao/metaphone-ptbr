@@ -1,0 +1,8 @@
+#include-removal
+#auto-commit
+#single-debian-patch
+#skip-patches
+#no-preparation
+#single-debian-patch
+#create-empty-orig
+#unapply-patches

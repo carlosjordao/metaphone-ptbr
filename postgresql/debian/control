@@ -1,0 +1,16 @@
+Source: postgresql-metaphoneptbr
+Build-Depends: debhelper, postgresql-server-dev-all (>= 153~)
+Priority: optional
+Homepage: https://github.com/carlosjordao/metaphone-ptbr
+Standards-Version: 3.9.5
+Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
+
+Package: postgresql-14-metaphoneptbr
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, postgresql-14
+Description: This is a metaphone-pt_Br module for PostgreSQL database
+ It aims to extend word search beyond 'LIKE' commands boundaries
+ through a phonetic key search. It reduces words to a representative
+ phonetic key, making it easier to compare and search by names,
+ dictionary words and streets names. 

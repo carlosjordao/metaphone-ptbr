@@ -1,0 +1,68 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+export DH_OPTIONS=-v
+
+# --- ENVIRONMENT ---
+PHP_EX=$(shell /usr/bin/php-config --extension-dir)
+PHPFLAGS=`dpkg-buildflags --export=configure`
+# hardening
+export DEB_BUILD_HARDENING=1
+
+
+# specific cleaning routines
+clean:
+	@echo "\n**************************\n\t\t cleaning \n**********************"
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	phpize --clean 
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
+
+
+# ---------
+# compile and package
+# ------------
+php-metaphoneptbr: 
+	@echo "\n*****************************\n*** PHP module \n**********************"
+	dh_testroot -p$@
+	dh_testdir -p$@
+	dh_installdirs -p$@
+	phpize 
+	DEB_BUILD_HARDENING=1 ./configure --prefix=$(CURDIR)/debian/php-metaphoneptbr/usr
+	DEB_BUILD_HARDENING=1 $(MAKE) -e DESTDIR=$(CURDIR)/debian/$@
+	install -D -m 0644 metaphone_ptbr.ini $(CURDIR)/debian/$@/usr/share/php/metaphoneptbr/metaphone_ptbr.ini
+	install -D -m 0644 modules/metaphoneptbr.so $(CURDIR)/debian/$@$(PHP_EX)/metaphoneptbr.so
+	echo "php:Depends=phpapi-"`php-config --phpapi` >> $(CURDIR)/debian/php-metaphoneptbr.substvars
+	@echo "\n_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,_,.-~+'ºª'+~-.,"
+
+
+
+# Build architecture-dependent files here.
+binary-arch: php-metaphoneptbr 
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs debian/changelog
+	dh_installdocs -A README
+	dh_install
+	dh_installdirs
+	dh_installman
+	dh_link
+	dh_lintian
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_shlibdeps
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+
+binary: binary-arch
+
+
+
+.PHONY: build clean binary-indep binary-arch binary install configure

@@ -1,0 +1,15 @@
+Package: postgresql-13-metaphoneptbr
+Source: postgresql-metaphoneptbr
+Version: 1.23
+Architecture: amd64
+Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
+Installed-Size: 57
+Depends: postgresql-13, libc6 (>= 2.14)
+Section: libs
+Priority: optional
+Homepage: https://github.com/carlosjordao/metaphone-ptbr
+Description: This is a metaphone-pt_Br module for PostgreSQL database
+ It aims to extend word search beyond 'LIKE' commands boundaries
+ through a phonetic key search. It reduces words to a representative
+ phonetic key, making it easier to compare and search by names,
+ dictionary words and streets names.

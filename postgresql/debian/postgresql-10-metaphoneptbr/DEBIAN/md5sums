@@ -1,0 +1,5 @@
+df3a80031b6d8b32a7bb5f509087c584  usr/lib/postgresql/10/lib/metaphoneptbr.so
+45ab32f595b51c222fd40324e922941f  usr/share/doc/postgresql-10-metaphoneptbr/README
+7e786e0c39e21705692469b4f73a46d1  usr/share/doc/postgresql-10-metaphoneptbr/changelog.gz
+c7579b94305159102520a55b34ad5fd6  usr/share/postgresql/10/extension/metaphoneptbr--1.36.sql
+a1543d4c85498e9067387ba8180fcefe  usr/share/postgresql/10/extension/metaphoneptbr.control

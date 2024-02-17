@@ -1,0 +1,18 @@
+Source: metaphoneptbr
+Section: libdevel
+Priority: optional
+Maintainer: Carlos Costa Jordão <carlosjordao@gmail.com>
+Build-Depends: debhelper (>= 10), python3-all, python3-setuptools, dh-python, python3-dev
+Homepage: http://sourceforge.net/projects/metaphoneptbr/
+Standards-Version: 3.9.5
+
+
+Package: python3-metaphoneptbr
+Section: python
+Architecture: any
+Depends: ${shlibs:Depends}, python3 (>= 3.4) 
+Description: This is the brazilian metaphone module for Python 3
+ It aims providing a phonetic key search for python 3. It reduces 
+ words to a representative phonetic key, making it easier to compare 
+ and search by names, dictionary words and streets names.
+ 

@@ -1,0 +1,146 @@
+metaphoneptbr (1.23) unstable; urgency=low
+  * refatoramento dos pacotes do postgresql;
+  * separação do pacote debian do módulo de postgresql em outro diretorio
+  * geração de pacotes postgresql para diversas versões.
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sat, 08 Oct 2022 17:00:00 -0300
+
+
+metaphoneptbr (1.22) unstable; urgency=low
+  * remoção de python-dev como dependência e suporte a python2
+  * adequação para o módulo de PHP funcionar na versão 8
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sat, 08 Oct 2022 17:00:00 -0300
+
+
+metaphoneptbr (1.21) unstable; urgency=low
+  * rearranjo de includes
+  * conversão do arquivo utf-8, arrumando erros no apresentados no VisualStudio ao compilar módulo python
+  * mudanças na função de retorno do módulo python
+  * conformidade entre char e wchar_t no metaphone
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Mon, 15 Mar 2021 19:54:00 -0300
+
+
+metaphoneptbr (1.20) unstable; urgency=low
+  * compilado no Ubuntu 19.10
+  * sem suporte a python 2
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Mon, 30 Mar 2020 22:57:00 -0300
+
+
+metaphoneptbr (1.19) unstable; urgency=low
+  * modificado a compilação de módulo PostgreSQL;
+  * suporte a PostgreSQL 10 do Ubuntu 18.04;
+  * modificado dependências de compilação, usando lintian
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Mon, 28 May 2018 15:39:00 -0300
+
+
+metaphoneptbr (1.18) unstable; urgency=low
+  * mantido suporte apenas para strings unicodes em python 2 devido ao uso de setlocale() ser desencorajado.
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sun, 26 Mar 2017 18:06:00 -0300
+
+
+metaphoneptbr (1.17) unstable; urgency=low
+  * acentos com python 2 funcionando de forma mais transparente.
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Wed, 15 Mar 2017 22:06:00 -0300
+
+
+metaphoneptbr (1.17) unstable; urgency=low
+  * Added python 2 module extension support (Bruno Guberfain do Amaral)
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Thu, 09 Mar 2017 23:36:00 -0300
+
+
+metaphoneptbr (1.16) unstable; urgency=low
+  * Added python module extension (Bruno Guberfain do Amaral)
+  * reorganized some files structures
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Sat, 11 Feb 2017 13:39:00 -0300
+
+
+metaphoneptbr (1.15) unstable; urgency=low
+  * review of PHP module for version 7 compatibility
+  * update debian control and rules files to mirror changes for new version of PHP
+  * added 9.5 symlink to 9.4 postgres module code
+
+ -- Carlos Costa Jordão <carlosjordao@gmail.com>  Mon, 16 May 2016 15:49:00 -0300
+
+
+metaphoneptbr (1.14-2) unstable; urgency=low
+  * review of postgresql extension install, including support for 9.4 version
+  * review of PHP 5 extension install
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 10 Apr 2015 11:05:00 -0300
+
+
+metaphoneptbr (1.14-1) unstable; urgency=low
+  * added mapping of W[LR] -> V (Wladimir, Wrana). Thanks to Furquim
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Thu, 05 Mar 2015 16:35:00 -0300
+
+
+metaphoneptbr (1.13-1) unstable; urgency=low
+
+  * fixed bugged doubled 'R' and 'S' analysis into main code
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 08 Jan 2013 14:35:00 -0300
+
+
+metaphoneptbr (1.12.37-1) unstable; urgency=low
+
+  * changed postgresql tree to support 8.4 and 9.1 modules
+  * add pg_buildext to debian/rules instead manual install
+  * changed debian package format to 3.0 quilt
+  * fixed segmentation fault when command line program receives zero-length
+    string
+  * fixing lots of lintian warnings
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 08 Jan 2013 14:35:00 -0300
+
+metaphoneptbr (1.12.36-1) unstable; urgency=low
+
+  * changed Postgresql support to 9.1
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Tue, 27 Nov 2012 17:35:00 -0300
+
+metaphoneptbr (1.12.35) unstable; urgency=low
+
+  * config for wnpp and sponsorship
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 15 Jun 2012 18:05:00 -0300
+ 
+metaphoneptbr (1.12.34) unstable; urgency=low
+
+  * cleaned vim swap files
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Fri, 15 Jun 2012 18:05:00 -0300
+ 
+metaphoneptbr (1.12.33) unstable; urgency=low
+
+  * fixes Makefile to $(DESTDIR)
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 19:27:00 -0300
+
+metaphoneptbr (1.12.32) unstable; urgency=low
+
+  * changes for debian mentors system upload. Cleaning lintian warnings
+  * fixing debian/rules for cleaning lintian warnings
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 15:27:00 -0300
+
+metaphoneptbr (1.12.30) unstable; urgency=low
+
+  * changes for debian mentors system upload
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 14 Jun 2012 14:27:00 -0300
+
+metaphoneptbr (1.12.28-6) unstable; urgency=low
+
+  * setting output string at 4 chars long, as soundex and other metaphone algorithm
+
+ -- Carlos C. Jordao (jordao) <carlosjordao@gmail.com>  Wed, 7 Jul 2011 21:10:00 -0300
+

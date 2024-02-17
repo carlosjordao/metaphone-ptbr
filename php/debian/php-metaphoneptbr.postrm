@@ -1,0 +1,55 @@
+#!/bin/bash
+set -e
+
+[ -x /usr/sbin/phpquery ] || { echo 'phpquery not found'; exit 1; }
+[ -e /usr/lib/php/php-maintscript-helper ] || { echo 'php-maintscript-helper not found'; exit 2; }
+
+. /usr/lib/php/php-maintscript-helper
+
+dsoname="metaphoneptbr"
+module="metaphone_ptbr"
+inifile="metaphone_ptbr.ini"
+php_version=`/usr/sbin/phpquery -V`
+inidir=/etc/php/$php_version/mods-available
+
+case "$1" in
+  'configure')
+    # Register new conffile with UCF
+    ucf /usr/share/php/metaphoneptbr/${inifile} ${inidir}/${inifile}
+    ucfr --force php-metaphoneptbr ${inidir}/${inifile}
+
+    phpenmod -m -v $php_version -s ALL -q $module
+    [ $? -ne 0 ] && { echo 'error enabling module $module for ALL SAPI'; exit 3; }
+
+	echo "Use: <?php echo metaphone_ptbr('teste'); // result: TST ?>"
+	php -r "metaphone_ptbr('teste');" && echo "... module enabled" || echo "Enable this module manually: sudo phpenmod $module"
+    ;;
+
+  'purge')
+    # Query which package has this conffile registered
+    if which ucfq >/dev/null; then
+      ucfp=$(ucfq -w ${inidir}/${inifile} | cut -f 2 -d:)
+    fi
+
+    # Only work with the config file if it still belongs to us
+    if test "$ucfp" = php-metaphoneptbr; then
+        for ext in '~' '%' .bak .ucf-new .ucf-old .ucf-dist;  do
+          rm -f ${inidir}/${inifile}${ext}
+        done
+        if which ucf >/dev/null; then
+          ucf --purge ${inidir}/${inifile}
+        fi
+        if which ucfr >/dev/null; then
+          ucfr --purge php-metaphoneptbr ${inidir}/${inifile}
+        fi
+    fi
+
+    phpdismod -v "$php_version" -s ALL -m "$module"
+    [ -e ${inidir}/${inifile} ] && rm -f ${inidir}/${inifile}
+  ;;
+  'remove'|'deconfigure')
+    phpdismod -v "$php_version" -s ALL -m "$module"
+  ;;
+esac
+
+exit 0

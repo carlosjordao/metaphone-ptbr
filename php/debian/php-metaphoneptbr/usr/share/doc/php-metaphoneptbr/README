@@ -1,0 +1,16 @@
+* Requisitos de compilação:
+	apt install php-dev
+
+* Requisitos de instalação:
+	precisa do pacote php-cli OU php
+
+* Compilando manualmente:
+	phpize 
+	./configure --prefix=/usr
+	make
+	sudo install -D -m 0644 metaphone_ptbr.ini /usr/share/php/metaphoneptbr/metaphone_ptbr.ini
+	sudo install -D -m 0644 modules/metaphoneptbr.so /usr/lib/php/20210902/metaphoneptbr.so
+	# PS: note que o diretório /usr/lib/php/20210902 muda com o tempo e com a versão do PHP
+
+* Gerando o pacote debian:
+	dpkg-buildpackage -uc -us -b
