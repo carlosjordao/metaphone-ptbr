@@ -1,0 +1,5 @@
+Alterações
+17/02/2024 - SET_VARSIZE na versão do postgresql 16 é uma macro implementada no include varatt.h
+#if PG_MAJORVERSION_NUM >= 16
+#include "varatt.h"
+#endif

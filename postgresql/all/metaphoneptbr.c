@@ -23,9 +23,8 @@ and is covered under this copyright:
 /* include these first, according to the docs */
 #include "postgres.h"
 #include "fmgr.h"
-
 #if PG_MAJORVERSION_NUM >= 16 
-  #include "varatt.h"
+#include "varatt.h"
 #endif
 
 #ifdef PG_MODULE_MAGIC
